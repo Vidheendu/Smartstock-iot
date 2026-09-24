@@ -3,7 +3,7 @@
  */
 export const notFoundHandler = (req, res, next) => {
   res.status(404).json({
-    status: 'error',
+    success: false,
     message: `Cannot ${req.method} ${req.originalUrl} - Route not found`
   });
 };
@@ -12,14 +12,15 @@ export const notFoundHandler = (req, res, next) => {
  * Centralized Error Handling Middleware
  */
 export const errorHandler = (err, req, res, next) => {
-  const statusCode = err.status || err.statusCode || 500;
+  const statusCode = err.statusCode || err.status || 500;
   const message = err.message || 'Internal Server Error';
 
-  console.error(`[SERVER ERROR] ${req.method} ${req.originalUrl}:`, err);
+  if (statusCode >= 500) {
+    console.error(`[SERVER ERROR] ${req.method} ${req.originalUrl}:`, err);
+  }
 
   res.status(statusCode).json({
-    status: 'error',
-    message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    success: false,
+    message
   });
 };

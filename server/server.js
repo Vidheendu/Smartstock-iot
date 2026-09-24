@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import config, { validateEnv } from './src/config/env.js';
 import './src/config/db.js';
+import authRoutes from './src/routes/auth.routes.js';
 import { notFoundHandler, errorHandler } from './src/middleware/error.middleware.js';
 
 // Validate environment variables on startup
@@ -20,6 +21,9 @@ app.get('/api/health', (req, res) => {
     message: 'SmartStock API is running'
   });
 });
+
+// Authentication Routes (Phase 2)
+app.use('/api/auth', authRoutes);
 
 // 404 & Centralized Error Middleware
 app.use(notFoundHandler);

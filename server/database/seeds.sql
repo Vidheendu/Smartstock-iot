@@ -16,8 +16,8 @@ DELETE FROM users;
 -- 1. SEED USERS (Role: MANAGER, STAFF)
 -- Password for both demo accounts: password123 (hashed with bcrypt 10 rounds)
 INSERT INTO users (id, email, password_hash, full_name, role) VALUES
-('e0000000-0000-0000-0000-000000000001', 'manager@smartstock.com', '$2b$10$pLw.W5b1Yf77eW3E8rV1veV6oQ0fG9.kGZ1B5Vp8p6wN8M5B0lK9W', 'Alex Morgan', 'MANAGER'),
-('e0000000-0000-0000-0000-000000000002', 'staff@smartstock.com', '$2b$10$pLw.W5b1Yf77eW3E8rV1veV6oQ0fG9.kGZ1B5Vp8p6wN8M5B0lK9W', 'Taylor Brooks', 'STAFF');
+('e0000000-0000-0000-0000-000000000001', 'manager@smartstock.com', '$2b$10$x1VCpBETnXPwknq.4hzx5uRUF6GH.Ozi8imwsUarTThA/vtYOBwV2', 'Alex Morgan', 'MANAGER'),
+('e0000000-0000-0000-0000-000000000002', 'staff@smartstock.com', '$2b$10$x1VCpBETnXPwknq.4hzx5uRUF6GH.Ozi8imwsUarTThA/vtYOBwV2', 'Taylor Brooks', 'STAFF');
 
 -- 2. SEED SUPPLIERS (At least 3 suppliers)
 INSERT INTO suppliers (id, name, contact_name, email, phone, address, lead_time_days) VALUES
