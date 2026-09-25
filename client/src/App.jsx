@@ -6,6 +6,8 @@ import AppLayout from './components/layout/AppLayout.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Products from './pages/Products.jsx';
+import ProductDetails from './pages/ProductDetails.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import {
@@ -73,17 +75,8 @@ function AppRoutes() {
         <Route path="/dashboard" element={<Dashboard />} />
 
         {/* General Protected Routes (Staff & Manager) */}
-        <Route
-          path="/products"
-          element={
-            <PlaceholderPage
-              title="Products"
-              description="Product management will be implemented in a later phase."
-              icon={Package}
-              phase="Phase 4"
-            />
-          }
-        />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
         <Route
           path="/inventory"
           element={

@@ -3,6 +3,9 @@ import cors from 'cors';
 import config, { validateEnv } from './src/config/env.js';
 import './src/config/db.js';
 import authRoutes from './src/routes/auth.routes.js';
+import productRoutes from './src/routes/product.routes.js';
+import supplierRoutes from './src/routes/supplier.routes.js';
+import dashboardRoutes from './src/routes/dashboard.routes.js';
 import { notFoundHandler, errorHandler } from './src/middleware/error.middleware.js';
 
 // Validate environment variables on startup
@@ -22,8 +25,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Authentication Routes (Phase 2)
+// Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/suppliers', supplierRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // 404 & Centralized Error Middleware
 app.use(notFoundHandler);

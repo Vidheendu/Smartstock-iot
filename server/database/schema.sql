@@ -40,12 +40,14 @@ CREATE TABLE IF NOT EXISTS products (
     sku VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(150) NOT NULL,
     category VARCHAR(100) NOT NULL,
+    description TEXT,
     current_stock INTEGER NOT NULL DEFAULT 0 CHECK (current_stock >= 0),
     minimum_stock INTEGER NOT NULL DEFAULT 10 CHECK (minimum_stock >= 0),
     unit VARCHAR(30) DEFAULT 'units',
     unit_price NUMERIC(10, 2) NOT NULL DEFAULT 0.00 CHECK (unit_price >= 0),
     supplier_id UUID REFERENCES suppliers(id) ON DELETE SET NULL,
     stock_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL' CHECK (stock_status IN ('NORMAL', 'LOW', 'CRITICAL', 'OUT_OF_STOCK')),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -54,6 +56,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_products_sku ON products(sku);
 CREATE INDEX IF NOT EXISTS idx_products_status ON products(stock_status);
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
 CREATE INDEX IF NOT EXISTS idx_products_supplier ON products(supplier_id);
+CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active);
 
 -- 4. SIMULATED_DEVICES TABLE
 CREATE TABLE IF NOT EXISTS simulated_devices (

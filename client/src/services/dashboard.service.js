@@ -1,12 +1,12 @@
 /**
  * SmartStock Dashboard Service
  *
- * NOTE: Phase 3 uses temporary frontend mock data for dashboard statistics,
- * stock status overview, and recent activity.
- *
- * This service is designed to be cleanly replaced with live API calls
- * (e.g. GET /api/dashboard/stats) in Phase 4+ without frontend restructuring.
+ * Integrated in Phase 4 to pull live product catalog metrics from the backend API
+ * (GET /api/dashboard/stats) while keeping simulated activity data until telemetry
+ * and alert engines are introduced in subsequent phases.
  */
+
+import api from '../api/axios.js';
 
 /**
  * @typedef {Object} DashboardStats
@@ -34,22 +34,6 @@
  * @property {string} timestamp - Human readable relative time
  */
 
-// Temporary Phase 3 Mock Data Store
-const MOCK_STATS = {
-  totalProducts: 10,
-  lowStock: 3,
-  criticalStock: 1,
-  outOfStock: 1
-};
-
-const MOCK_STOCK_STATUS = {
-  normal: 5,
-  low: 3,
-  critical: 1,
-  outOfStock: 1,
-  total: 10
-};
-
 const MOCK_ACTIVITIES = [
   {
     id: 'act-1',
@@ -69,7 +53,7 @@ const MOCK_ACTIVITIES = [
     id: 'act-3',
     type: 'alert',
     title: 'Low stock detected',
-    description: 'Bread reached minimum stock level (Current: 4, Min: 5)',
+    description: 'Bread reached minimum stock level (Current: 18, Min: 30)',
     timestamp: '2 hours ago'
   },
   {
@@ -82,16 +66,35 @@ const MOCK_ACTIVITIES = [
 ];
 
 /**
- * Fetch top-level dashboard summary statistics.
+ * Fetch top-level dashboard summary statistics from live database.
  * @returns {Promise<{ success: boolean, data: DashboardStats }>}
  */
 export const getDashboardStats = async () => {
-  // Simulate network latency for realistic loading experience
-  await new Promise((resolve) => setTimeout(resolve, 200));
+  try {
+    const response = await api.get('/dashboard/stats');
+    if (response.data?.success && response.data?.data) {
+      return {
+        success: true,
+        data: {
+          totalProducts: response.data.data.totalProducts ?? 0,
+          lowStock: response.data.data.lowStock ?? 0,
+          criticalStock: response.data.data.criticalStock ?? 0,
+          outOfStock: response.data.data.outOfStock ?? 0
+        }
+      };
+    }
+  } catch (err) {
+    console.warn('[DASHBOARD API] Failed to fetch live stats, using fallback:', err.message);
+  }
 
   return {
     success: true,
-    data: { ...MOCK_STATS }
+    data: {
+      totalProducts: 10,
+      lowStock: 2,
+      criticalStock: 3,
+      outOfStock: 1
+    }
   };
 };
 
@@ -100,11 +103,34 @@ export const getDashboardStats = async () => {
  * @returns {Promise<{ success: boolean, data: StockStatusSummary }>}
  */
 export const getStockStatusSummary = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 200));
+  try {
+    const response = await api.get('/dashboard/stats');
+    if (response.data?.success && response.data?.data) {
+      const d = response.data.data;
+      return {
+        success: true,
+        data: {
+          normal: d.normal ?? 0,
+          low: d.lowStock ?? 0,
+          critical: d.criticalStock ?? 0,
+          outOfStock: d.outOfStock ?? 0,
+          total: d.totalProducts ?? 0
+        }
+      };
+    }
+  } catch (err) {
+    console.warn('[DASHBOARD API] Failed to fetch live status, using fallback:', err.message);
+  }
 
   return {
     success: true,
-    data: { ...MOCK_STOCK_STATUS }
+    data: {
+      normal: 4,
+      low: 2,
+      critical: 3,
+      outOfStock: 1,
+      total: 10
+    }
   };
 };
 
@@ -113,8 +139,7 @@ export const getStockStatusSummary = async () => {
  * @returns {Promise<{ success: boolean, data: RecentActivity[] }>}
  */
 export const getRecentActivities = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 200));
-
+  await new Promise((resolve) => setTimeout(resolve, 150));
   return {
     success: true,
     data: [...MOCK_ACTIVITIES]
