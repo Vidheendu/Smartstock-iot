@@ -43,13 +43,13 @@ const ACTIONS = [
 
 export const QuickActions = () => {
   return (
-    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-xs space-y-4">
+    <div className="bg-white border border-[#D9E2EC] rounded-2xl p-6 shadow-xs space-y-4">
       <div className="flex items-center gap-2.5">
-        <div className="p-2 rounded-xl gradient-brand text-white shadow-xs">
+        <div className="p-2 rounded-xl bg-[#E8F2FF] border border-[#BFDBFE] text-[#1769C2] shadow-xs">
           <Zap className="w-4 h-4" />
         </div>
         <div>
-          <h2 className="text-base font-bold text-[#102A43] tracking-tight">Quick Actions</h2>
+          <h2 className="text-base font-bold text-[#0F172A] tracking-tight">Quick Actions</h2>
           <p className="text-xs text-[#64748B]">
             Frequently accessed stock management shortcuts.
           </p>
@@ -63,7 +63,7 @@ export const QuickActions = () => {
             <Link
               key={action.id}
               to={action.to}
-              className={`group p-4 rounded-xl border border-[#E2E8F0] bg-[#F4F8FC] transition-all duration-200 ${action.accent} flex flex-col justify-between`}
+              className={`group p-4 rounded-xl border border-[#D9E2EC] bg-[#F8FAFC] transition-all duration-200 ${action.accent} flex flex-col justify-between`}
             >
               <div className="flex items-start justify-between">
                 <div className={`p-2.5 rounded-xl border ${action.iconColor}`}>
@@ -73,7 +73,7 @@ export const QuickActions = () => {
               </div>
 
               <div className="mt-4">
-                <h3 className="text-sm font-bold text-[#102A43] group-hover:text-[#1769C2] transition-colors">
+                <h3 className="text-sm font-bold text-[#0F172A] group-hover:text-[#1769C2] transition-colors">
                   {action.title}
                 </h3>
                 <p className="text-xs text-[#64748B] mt-1 line-clamp-2">

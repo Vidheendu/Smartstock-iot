@@ -8,7 +8,7 @@ export const AppLayout = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F4F8FC] text-[#102A43] flex overflow-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex overflow-hidden">
       {/* Desktop Sidebar (visible on lg screens and up) */}
       <div className="hidden lg:flex lg:flex-shrink-0 h-screen sticky top-0">
         <Sidebar />
@@ -21,7 +21,7 @@ export const AppLayout = ({ children }) => {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-[#F4F8FC]">
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-[#F8FAFC]">
         {/* Topbar Header */}
         <Topbar onMenuClick={() => setMobileMenuOpen(true)} />
 

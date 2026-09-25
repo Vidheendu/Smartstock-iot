@@ -69,23 +69,23 @@ export const StockStatusCard = ({ summary }) => {
   ];
 
   return (
-    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-xs space-y-6">
+    <div className="bg-white border border-[#D9E2EC] rounded-2xl p-6 shadow-xs space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h2 className="text-base font-bold text-[#102A43] tracking-tight">Stock Status Overview</h2>
+          <h2 className="text-base font-bold text-[#0F172A] tracking-tight">Stock Status Overview</h2>
           <p className="text-xs text-[#64748B]">
             Current catalog distribution across defined stock thresholds.
           </p>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-[#64748B] bg-[#F4F8FC] px-3 py-1.5 rounded-lg border border-[#E2E8F0] self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 text-xs text-[#64748B] bg-[#F8FAFC] px-3 py-1.5 rounded-lg border border-[#D9E2EC] self-start sm:self-auto">
           <Info className="w-3.5 h-3.5 text-[#1769C2]" />
-          <span>Total: <strong className="text-[#102A43]">{totalCalculated}</strong> products</span>
+          <span>Total: <strong className="text-[#0F172A]">{totalCalculated}</strong> products</span>
         </div>
       </div>
 
       {/* Segmented Distribution Bar */}
       <div className="space-y-1.5">
-        <div className="h-3 w-full bg-[#F4F8FC] rounded-full overflow-hidden flex p-0.5 gap-0.5 border border-[#E2E8F0]">
+        <div className="h-3 w-full bg-[#F8FAFC] rounded-full overflow-hidden flex p-0.5 gap-0.5 border border-[#D9E2EC]">
           {normalPct > 0 && (
             <div
               style={{ width: `${normalPct}%` }}
@@ -139,7 +139,7 @@ export const StockStatusCard = ({ summary }) => {
                 <Icon className={`w-4 h-4 ${item.textColor}`} />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-extrabold text-[#102A43]">{item.count}</span>
+                <span className="text-2xl font-extrabold text-[#0F172A]">{item.count}</span>
                 <span className="text-xs text-[#64748B]">items</span>
               </div>
               <p className="text-[11px] text-[#64748B] leading-snug">

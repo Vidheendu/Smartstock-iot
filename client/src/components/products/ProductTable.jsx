@@ -10,10 +10,10 @@ export const ProductTable = ({
   onDelete
 }) => {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-[#E2E8F0] bg-white shadow-xs">
+    <div className="overflow-x-auto rounded-2xl border border-[#D9E2EC] bg-white shadow-xs">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="border-b border-[#E2E8F0] bg-[#F4F8FC] text-[11px] uppercase tracking-wider text-[#64748B] font-bold">
+          <tr className="border-b border-[#D9E2EC] bg-[#F8FAFC] text-[11px] uppercase tracking-wider text-[#64748B] font-bold">
             <th className="py-3.5 px-4">Product</th>
             <th className="py-3.5 px-3">SKU</th>
             <th className="py-3.5 px-3">Category</th>
@@ -25,20 +25,20 @@ export const ProductTable = ({
             <th className="py-3.5 px-4 text-center">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-[#E2E8F0] text-xs text-[#102A43]">
+        <tbody className="divide-y divide-[#D9E2EC] text-xs text-[#0F172A]">
           {products.map((product) => {
             const isInactive = product.isActive === false;
 
             return (
               <tr
                 key={product.id}
-                className={`transition-colors hover:bg-[#F4F8FC] ${
+                className={`transition-colors hover:bg-[#F8FAFC] ${
                   isInactive ? 'opacity-60 bg-slate-50' : ''
                 }`}
               >
                 {/* Product Name & Details */}
                 <td className="py-3.5 px-4">
-                  <div className="font-bold text-[#102A43] hover:text-[#1769C2] transition-colors">
+                  <div className="font-bold text-[#0F172A] hover:text-[#1769C2] transition-colors">
                     <Link to={`/products/${product.id}`}>{product.name}</Link>
                   </div>
                   {isInactive && (
@@ -55,7 +55,7 @@ export const ProductTable = ({
 
                 {/* Category */}
                 <td className="py-3.5 px-3">
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#F4F8FC] border border-[#E2E8F0] text-[#102A43] text-[11px] font-medium">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#F8FAFC] border border-[#D9E2EC] text-[#0F172A] text-[11px] font-medium">
                     {product.category}
                   </span>
                 </td>
@@ -80,7 +80,7 @@ export const ProductTable = ({
                         ? 'text-red-600'
                         : product.currentStock <= product.minimumStock
                         ? 'text-amber-600'
-                        : 'text-[#102A43]'
+                        : 'text-[#0F172A]'
                     }`}
                   >
                     {product.currentStock}
@@ -100,7 +100,7 @@ export const ProductTable = ({
                 </td>
 
                 {/* Price */}
-                <td className="py-3.5 px-3 text-right font-mono font-bold text-[#0B1F3A]">
+                <td className="py-3.5 px-3 text-right font-mono font-bold text-[#0F172A]">
                   ${Number(product.price || 0).toFixed(2)}
                 </td>
 

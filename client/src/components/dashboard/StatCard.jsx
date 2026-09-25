@@ -10,18 +10,18 @@ import React from 'react';
  */
 const COLOR_VARIANTS = {
   blue: {
-    bg: 'bg-royalblue-50',
-    border: 'border-royalblue-200',
+    bg: 'bg-[#E8F2FF]',
+    border: 'border-[#BFDBFE]',
     text: 'text-[#1769C2]',
-    iconBg: 'bg-royalblue-50 text-[#1769C2] border border-royalblue-200',
-    valueText: 'text-[#0B1F3A]'
+    iconBg: 'bg-[#E8F2FF] text-[#1769C2] border border-[#BFDBFE]',
+    valueText: 'text-[#0F172A]'
   },
   indigo: {
-    bg: 'bg-royalblue-50',
-    border: 'border-royalblue-200',
+    bg: 'bg-[#E8F2FF]',
+    border: 'border-[#BFDBFE]',
     text: 'text-[#1769C2]',
-    iconBg: 'bg-royalblue-50 text-[#1769C2] border border-royalblue-200',
-    valueText: 'text-[#0B1F3A]'
+    iconBg: 'bg-[#E8F2FF] text-[#1769C2] border border-[#BFDBFE]',
+    valueText: 'text-[#0F172A]'
   },
   amber: {
     bg: 'bg-amber-50',
@@ -45,11 +45,11 @@ const COLOR_VARIANTS = {
     valueText: 'text-red-700'
   },
   emerald: {
-    bg: 'bg-emerald-50',
-    border: 'border-emerald-200',
-    text: 'text-emerald-700',
-    iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-200',
-    valueText: 'text-emerald-700'
+    bg: 'bg-[#D1FAE5]',
+    border: 'border-emerald-300',
+    text: 'text-emerald-800',
+    iconBg: 'bg-[#D1FAE5] text-emerald-800 border border-emerald-300',
+    valueText: 'text-emerald-800'
   }
 };
 
@@ -65,7 +65,7 @@ export const StatCard = ({
 
   return (
     <div
-      className="rounded-2xl p-5 border border-[#E2E8F0] bg-white shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-200"
+      className="rounded-2xl p-5 border border-[#D9E2EC] bg-white shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-200"
     >
       <div className="flex items-center justify-between">
         <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider">

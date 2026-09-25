@@ -179,7 +179,7 @@ export const TransactionModal = ({
             className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold transition cursor-pointer ${
               transactionType === 'STOCK_IN'
                 ? 'bg-white text-emerald-700 shadow-sm'
-                : 'text-[#64748B] hover:text-[#102A43]'
+                : 'text-[#64748B] hover:text-[#0F172A]'
             }`}
           >
             <ArrowDownLeft className="w-3.5 h-3.5 text-emerald-600" />
@@ -195,7 +195,7 @@ export const TransactionModal = ({
             className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold transition cursor-pointer ${
               transactionType === 'STOCK_OUT'
                 ? 'bg-white text-[#1769C2] shadow-sm'
-                : 'text-[#64748B] hover:text-[#102A43]'
+                : 'text-[#64748B] hover:text-[#0F172A]'
             }`}
           >
             <ArrowUpRight className="w-3.5 h-3.5 text-[#1769C2]" />
@@ -217,7 +217,7 @@ export const TransactionModal = ({
                 ? 'opacity-40 cursor-not-allowed text-[#64748B]'
                 : transactionType === 'ADJUSTMENT'
                 ? 'bg-white text-amber-700 shadow-sm cursor-pointer'
-                : 'text-[#64748B] hover:text-[#102A43] cursor-pointer'
+                : 'text-[#64748B] hover:text-[#0F172A] cursor-pointer'
             }`}
           >
             <Sliders className="w-3.5 h-3.5 text-amber-600" />
@@ -226,13 +226,13 @@ export const TransactionModal = ({
         </div>
 
         {/* Product Context Banner */}
-        <div className="flex items-center justify-between p-3.5 bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl text-xs">
+        <div className="flex items-center justify-between p-3.5 bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl text-xs">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-white border border-[#CBD5E1] flex items-center justify-center text-[#1769C2]">
+            <div className="w-8 h-8 rounded-lg bg-white border border-[#D9E2EC] flex items-center justify-center text-[#1769C2]">
               <Package className="w-4 h-4" />
             </div>
             <div>
-              <p className="font-semibold text-[#102A43]">{product.name}</p>
+              <p className="font-semibold text-[#0F172A]">{product.name}</p>
               <p className="text-[11px] font-mono text-[#64748B]">{product.sku}</p>
             </div>
           </div>
@@ -240,7 +240,7 @@ export const TransactionModal = ({
             <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">
               Current Stock
             </span>
-            <span className="text-sm font-bold text-[#102A43]">
+            <span className="text-sm font-bold text-[#0F172A]">
               {currentStock} <span className="text-xs font-normal text-[#64748B]">{product.unit}</span>
             </span>
           </div>
@@ -250,7 +250,7 @@ export const TransactionModal = ({
         <div className="space-y-4">
           {transactionType === 'ADJUSTMENT' ? (
             <div>
-              <label className="block text-xs font-semibold text-[#102A43] mb-1.5">
+              <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                 New Physical Stock Count <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -265,7 +265,7 @@ export const TransactionModal = ({
                     setClientError(null);
                   }}
                   placeholder={`e.g. ${currentStock}`}
-                  className="w-full px-3.5 py-2.5 bg-white border border-[#CBD5E1] rounded-xl text-sm text-[#102A43] focus:outline-none focus:border-[#1769C2] focus:ring-1 focus:ring-[#1769C2] transition"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#D9E2EC] rounded-xl text-sm text-[#0F172A] focus:outline-none focus:border-[#1769C2] focus:ring-1 focus:ring-[#1769C2] transition"
                 />
                 <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-[#64748B]">
                   {product.unit}
@@ -277,7 +277,7 @@ export const TransactionModal = ({
             </div>
           ) : (
             <div>
-              <label className="block text-xs font-semibold text-[#102A43] mb-1.5">
+              <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                 {transactionType === 'STOCK_IN' ? 'Quantity Received' : 'Quantity To Deduct'}{' '}
                 <span className="text-red-500">*</span>
               </label>
@@ -293,7 +293,7 @@ export const TransactionModal = ({
                     setClientError(null);
                   }}
                   placeholder="e.g. 10"
-                  className="w-full px-3.5 py-2.5 bg-white border border-[#CBD5E1] rounded-xl text-sm text-[#102A43] focus:outline-none focus:border-[#1769C2] focus:ring-1 focus:ring-[#1769C2] transition"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#D9E2EC] rounded-xl text-sm text-[#0F172A] focus:outline-none focus:border-[#1769C2] focus:ring-1 focus:ring-[#1769C2] transition"
                 />
                 <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-[#64748B]">
                   {product.unit}
@@ -303,7 +303,7 @@ export const TransactionModal = ({
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
               Reason / Justification <span className="text-red-500">*</span>
             </label>
             <input
@@ -322,22 +322,22 @@ export const TransactionModal = ({
                   ? 'e.g. Store sale, damaged packaging'
                   : 'e.g. Physical inventory count discrepancy'
               }
-              className="w-full px-3.5 py-2.5 bg-white border border-[#CBD5E1] rounded-xl text-xs sm:text-sm text-[#102A43] focus:outline-none focus:border-[#1769C2] focus:ring-1 focus:ring-[#1769C2] transition"
+              className="w-full px-3.5 py-2.5 bg-white border border-[#D9E2EC] rounded-xl text-xs sm:text-sm text-[#0F172A] focus:outline-none focus:border-[#1769C2] focus:ring-1 focus:ring-[#1769C2] transition"
             />
           </div>
         </div>
 
         {/* Real-Time Transaction Preview Card (Part 23) */}
-        <div className="p-3.5 bg-slate-50 border border-[#E2E8F0] rounded-xl space-y-2.5">
+        <div className="p-3.5 bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl space-y-2.5">
           <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] block">
             Transaction Impact Preview
           </span>
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="bg-white p-2 rounded-lg border border-[#E2E8F0]">
+            <div className="bg-white p-2 rounded-lg border border-[#D9E2EC]">
               <span className="text-[10px] text-[#64748B] block">Current</span>
-              <span className="font-bold text-[#102A43]">{currentStock}</span>
+              <span className="font-bold text-[#0F172A]">{currentStock}</span>
             </div>
-            <div className="bg-white p-2 rounded-lg border border-[#E2E8F0]">
+            <div className="bg-white p-2 rounded-lg border border-[#D9E2EC]">
               <span className="text-[10px] text-[#64748B] block">Change</span>
               <span
                 className={`font-bold ${
@@ -351,9 +351,9 @@ export const TransactionModal = ({
                 {changeDelta > 0 ? `+${changeDelta}` : changeDelta}
               </span>
             </div>
-            <div className="bg-white p-2 rounded-lg border border-[#E2E8F0]">
+            <div className="bg-white p-2 rounded-lg border border-[#D9E2EC]">
               <span className="text-[10px] text-[#64748B] block">New Stock</span>
-              <span className="font-bold text-[#102A43]">{calculatedNewStock}</span>
+              <span className="font-bold text-[#0F172A]">{calculatedNewStock}</span>
             </div>
           </div>
 
@@ -390,7 +390,7 @@ export const TransactionModal = ({
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:text-[#102A43] bg-slate-100 hover:bg-slate-200 rounded-xl transition cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-slate-100 hover:bg-slate-200 rounded-xl transition cursor-pointer"
           >
             Cancel
           </button>
@@ -402,7 +402,7 @@ export const TransactionModal = ({
                 ? 'bg-[#10B981] hover:bg-[#059669] shadow-emerald-500/20'
                 : transactionType === 'STOCK_OUT'
                 ? 'bg-[#1769C2] hover:bg-[#1257A0] shadow-blue-500/20'
-                : 'bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 shadow-blue-500/20'
+                : 'bg-[#1769C2] hover:bg-[#1257A0] shadow-blue-500/20'
             }`}
           >
             {isSubmitting ? (

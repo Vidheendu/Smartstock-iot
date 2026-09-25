@@ -171,9 +171,9 @@ export const Inventory = () => {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#E2E8F0]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#D9E2EC]">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#102A43] flex items-center gap-2.5">
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A] flex items-center gap-2.5">
             <span>Inventory</span>
           </h1>
           <p className="text-xs sm:text-sm text-[#64748B] mt-1">
@@ -185,7 +185,7 @@ export const Inventory = () => {
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
           <Link
             to="/inventory/history"
-            className="inline-flex items-center gap-2 px-3.5 py-2.5 bg-white hover:bg-slate-50 text-[#102A43] border border-slate-200 text-xs font-semibold rounded-xl shadow-sm transition cursor-pointer"
+            className="inline-flex items-center gap-2 px-3.5 py-2.5 bg-white hover:bg-slate-50 text-[#0F172A] border border-[#D9E2EC] text-xs font-semibold rounded-xl shadow-xs transition cursor-pointer"
           >
             <History className="w-4 h-4 text-[#1769C2]" />
             <span>View History</span>
@@ -194,7 +194,7 @@ export const Inventory = () => {
           {isManager && (
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1769C2] hover:bg-[#1257A0] text-white text-xs font-bold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Catalog</span>
@@ -205,9 +205,9 @@ export const Inventory = () => {
 
       {/* Success Notification Toast */}
       {successToast && (
-        <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-2 text-xs text-emerald-800 animate-in fade-in shadow-sm">
+        <div className="p-3.5 bg-[#D1FAE5] border border-emerald-300 rounded-xl flex items-center justify-between gap-2 text-xs text-emerald-800 animate-in fade-in shadow-xs">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
             <span className="font-semibold">{successToast}</span>
           </div>
           <button
@@ -221,28 +221,28 @@ export const Inventory = () => {
 
       {/* Quick Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#D9E2EC] rounded-2xl p-4 shadow-xs space-y-1">
           <span className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider block">
             Total Tracked
           </span>
-          <p className="text-2xl font-bold text-[#102A43]">{metrics.total}</p>
+          <p className="text-2xl font-bold text-[#0F172A]">{metrics.total}</p>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#D9E2EC] rounded-2xl p-4 shadow-xs space-y-1">
           <span className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider block">
             Normal Stock
           </span>
           <p className="text-2xl font-bold text-emerald-700">{metrics.normal}</p>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#D9E2EC] rounded-2xl p-4 shadow-xs space-y-1">
           <span className="text-[11px] font-semibold text-amber-700 uppercase tracking-wider block">
             Low Stock
           </span>
           <p className="text-2xl font-bold text-amber-700">{metrics.low}</p>
         </div>
 
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#D9E2EC] rounded-2xl p-4 shadow-xs space-y-1">
           <span className="text-[11px] font-semibold text-red-700 uppercase tracking-wider block">
             Critical / Empty
           </span>
@@ -273,11 +273,11 @@ export const Inventory = () => {
         </div>
       ) : error ? (
         <div className="min-h-[30vh] flex flex-col items-center justify-center p-6">
-          <div className="max-w-md w-full bg-white border border-red-200 rounded-2xl p-6 text-center space-y-4 shadow-sm">
+          <div className="max-w-md w-full bg-white border border-red-200 rounded-2xl p-6 text-center space-y-4 shadow-xs">
             <div className="w-12 h-12 mx-auto rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
               <AlertCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-lg font-bold text-[#102A43]">Unable to load inventory</h2>
+            <h2 className="text-lg font-bold text-[#0F172A]">Unable to load inventory</h2>
             <p className="text-xs text-[#64748B]">
               Could not retrieve current inventory levels from the server. Please try again.
             </p>
@@ -291,13 +291,13 @@ export const Inventory = () => {
           </div>
         </div>
       ) : filteredInventory.length === 0 ? (
-        <div className="bg-white border border-dashed border-[#CBD5E1] rounded-2xl p-12 text-center space-y-4 shadow-sm">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#1769C2]/10 border border-[#1769C2]/20 text-[#1769C2] flex items-center justify-center">
+        <div className="bg-white border border-dashed border-[#D9E2EC] rounded-2xl p-12 text-center space-y-4 shadow-xs">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#E8F2FF] border border-[#BFDBFE] text-[#1769C2] flex items-center justify-center">
             <Boxes className="w-7 h-7" />
           </div>
           {inventory.length === 0 ? (
             <div className="space-y-2">
-              <h3 className="text-base font-bold text-[#102A43]">No inventory records found</h3>
+              <h3 className="text-base font-bold text-[#0F172A]">No inventory records found</h3>
               <p className="text-xs text-[#64748B] max-w-sm mx-auto">
                 Your inventory catalog is currently empty. Add products from the Catalog page to start tracking stock.
               </p>
@@ -305,7 +305,7 @@ export const Inventory = () => {
                 <div className="pt-2">
                   <Link
                     to="/products"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#1769C2] hover:bg-[#1257A0] text-white text-xs font-bold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Go to Products</span>
@@ -315,14 +315,14 @@ export const Inventory = () => {
             </div>
           ) : (
             <div className="space-y-2">
-              <h3 className="text-base font-bold text-[#102A43]">No inventory records match your filters</h3>
+              <h3 className="text-base font-bold text-[#0F172A]">No inventory records match your filters</h3>
               <p className="text-xs text-[#64748B] max-w-sm mx-auto">
                 No items match your active search and filter options.
               </p>
               <div className="pt-2">
                 <button
                   onClick={handleClearFilters}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#102A43] border border-slate-300 text-xs font-semibold rounded-xl transition cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#0F172A] border border-[#D9E2EC] text-xs font-semibold rounded-xl transition cursor-pointer"
                 >
                   <span>Clear Filters</span>
                 </button>

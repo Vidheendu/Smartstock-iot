@@ -87,11 +87,11 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F8FC] text-[#102A43] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white border border-[#E2E8F0] rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/60 space-y-6">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white border border-[#D9E2EC] rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/60 space-y-6">
         {/* Header with Official Logo */}
         <div className="text-center space-y-3">
-          <Link to="/" className="inline-block">
+          <Link to="/" className="inline-block p-1 rounded-xl bg-white">
             <img
               src="/logo.png"
               alt="SmartStock-IoT"
@@ -99,7 +99,7 @@ export const Register = () => {
             />
           </Link>
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-[#102A43]">
+            <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">
               Create an Account
             </h1>
             <p className="text-xs text-[#64748B]">
@@ -120,7 +120,7 @@ export const Register = () => {
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           {/* Full Name */}
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Full Name
             </label>
             <div className="relative">
@@ -131,8 +131,8 @@ export const Register = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Alex Morgan"
-                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
-                  errors.name ? 'border-red-400' : 'border-[#E2E8F0]'
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                  errors.name ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
             </div>
@@ -143,7 +143,7 @@ export const Register = () => {
 
           {/* Email */}
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <div className="relative">
@@ -154,8 +154,8 @@ export const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="alex@smartstock.com"
-                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
-                  errors.email ? 'border-red-400' : 'border-[#E2E8F0]'
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                  errors.email ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
             </div>
@@ -166,7 +166,7 @@ export const Register = () => {
 
           {/* Role Selection */}
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] uppercase tracking-wider mb-1.5">
               System Role
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -175,8 +175,8 @@ export const Register = () => {
                 onClick={() => setFormData((prev) => ({ ...prev, role: 'STAFF' }))}
                 className={`p-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer ${
                   formData.role === 'STAFF'
-                    ? 'border-[#1769C2] bg-royalblue-50 text-[#1769C2] shadow-xs'
-                    : 'border-[#E2E8F0] bg-[#F4F8FC] text-[#64748B] hover:bg-slate-100'
+                    ? 'border-[#1769C2] bg-[#E8F2FF] text-[#1769C2] shadow-xs'
+                    : 'border-[#D9E2EC] bg-[#F8FAFC] text-[#64748B] hover:bg-slate-100'
                 }`}
               >
                 <Shield className="w-4 h-4" />
@@ -188,8 +188,8 @@ export const Register = () => {
                 onClick={() => setFormData((prev) => ({ ...prev, role: 'MANAGER' }))}
                 className={`p-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer ${
                   formData.role === 'MANAGER'
-                    ? 'border-[#10B981] bg-emerald-50 text-emerald-800 shadow-xs'
-                    : 'border-[#E2E8F0] bg-[#F4F8FC] text-[#64748B] hover:bg-slate-100'
+                    ? 'border-emerald-300 bg-[#D1FAE5] text-emerald-800 shadow-xs'
+                    : 'border-[#D9E2EC] bg-[#F8FAFC] text-[#64748B] hover:bg-slate-100'
                 }`}
               >
                 <Shield className="w-4 h-4" />
@@ -203,7 +203,7 @@ export const Register = () => {
 
           {/* Password */}
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Password (min 8 characters)
             </label>
             <div className="relative">
@@ -214,8 +214,8 @@ export const Register = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
-                  errors.password ? 'border-red-400' : 'border-[#E2E8F0]'
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                  errors.password ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
             </div>
@@ -226,7 +226,7 @@ export const Register = () => {
 
           {/* Confirm Password */}
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Confirm Password
             </label>
             <div className="relative">
@@ -237,8 +237,8 @@ export const Register = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
-                  errors.confirmPassword ? 'border-red-400' : 'border-[#E2E8F0]'
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                  errors.confirmPassword ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
             </div>
@@ -247,11 +247,11 @@ export const Register = () => {
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button - Solid Blue #1769C2 */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white gradient-brand hover:opacity-95 shadow-md shadow-emerald-500/20 transition cursor-pointer disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#1769C2] hover:bg-[#1257A0] shadow-md shadow-blue-500/20 transition cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? (
               <>
@@ -272,7 +272,7 @@ export const Register = () => {
           <span>Already have an account? </span>
           <Link
             to="/login"
-            className="text-[#1769C2] font-bold hover:text-[#10B981] transition"
+            className="text-[#1769C2] font-bold hover:text-[#1257A0] transition"
           >
             Sign In
           </Link>

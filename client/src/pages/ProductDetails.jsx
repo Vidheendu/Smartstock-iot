@@ -111,7 +111,7 @@ export const ProductDetails = () => {
         <div className="w-12 h-12 mx-auto rounded-2xl bg-red-50 border border-red-200 text-red-600 flex items-center justify-center">
           <AlertCircle className="w-6 h-6" />
         </div>
-        <h2 className="text-lg font-bold text-[#102A43]">{error || 'Product not found'}</h2>
+        <h2 className="text-lg font-bold text-[#0F172A]">{error || 'Product not found'}</h2>
         <p className="text-xs text-[#64748B]">
           The requested product SKU could not be found or has been removed.
         </p>
@@ -131,10 +131,10 @@ export const ProductDetails = () => {
   return (
     <div className="space-y-6">
       {/* Top Navigation & Action Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#E2E8F0]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#D9E2EC]">
         <Link
           to="/products"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-[#64748B] hover:text-[#102A43] transition"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] transition"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Products</span>
@@ -143,7 +143,7 @@ export const ProductDetails = () => {
         <div className="flex flex-wrap items-center gap-2.5">
           <Link
             to={`/inventory/history?productId=${product.id}`}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#1769C2] bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl transition cursor-pointer shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#1769C2] bg-[#E8F2FF] hover:bg-[#dbeafe] border border-[#BFDBFE] rounded-xl transition cursor-pointer shadow-xs"
           >
             <History className="w-3.5 h-3.5 text-[#1769C2]" />
             <span>View Inventory History</span>
@@ -156,7 +156,7 @@ export const ProductDetails = () => {
                   setFormError(null);
                   setIsEditModalOpen(true);
                 }}
-                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#102A43] bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition cursor-pointer shadow-sm"
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#0F172A] bg-white hover:bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl transition cursor-pointer shadow-xs"
               >
                 <Edit3 className="w-3.5 h-3.5 text-[#1769C2]" />
                 <span>Edit Product</span>
@@ -165,7 +165,7 @@ export const ProductDetails = () => {
               {!isInactive && (
                 <button
                   onClick={() => setIsDeleteModalOpen(true)}
-                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 border border-red-200 bg-white rounded-xl transition cursor-pointer shadow-sm"
+                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 border border-red-200 bg-white rounded-xl transition cursor-pointer shadow-xs"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Deactivate</span>
@@ -177,12 +177,12 @@ export const ProductDetails = () => {
       </div>
 
       {/* Main Details Card */}
-      <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+      <div className="bg-white border border-[#D9E2EC] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
         {/* Title and Badges */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#102A43]">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A]">
                 {product.name}
               </h1>
               <ProductStatusBadge status={product.stockStatus} />
@@ -193,7 +193,7 @@ export const ProductDetails = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-[#102A43] border border-slate-200">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#F8FAFC] text-[#0F172A] border border-[#D9E2EC]">
               {product.category}
             </span>
             {isInactive ? (
@@ -201,7 +201,7 @@ export const ProductDetails = () => {
                 Inactive
               </span>
             ) : (
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#D1FAE5] text-emerald-800 border border-emerald-300">
                 Active
               </span>
             )}
@@ -210,14 +210,14 @@ export const ProductDetails = () => {
 
         {/* Description */}
         {product.description && (
-          <div className="p-4 bg-[#F4F8FC] rounded-xl border border-[#E2E8F0] text-xs text-[#102A43] leading-relaxed">
+          <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#D9E2EC] text-xs text-[#0F172A] leading-relaxed">
             {product.description}
           </div>
         )}
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl bg-[#F4F8FC] border border-[#E2E8F0] space-y-1">
+          <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#D9E2EC] space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] block">
               Current Stock
             </span>
@@ -228,7 +228,7 @@ export const ProductDetails = () => {
                     ? 'text-red-600'
                     : product.currentStock <= product.minimumStock
                     ? 'text-amber-600'
-                    : 'text-[#102A43]'
+                    : 'text-[#0F172A]'
                 }`}
               >
                 {product.currentStock}
@@ -237,32 +237,32 @@ export const ProductDetails = () => {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#F4F8FC] border border-[#E2E8F0] space-y-1">
+          <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#D9E2EC] space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] block">
               Minimum Stock Threshold
             </span>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-[#102A43]">
+              <span className="text-2xl font-bold text-[#0F172A]">
                 {product.minimumStock}
               </span>
               <span className="text-xs text-[#64748B]">{product.unit}</span>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#F4F8FC] border border-[#E2E8F0] space-y-1">
+          <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#D9E2EC] space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] block">
               Unit Price
             </span>
-            <span className="text-2xl font-bold font-mono text-emerald-600 block">
+            <span className="text-2xl font-bold font-mono text-emerald-700 block">
               ${Number(product.price || 0).toFixed(2)}
             </span>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#F4F8FC] border border-[#E2E8F0] space-y-1">
+          <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#D9E2EC] space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] block">
               Assigned Supplier
             </span>
-            <p className="text-sm font-semibold text-[#102A43] truncate">
+            <p className="text-sm font-semibold text-[#0F172A] truncate">
               {product.supplier?.name || 'None Assigned'}
             </p>
           </div>
@@ -270,30 +270,30 @@ export const ProductDetails = () => {
 
         {/* Supplier Contact Details if available */}
         {product.supplier && (
-          <div className="p-5 bg-[#F4F8FC] rounded-xl border border-[#E2E8F0] space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#102A43] flex items-center gap-2">
+          <div className="p-5 bg-[#F8FAFC] rounded-xl border border-[#D9E2EC] space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F172A] flex items-center gap-2">
               <Building2 className="w-4 h-4 text-[#1769C2]" />
               <span>Supplier Contact Information</span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
               <div>
                 <span className="text-[#64748B] block">Company:</span>
-                <span className="text-[#102A43] font-medium">{product.supplier.name}</span>
+                <span className="text-[#0F172A] font-medium">{product.supplier.name}</span>
               </div>
               <div>
                 <span className="text-[#64748B] block">Email:</span>
-                <span className="text-[#102A43] font-medium">{product.supplier.email || 'N/A'}</span>
+                <span className="text-[#0F172A] font-medium">{product.supplier.email || 'N/A'}</span>
               </div>
               <div>
                 <span className="text-[#64748B] block">Phone:</span>
-                <span className="text-[#102A43] font-medium">{product.supplier.phone || 'N/A'}</span>
+                <span className="text-[#0F172A] font-medium">{product.supplier.phone || 'N/A'}</span>
               </div>
             </div>
           </div>
         )}
 
         {/* Timestamps */}
-        <div className="flex flex-wrap items-center gap-4 text-xs text-[#64748B] pt-3 border-t border-[#E2E8F0]">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-[#64748B] pt-3 border-t border-[#D9E2EC]">
           <span className="flex items-center gap-1.5">
             <Calendar className="w-3.5 h-3.5 text-[#64748B]" />
             <span>Created: {new Date(product.createdAt).toLocaleDateString()}</span>
@@ -306,10 +306,10 @@ export const ProductDetails = () => {
       </div>
 
       {/* Inventory Audit History Section */}
-      <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-sm space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E2E8F0]">
+      <div className="bg-white border border-[#D9E2EC] rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#D9E2EC]">
           <div>
-            <h3 className="text-base font-bold text-[#102A43] flex items-center gap-2">
+            <h3 className="text-base font-bold text-[#0F172A] flex items-center gap-2">
               <History className="w-4 h-4 text-[#1769C2]" />
               <span>Inventory Audit History</span>
             </h3>
@@ -320,7 +320,7 @@ export const ProductDetails = () => {
 
           <Link
             to={`/inventory/history?productId=${product.id}`}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#1769C2] hover:text-[#1257A0] bg-blue-50 hover:bg-blue-100 rounded-lg transition self-start sm:self-auto border border-blue-200"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#1769C2] hover:text-[#1257A0] bg-[#E8F2FF] hover:bg-[#dbeafe] rounded-lg transition self-start sm:self-auto border border-[#BFDBFE]"
           >
             <span>View Full History ({recentHistory.length})</span>
             <span aria-hidden="true">&rarr;</span>
@@ -328,7 +328,7 @@ export const ProductDetails = () => {
         </div>
 
         {recentHistory.length === 0 ? (
-          <div className="p-8 text-center space-y-2 bg-[#F4F8FC] rounded-xl border border-dashed border-[#CBD5E1]">
+          <div className="p-8 text-center space-y-2 bg-[#F8FAFC] rounded-xl border border-dashed border-[#D9E2EC]">
             <p className="text-xs text-[#64748B]">
               No inventory history recorded yet for this product.
             </p>
@@ -343,7 +343,7 @@ export const ProductDetails = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#E2E8F0] text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
+                <tr className="border-b border-[#D9E2EC] text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
                   <th className="py-2.5 px-3">Date</th>
                   <th className="py-2.5 px-3 text-center">Type</th>
                   <th className="py-2.5 px-3 text-right">Change</th>
@@ -352,7 +352,7 @@ export const ProductDetails = () => {
                   <th className="py-2.5 px-3">By</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-[#D9E2EC]">
                 {recentHistory.slice(0, 5).map((item) => {
                   const isPositive = Number(item.quantityChange) > 0;
                   const isNegative = Number(item.quantityChange) < 0;
@@ -360,7 +360,7 @@ export const ProductDetails = () => {
                     TRANSACTION_CONFIG[item.changeType] || TRANSACTION_CONFIG.ADJUSTMENT;
 
                   return (
-                    <tr key={item.id} className="hover:bg-slate-50/75">
+                    <tr key={item.id} className="hover:bg-[#F8FAFC]">
                       <td className="py-2.5 px-3 text-[#64748B] text-[11px] whitespace-nowrap">
                         {new Date(item.createdAt).toLocaleDateString(undefined, {
                           month: 'short',
@@ -393,9 +393,9 @@ export const ProductDetails = () => {
                       </td>
                       <td className="py-2.5 px-3 text-center font-mono text-[11px] text-[#64748B]">
                         {item.previousStock} &rarr;{' '}
-                        <strong className="text-[#102A43]">{item.newStock}</strong>
+                        <strong className="text-[#0F172A]">{item.newStock}</strong>
                       </td>
-                      <td className="py-2.5 px-3 text-[#102A43] max-w-xs truncate" title={item.reason}>
+                      <td className="py-2.5 px-3 text-[#0F172A] max-w-xs truncate" title={item.reason}>
                         {item.reason}
                       </td>
                       <td className="py-2.5 px-3 text-[#64748B] text-[11px]">
@@ -435,7 +435,7 @@ export const ProductDetails = () => {
         <div className="space-y-4">
           <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-            <div className="text-xs text-[#102A43]">
+            <div className="text-xs text-[#0F172A]">
               <p className="font-semibold text-red-700 mb-1">
                 Are you sure you want to deactivate "{product.name}"?
               </p>
@@ -449,7 +449,7 @@ export const ProductDetails = () => {
             <button
               onClick={() => setIsDeleteModalOpen(false)}
               disabled={isDeleting}
-              className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:text-[#102A43] bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-slate-100 hover:bg-slate-200 border border-[#D9E2EC] rounded-xl transition cursor-pointer"
             >
               Cancel
             </button>

@@ -8,7 +8,7 @@ export const ProtectedRoute = ({ children, allowedRoles }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F4F8FC] flex flex-col items-center justify-center text-[#64748B]">
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center text-[#64748B]">
         <Loader2 className="w-8 h-8 animate-spin text-[#1769C2] mb-3" />
         <p className="text-sm font-medium">Verifying authentication session...</p>
       </div>
@@ -21,23 +21,23 @@ export const ProtectedRoute = ({ children, allowedRoles }) => {
 
   if (allowedRoles && !allowedRoles.includes(user?.role)) {
     return (
-      <div className="min-h-screen bg-[#F4F8FC] text-[#102A43] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white border border-red-200 rounded-2xl p-6 text-center shadow-sm space-y-4">
           <div className="w-12 h-12 mx-auto rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
             <ShieldAlert className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-[#102A43]">Access Denied</h2>
+          <h2 className="text-xl font-bold text-[#0F172A]">Access Denied</h2>
           <p className="text-sm text-[#64748B]">
             You do not have permission to access this page.
           </p>
           <p className="text-xs text-[#64748B]">
             Required role: <span className="font-mono text-amber-700 font-semibold">{allowedRoles.join(', ')}</span><br />
-            Your role: <span className="font-mono text-[#102A43] font-semibold">{user?.role}</span>
+            Your role: <span className="font-mono text-[#0F172A] font-semibold">{user?.role}</span>
           </p>
           <div className="pt-2">
             <Link
               to="/dashboard"
-              className="inline-block px-4 py-2 bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 text-white text-sm font-medium rounded-xl shadow-md shadow-blue-500/20 transition"
+              className="inline-block px-4 py-2 bg-[#1769C2] hover:bg-[#1257A0] text-white text-sm font-medium rounded-xl shadow-md shadow-blue-500/20 transition"
             >
               Return to Dashboard
             </Link>

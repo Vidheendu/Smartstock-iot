@@ -13,7 +13,7 @@ export const ProductCard = ({
 
   return (
     <div
-      className={`bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-xs space-y-3 transition ${
+      className={`bg-white border border-[#D9E2EC] rounded-2xl p-4 shadow-xs space-y-3 transition ${
         isInactive ? 'opacity-60 bg-slate-50' : ''
       }`}
     >
@@ -22,7 +22,7 @@ export const ProductCard = ({
         <div className="min-w-0">
           <Link
             to={`/products/${product.id}`}
-            className="text-sm font-bold text-[#102A43] hover:text-[#1769C2] transition truncate block"
+            className="text-sm font-bold text-[#0F172A] hover:text-[#1769C2] transition truncate block"
           >
             {product.name}
           </Link>
@@ -31,7 +31,7 @@ export const ProductCard = ({
               {product.sku}
             </span>
             <span className="text-slate-300">•</span>
-            <span className="text-[11px] text-[#102A43] bg-[#F4F8FC] px-2 py-0.2 rounded border border-[#E2E8F0]">
+            <span className="text-[11px] text-[#0F172A] bg-[#F8FAFC] px-2 py-0.2 rounded border border-[#D9E2EC]">
               {product.category}
             </span>
           </div>
@@ -40,7 +40,7 @@ export const ProductCard = ({
       </div>
 
       {/* Stock metrics */}
-      <div className="grid grid-cols-3 gap-2 py-2 px-3 bg-[#F4F8FC] rounded-xl border border-[#E2E8F0] text-center">
+      <div className="grid grid-cols-3 gap-2 py-2 px-3 bg-[#F8FAFC] rounded-xl border border-[#D9E2EC] text-center">
         <div>
           <span className="text-[10px] uppercase font-bold text-[#64748B] block">
             Current
@@ -51,7 +51,7 @@ export const ProductCard = ({
                 ? 'text-red-600'
                 : product.currentStock <= product.minimumStock
                 ? 'text-amber-600'
-                : 'text-[#102A43]'
+                : 'text-[#0F172A]'
             }`}
           >
             {product.currentStock}{' '}
@@ -77,7 +77,7 @@ export const ProductCard = ({
           <span className="text-[10px] uppercase font-bold text-[#64748B] block">
             Price
           </span>
-          <span className="text-sm font-bold font-mono text-[#0B1F3A]">
+          <span className="text-sm font-bold font-mono text-[#0F172A]">
             ${Number(product.price || 0).toFixed(2)}
           </span>
         </div>

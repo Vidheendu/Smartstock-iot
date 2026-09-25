@@ -126,7 +126,7 @@ export const ProductForm = ({
       {/* Row 1: Name and SKU */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             Product Name <span className="text-red-500">*</span>
           </label>
           <input
@@ -134,7 +134,7 @@ export const ProductForm = ({
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="e.g. Whole Milk"
-            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
+            className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
           />
           {errors.name && (
             <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.name}</p>
@@ -142,7 +142,7 @@ export const ProductForm = ({
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             SKU (Stock Keeping Unit) <span className="text-red-500">*</span>
           </label>
           <input
@@ -150,7 +150,7 @@ export const ProductForm = ({
             value={formData.sku}
             onChange={(e) => setFormData({ ...formData, sku: e.target.value.toUpperCase() })}
             placeholder="e.g. SKU-MILK-001"
-            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs font-mono text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] uppercase"
+            className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs font-mono text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] uppercase"
           />
           {errors.sku && (
             <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.sku}</p>
@@ -161,13 +161,13 @@ export const ProductForm = ({
       {/* Row 2: Category and Supplier */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             Category <span className="text-red-500">*</span>
           </label>
           <select
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
+            className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
           >
             {PRODUCT_CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>
@@ -179,7 +179,7 @@ export const ProductForm = ({
 
         {formData.category === 'Other' ? (
           <div>
-            <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Custom Category <span className="text-red-500">*</span>
             </label>
             <input
@@ -187,7 +187,7 @@ export const ProductForm = ({
               value={formData.customCategory}
               onChange={(e) => setFormData({ ...formData, customCategory: e.target.value })}
               placeholder="Enter category name"
-              className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
+              className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
             />
             {errors.category && (
               <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.category}</p>
@@ -195,13 +195,13 @@ export const ProductForm = ({
           </div>
         ) : (
           <div>
-            <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Supplier
             </label>
             <select
               value={formData.supplierId}
               onChange={(e) => setFormData({ ...formData, supplierId: e.target.value })}
-              className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
+              className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
             >
               <option value="">No Supplier Assigned</option>
               {suppliers.map((s) => (
@@ -220,7 +220,7 @@ export const ProductForm = ({
       {/* Row 3: Stock Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div>
-          <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             Current Stock <span className="text-red-500">*</span>
           </label>
           <input
@@ -229,7 +229,7 @@ export const ProductForm = ({
             step="1"
             value={formData.currentStock}
             onChange={(e) => setFormData({ ...formData, currentStock: e.target.value })}
-            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
+            className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
           />
           {errors.currentStock && (
             <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.currentStock}</p>
@@ -237,7 +237,7 @@ export const ProductForm = ({
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             Minimum Stock <span className="text-red-500">*</span>
           </label>
           <input
@@ -246,7 +246,7 @@ export const ProductForm = ({
             step="1"
             value={formData.minimumStock}
             onChange={(e) => setFormData({ ...formData, minimumStock: e.target.value })}
-            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
+            className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
           />
           {errors.minimumStock && (
             <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.minimumStock}</p>
@@ -254,13 +254,13 @@ export const ProductForm = ({
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             Unit <span className="text-red-500">*</span>
           </label>
           <select
             value={formData.unit}
             onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
+            className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
           >
             {PRODUCT_UNITS.map((u) => (
               <option key={u} value={u}>
@@ -277,7 +277,7 @@ export const ProductForm = ({
       {/* Row 4: Price & Active Status */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             Price ($ USD)
           </label>
           <input
@@ -287,7 +287,7 @@ export const ProductForm = ({
             value={formData.price}
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             placeholder="0.00"
-            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2.5 text-xs text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
+            className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
           />
           {errors.price && (
             <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.price}</p>
@@ -295,7 +295,7 @@ export const ProductForm = ({
         </div>
 
         <div className="flex items-center sm:pt-6">
-          <label className="flex items-center gap-2.5 text-xs text-[#102A43] cursor-pointer select-none">
+          <label className="flex items-center gap-2.5 text-xs text-[#0F172A] cursor-pointer select-none">
             <input
               type="checkbox"
               checked={formData.isActive}
@@ -309,7 +309,7 @@ export const ProductForm = ({
 
       {/* Description */}
       <div>
-        <label className="block text-xs font-bold text-[#102A43] uppercase tracking-wider mb-1.5">
+        <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
           Description
         </label>
         <textarea
@@ -317,24 +317,24 @@ export const ProductForm = ({
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           placeholder="Product specifications, storage directions, or packaging notes..."
-          className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3.5 py-2 text-xs text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2]"
+          className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2 text-xs text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2]"
         />
       </div>
 
       {/* Action Buttons */}
-      <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-[#E2E8F0]">
+      <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-[#D9E2EC]">
         <button
           type="button"
           onClick={onCancel}
           disabled={isSubmitting}
-          className="px-4 py-2.5 text-xs font-bold text-[#64748B] hover:text-[#102A43] bg-slate-100 hover:bg-slate-200 rounded-xl transition cursor-pointer disabled:opacity-50"
+          className="px-4 py-2.5 text-xs font-bold text-[#64748B] hover:text-[#0F172A] bg-slate-100 hover:bg-slate-200 rounded-xl transition cursor-pointer disabled:opacity-50"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white gradient-brand hover:opacity-95 shadow-md shadow-emerald-500/20 rounded-xl transition cursor-pointer disabled:opacity-50"
+          className="flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-[#1769C2] hover:bg-[#1257A0] shadow-md shadow-blue-500/20 rounded-xl transition cursor-pointer disabled:opacity-50"
         >
           {isSubmitting ? (
             <>

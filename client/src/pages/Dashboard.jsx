@@ -63,7 +63,7 @@ export const Dashboard = () => {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-3">
         <Loader2 className="w-8 h-8 animate-spin text-[#1769C2]" />
-        <p className="text-sm font-semibold text-[#102A43]">Loading dashboard...</p>
+        <p className="text-sm font-semibold text-[#0F172A]">Loading dashboard...</p>
         <p className="text-xs text-[#64748B]">Preparing stock overview metrics</p>
       </div>
     );
@@ -77,13 +77,13 @@ export const Dashboard = () => {
           <div className="w-12 h-12 mx-auto rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-500">
             <AlertCircle className="w-6 h-6" />
           </div>
-          <h2 className="text-lg font-bold text-[#102A43]">Unable to load dashboard data</h2>
+          <h2 className="text-lg font-bold text-[#0F172A]">Unable to load dashboard data</h2>
           <p className="text-xs text-[#64748B]">
             An issue occurred while fetching the inventory overview. Please retry.
           </p>
           <button
             onClick={loadData}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1769C2] hover:bg-[#1359a6] text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-xs"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1769C2] hover:bg-[#1257A0] text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-xs"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Retry</span>
@@ -98,17 +98,17 @@ export const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Dashboard Greeting Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#E2E8F0]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#D9E2EC]">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#102A43]">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0F172A]">
               Dashboard
             </h1>
             <span
               className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
                 isManager
-                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                  : 'bg-royalblue-50 text-[#1769C2] border border-[#1769C2]/20'
+                  ? 'bg-[#D1FAE5] text-emerald-800 border border-emerald-300'
+                  : 'bg-[#E8F2FF] text-[#1769C2] border border-[#BFDBFE]'
               }`}
             >
               {user?.role || 'STAFF'}
@@ -122,13 +122,13 @@ export const Dashboard = () => {
         {/* User Identity & Refresh Action */}
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-bold text-[#102A43]">{user?.name}</p>
+            <p className="text-xs font-bold text-[#0F172A]">{user?.name}</p>
             <p className="text-[11px] text-[#64748B]">{user?.email}</p>
           </div>
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#102A43] bg-white hover:bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl transition cursor-pointer disabled:opacity-50 shadow-xs"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#0F172A] bg-white hover:bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl transition cursor-pointer disabled:opacity-50 shadow-xs"
             title="Refresh dashboard metrics"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#1769C2]' : 'text-[#64748B]'}`} />

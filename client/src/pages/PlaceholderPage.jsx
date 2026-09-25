@@ -11,13 +11,13 @@ export const PlaceholderPage = ({
 }) => {
   return (
     <div className="py-8 px-4 flex items-center justify-center min-h-[calc(100vh-10rem)]">
-      <div className="max-w-lg w-full bg-white border border-[#E2E8F0] rounded-2xl p-8 shadow-sm text-center space-y-6">
+      <div className="max-w-lg w-full bg-white border border-[#D9E2EC] rounded-2xl p-8 shadow-sm text-center space-y-6">
         {/* Icon & Phase Badge */}
         <div className="space-y-3">
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-[#1769C2]/10 border border-[#1769C2]/20 text-[#1769C2] flex items-center justify-center shadow-sm">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-[#E8F2FF] border border-[#BFDBFE] text-[#1769C2] flex items-center justify-center shadow-sm">
             <Icon className="w-8 h-8" />
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-[#102A43] border border-slate-200">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-[#0F172A] border border-[#D9E2EC]">
             <Clock className="w-3.5 h-3.5 text-[#1769C2]" />
             <span>{phase}</span>
           </div>
@@ -25,7 +25,7 @@ export const PlaceholderPage = ({
 
         {/* Title and Description */}
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight text-[#102A43]">
+          <h2 className="text-2xl font-bold tracking-tight text-[#0F172A]">
             {title}
           </h2>
           <p className="text-sm text-[#64748B] max-w-sm mx-auto leading-relaxed">
@@ -39,8 +39,8 @@ export const PlaceholderPage = ({
         </div>
 
         {/* Roadmap Info Box */}
-        <div className="p-4 bg-[#F4F8FC] rounded-xl border border-[#E2E8F0] text-left text-xs text-[#64748B] space-y-1.5">
-          <p className="text-[#102A43] font-semibold flex items-center gap-1.5">
+        <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#D9E2EC] text-left text-xs text-[#64748B] space-y-1.5">
+          <p className="text-[#0F172A] font-semibold flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-[#10B981]" />
             SmartStock Development Roadmap:
           </p>
@@ -54,7 +54,7 @@ export const PlaceholderPage = ({
         <div className="pt-2">
           <Link
             to="/dashboard"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#1769C2] hover:bg-[#1257A0] text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>

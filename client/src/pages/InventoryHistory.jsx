@@ -125,7 +125,7 @@ export const InventoryHistory = () => {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#E2E8F0]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#D9E2EC]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Link
@@ -136,7 +136,7 @@ export const InventoryHistory = () => {
               <span>Back to Inventory</span>
             </Link>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#102A43] flex items-center gap-2.5">
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A] flex items-center gap-2.5">
             <span>Inventory History</span>
           </h1>
           <p className="text-xs sm:text-sm text-[#64748B] mt-1">
@@ -147,7 +147,7 @@ export const InventoryHistory = () => {
         <button
           onClick={fetchHistory}
           disabled={loading}
-          className="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#102A43] border border-slate-200 text-xs font-semibold rounded-xl shadow-sm transition cursor-pointer self-start sm:self-auto disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-slate-50 text-[#0F172A] border border-[#D9E2EC] text-xs font-semibold rounded-xl shadow-sm transition cursor-pointer self-start sm:self-auto disabled:opacity-50"
         >
           <RefreshCw className={`w-3.5 h-3.5 text-[#1769C2] ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
@@ -155,7 +155,7 @@ export const InventoryHistory = () => {
       </div>
 
       {/* Filters Section */}
-      <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
+      <div className="bg-white border border-[#D9E2EC] rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
           {/* Search Input */}
           <div className="lg:col-span-5 relative">
@@ -165,12 +165,12 @@ export const InventoryHistory = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by reason, product, SKU, or user..."
-              className="w-full pl-10 pr-9 py-2 bg-[#F4F8FC] border border-[#CBD5E1] rounded-xl text-xs sm:text-sm text-[#102A43] placeholder-[#64748B] focus:outline-none focus:border-[#1769C2] transition"
+              className="w-full pl-10 pr-9 py-2 bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl text-xs sm:text-sm text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#1769C2] transition"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#102A43] transition p-0.5 cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#0F172A] transition p-0.5 cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -182,7 +182,7 @@ export const InventoryHistory = () => {
             <select
               value={selectedProduct}
               onChange={handleProductChange}
-              className="w-full px-3 py-2 bg-[#F4F8FC] border border-[#CBD5E1] rounded-xl text-xs text-[#102A43] focus:outline-none focus:border-[#1769C2] transition cursor-pointer"
+              className="w-full px-3 py-2 bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl text-xs text-[#0F172A] focus:outline-none focus:border-[#1769C2] transition cursor-pointer"
             >
               <option value="ALL">All Products</option>
               {products.map((p) => (
@@ -198,7 +198,7 @@ export const InventoryHistory = () => {
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full px-3 py-2 bg-[#F4F8FC] border border-[#CBD5E1] rounded-xl text-xs text-[#102A43] focus:outline-none focus:border-[#1769C2] transition cursor-pointer"
+              className="w-full px-3 py-2 bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl text-xs text-[#0F172A] focus:outline-none focus:border-[#1769C2] transition cursor-pointer"
             >
               <option value="ALL">All Types</option>
               <option value="STOCK_IN">Stock In</option>
@@ -212,7 +212,7 @@ export const InventoryHistory = () => {
             <select
               value={selectedSource}
               onChange={(e) => setSelectedSource(e.target.value)}
-              className="w-full px-3 py-2 bg-[#F4F8FC] border border-[#CBD5E1] rounded-xl text-xs text-[#102A43] focus:outline-none focus:border-[#1769C2] transition cursor-pointer"
+              className="w-full px-3 py-2 bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl text-xs text-[#0F172A] focus:outline-none focus:border-[#1769C2] transition cursor-pointer"
             >
               <option value="ALL">All Sources</option>
               <option value="MANUAL">Manual</option>
@@ -222,18 +222,18 @@ export const InventoryHistory = () => {
         </div>
 
         {/* Filter Counts and Clear */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#E2E8F0] text-xs text-[#64748B]">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#D9E2EC] text-xs text-[#64748B]">
           <div className="flex items-center gap-2">
             <Filter className="w-3.5 h-3.5 text-[#1769C2]" />
             <span>
-              Showing <strong className="text-[#102A43] font-semibold">{filteredHistory.length}</strong> recorded audit transactions
+              Showing <strong className="text-[#0F172A] font-semibold">{filteredHistory.length}</strong> recorded audit transactions
             </span>
           </div>
 
           {isFiltered && (
             <button
               onClick={handleClearFilters}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-[#1769C2] hover:text-[#1257A0] bg-blue-50 hover:bg-blue-100 rounded-lg transition cursor-pointer border border-blue-200"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-[#1769C2] hover:text-[#1257A0] bg-[#E8F2FF] hover:bg-blue-100 rounded-lg transition cursor-pointer border border-[#BFDBFE]"
             >
               <X className="w-3.5 h-3.5" />
               <span>Clear Filters</span>
@@ -254,7 +254,7 @@ export const InventoryHistory = () => {
             <div className="w-12 h-12 mx-auto rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
               <AlertCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-lg font-bold text-[#102A43]">Unable to load inventory history</h2>
+            <h2 className="text-lg font-bold text-[#0F172A]">Unable to load inventory history</h2>
             <p className="text-xs text-[#64748B]">
               Could not retrieve transaction audit logs. Please try again.
             </p>
@@ -268,20 +268,20 @@ export const InventoryHistory = () => {
           </div>
         </div>
       ) : filteredHistory.length === 0 ? (
-        <div className="bg-white border border-dashed border-[#CBD5E1] rounded-2xl p-12 text-center space-y-4 shadow-sm">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#1769C2]/10 border border-[#1769C2]/20 text-[#1769C2] flex items-center justify-center">
+        <div className="bg-white border border-dashed border-[#D9E2EC] rounded-2xl p-12 text-center space-y-4 shadow-sm">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#E8F2FF] border border-[#BFDBFE] text-[#1769C2] flex items-center justify-center">
             <History className="w-7 h-7" />
           </div>
           {history.length === 0 ? (
             <div className="space-y-2">
-              <h3 className="text-base font-bold text-[#102A43]">No inventory history yet</h3>
+              <h3 className="text-base font-bold text-[#0F172A]">No inventory history yet</h3>
               <p className="text-xs text-[#64748B] max-w-sm mx-auto">
                 Stock transactions performed via Stock In, Stock Out, or Adjustments will appear here with an immutable audit trail.
               </p>
               <div className="pt-2">
                 <Link
                   to="/inventory"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#1769C2] hover:bg-[#1257A0] text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer"
                 >
                   <span>Go to Inventory</span>
                 </Link>
@@ -289,14 +289,14 @@ export const InventoryHistory = () => {
             </div>
           ) : (
             <div className="space-y-2">
-              <h3 className="text-base font-bold text-[#102A43]">No history records match your filters</h3>
+              <h3 className="text-base font-bold text-[#0F172A]">No history records match your filters</h3>
               <p className="text-xs text-[#64748B] max-w-sm mx-auto">
                 Try selecting a different product, transaction type, or clearing search keywords.
               </p>
               <div className="pt-2">
                 <button
                   onClick={handleClearFilters}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#102A43] border border-slate-300 text-xs font-semibold rounded-xl transition cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#0F172A] border border-[#D9E2EC] text-xs font-semibold rounded-xl transition cursor-pointer"
                 >
                   <span>Clear Filters</span>
                 </button>
@@ -307,11 +307,11 @@ export const InventoryHistory = () => {
       ) : (
         <div className="space-y-4">
           {/* Desktop Table View */}
-          <div className="hidden lg:block bg-white border border-[#E2E8F0] rounded-2xl shadow-sm overflow-hidden">
+          <div className="hidden lg:block bg-white border border-[#D9E2EC] rounded-2xl shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#E2E8F0] bg-[#F4F8FC] text-[11px] font-bold uppercase tracking-wider text-[#64748B]">
+                  <tr className="border-b border-[#D9E2EC] bg-[#F8FAFC] text-[11px] font-bold uppercase tracking-wider text-[#64748B]">
                     <th className="py-3.5 px-4">Date & Time</th>
                     <th className="py-3.5 px-4">Product</th>
                     <th className="py-3.5 px-4">SKU</th>
@@ -323,7 +323,7 @@ export const InventoryHistory = () => {
                     <th className="py-3.5 px-4">Performed By</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E2E8F0] text-xs">
+                <tbody className="divide-y divide-[#D9E2EC] text-xs">
                   {filteredHistory.map((item) => {
                     const isPositive = Number(item.quantityChange) > 0;
                     const isNegative = Number(item.quantityChange) < 0;
@@ -348,7 +348,7 @@ export const InventoryHistory = () => {
                         </td>
 
                         {/* Product */}
-                        <td className="py-3.5 px-4 font-semibold text-[#102A43]">
+                        <td className="py-3.5 px-4 font-semibold text-[#0F172A]">
                           <Link
                             to={`/products/${item.productId}`}
                             className="hover:text-[#1769C2] transition"
@@ -395,20 +395,20 @@ export const InventoryHistory = () => {
                         </td>
 
                         {/* Stock Flow (Prev -> New) */}
-                        <td className="py-3.5 px-4 text-center font-mono text-[11px] text-[#102A43]">
+                        <td className="py-3.5 px-4 text-center font-mono text-[11px] text-[#0F172A]">
                           <span className="text-[#64748B]">{item.previousStock}</span>
                           <span className="text-[#64748B] mx-1.5">→</span>
-                          <span className="font-bold text-[#102A43]">{item.newStock}</span>
+                          <span className="font-bold text-[#0F172A]">{item.newStock}</span>
                         </td>
 
                         {/* Reason */}
-                        <td className="py-3.5 px-4 text-[#102A43] max-w-xs truncate" title={item.reason}>
+                        <td className="py-3.5 px-4 text-[#0F172A] max-w-xs truncate" title={item.reason}>
                           {item.reason}
                         </td>
 
                         {/* Source */}
                         <td className="py-3.5 px-4 text-center">
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-[#102A43] border border-slate-200">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-[#0F172A] border border-[#D9E2EC]">
                             {item.source}
                           </span>
                         </td>
@@ -416,11 +416,11 @@ export const InventoryHistory = () => {
                         {/* Performed By */}
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-full bg-[#1769C2]/10 border border-[#1769C2]/20 flex items-center justify-center text-[10px] font-bold text-[#1769C2]">
+                            <div className="w-6 h-6 rounded-full bg-[#E8F2FF] border border-[#BFDBFE] flex items-center justify-center text-[10px] font-bold text-[#1769C2]">
                               {(item.performedBy?.name || 'U').charAt(0).toUpperCase()}
                             </div>
                             <div className="truncate">
-                              <p className="text-xs font-semibold text-[#102A43] truncate">
+                              <p className="text-xs font-semibold text-[#0F172A] truncate">
                                 {item.performedBy?.name || 'Staff User'}
                               </p>
                               {item.performedBy?.email && (
@@ -450,13 +450,13 @@ export const InventoryHistory = () => {
               return (
                 <div
                   key={item.id}
-                  className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm space-y-3"
+                  className="bg-white border border-[#D9E2EC] rounded-2xl p-4 shadow-sm space-y-3"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <Link
                         to={`/products/${item.productId}`}
-                        className="font-bold text-sm text-[#102A43] hover:text-[#1769C2] transition line-clamp-1"
+                        className="font-bold text-sm text-[#0F172A] hover:text-[#1769C2] transition line-clamp-1"
                       >
                         {item.productName}
                       </Link>
@@ -470,7 +470,7 @@ export const InventoryHistory = () => {
                   </div>
 
                   {/* Stock Flow & Change */}
-                  <div className="grid grid-cols-2 gap-2 p-2.5 bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl text-xs">
+                  <div className="grid grid-cols-2 gap-2 p-2.5 bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl text-xs">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-[#64748B] block">
                         Change
@@ -493,18 +493,18 @@ export const InventoryHistory = () => {
                       <span className="text-[10px] uppercase font-bold text-[#64748B] block">
                         Stock Flow
                       </span>
-                      <span className="font-mono text-xs font-semibold text-[#102A43]">
-                        {item.previousStock} → <strong className="text-[#102A43]">{item.newStock}</strong>
+                      <span className="font-mono text-xs font-semibold text-[#0F172A]">
+                        {item.previousStock} → <strong className="text-[#0F172A]">{item.newStock}</strong>
                       </span>
                     </div>
                   </div>
 
                   {/* Reason & User */}
                   <div className="text-xs space-y-1 text-[#64748B]">
-                    <p className="text-[#102A43]">
+                    <p className="text-[#0F172A]">
                       <strong className="font-medium text-[#64748B]">Reason:</strong> {item.reason}
                     </p>
-                    <div className="flex items-center justify-between pt-1 border-t border-[#E2E8F0] text-[11px]">
+                    <div className="flex items-center justify-between pt-1 border-t border-[#D9E2EC] text-[11px]">
                       <span>By: {item.performedBy?.name || 'Staff User'}</span>
                       <span>
                         {new Date(item.createdAt).toLocaleDateString(undefined, {

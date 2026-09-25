@@ -54,11 +54,11 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F8FC] text-[#102A43] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white border border-[#E2E8F0] rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/60 space-y-6">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white border border-[#D9E2EC] rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/60 space-y-6">
         {/* Header with Official Logo */}
         <div className="text-center space-y-3">
-          <Link to="/" className="inline-block">
+          <Link to="/" className="inline-block p-1 rounded-xl bg-white">
             <img
               src="/logo.png"
               alt="SmartStock-IoT"
@@ -66,7 +66,7 @@ export const Login = () => {
             />
           </Link>
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-[#102A43]">
+            <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">
               Welcome Back
             </h1>
             <p className="text-xs text-[#64748B]">
@@ -77,7 +77,7 @@ export const Login = () => {
 
         {/* Success Notice from Registration */}
         {successMessage && (
-          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-xs text-emerald-800">
+          <div className="p-3 bg-[#D1FAE5] border border-emerald-300 rounded-xl flex items-center gap-2 text-xs text-emerald-800">
             <CheckCircle2 className="w-4 h-4 shrink-0 text-[#10B981]" />
             <span>{successMessage}</span>
           </div>
@@ -95,7 +95,7 @@ export const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           {/* Email */}
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <div className="relative">
@@ -105,8 +105,8 @@ export const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="manager@smartstock.com"
-                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
-                  errors.email ? 'border-red-400' : 'border-[#E2E8F0]'
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                  errors.email ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
             </div>
@@ -117,7 +117,7 @@ export const Login = () => {
 
           {/* Password */}
           <div>
-            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Password
             </label>
             <div className="relative">
@@ -127,8 +127,8 @@ export const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
-                  errors.password ? 'border-red-400' : 'border-[#E2E8F0]'
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                  errors.password ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
             </div>
@@ -137,11 +137,11 @@ export const Login = () => {
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button - Solid Blue #1769C2 */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white gradient-brand hover:opacity-95 shadow-md shadow-emerald-500/20 transition cursor-pointer disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#1769C2] hover:bg-[#1257A0] shadow-md shadow-blue-500/20 transition cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? (
               <>
@@ -158,10 +158,10 @@ export const Login = () => {
         </form>
 
         {/* Demo Credentials Quick-Fill Hint */}
-        <div className="p-3 bg-[#F4F8FC] rounded-2xl border border-[#E2E8F0] text-[11px] text-[#64748B] space-y-1">
-          <p className="font-semibold text-[#0B1F3A]">Quick Test Accounts:</p>
+        <div className="p-3 bg-[#F8FAFC] rounded-2xl border border-[#D9E2EC] text-[11px] text-[#64748B] space-y-1">
+          <p className="font-semibold text-[#0F172A]">Quick Test Accounts:</p>
           <div className="flex items-center justify-between text-[11px]">
-            <span>Manager: <strong className="text-[#102A43]">manager@smartstock.com</strong></span>
+            <span>Manager: <strong className="text-[#0F172A]">manager@smartstock.com</strong></span>
             <button
               type="button"
               onClick={() => {
@@ -174,7 +174,7 @@ export const Login = () => {
             </button>
           </div>
           <div className="flex items-center justify-between text-[11px]">
-            <span>Staff: <strong className="text-[#102A43]">staff@smartstock.com</strong></span>
+            <span>Staff: <strong className="text-[#0F172A]">staff@smartstock.com</strong></span>
             <button
               type="button"
               onClick={() => {
@@ -193,9 +193,9 @@ export const Login = () => {
           <span>Don't have an account? </span>
           <Link
             to="/register"
-            className="text-[#1769C2] font-bold hover:text-[#10B981] transition"
+            className="text-[#1769C2] font-bold hover:text-[#1257A0] transition"
           >
-            Create account
+            Create an Account
           </Link>
         </div>
       </div>

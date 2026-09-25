@@ -27,11 +27,11 @@ export const MobileSidebar = ({ isOpen, onClose }) => {
       />
 
       {/* Slide-over container */}
-      <div className="fixed inset-y-0 left-0 max-w-xs w-full bg-[#0B1F3A] shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
+      <div className="fixed inset-y-0 left-0 max-w-xs w-full bg-white shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200 border-r border-[#D9E2EC]">
         <div className="absolute top-4 right-3 z-20">
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
+            className="p-1.5 rounded-lg text-[#64748B] hover:text-[#0F172A] hover:bg-slate-100 transition"
             aria-label="Close sidebar"
           >
             <X className="w-5 h-5" />
