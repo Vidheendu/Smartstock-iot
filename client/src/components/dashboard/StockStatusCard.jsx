@@ -25,11 +25,10 @@ export const StockStatusCard = ({ summary }) => {
       percentage: normalPct,
       threshold: 'current stock > minimum stock',
       icon: CheckCircle2,
-      color: 'emerald',
-      textColor: 'text-emerald-400',
-      bgColor: 'bg-emerald-500/10',
-      borderColor: 'border-emerald-500/20',
-      barColor: 'bg-emerald-500'
+      textColor: 'text-emerald-700',
+      bgColor: 'bg-emerald-50',
+      borderColor: 'border-emerald-200',
+      barColor: 'bg-[#10B981]'
     },
     {
       id: 'low',
@@ -38,10 +37,9 @@ export const StockStatusCard = ({ summary }) => {
       percentage: lowPct,
       threshold: 'current stock <= minimum stock',
       icon: AlertTriangle,
-      color: 'amber',
-      textColor: 'text-amber-400',
-      bgColor: 'bg-amber-500/10',
-      borderColor: 'border-amber-500/20',
+      textColor: 'text-amber-700',
+      bgColor: 'bg-amber-50',
+      borderColor: 'border-amber-200',
       barColor: 'bg-amber-500'
     },
     {
@@ -51,10 +49,9 @@ export const StockStatusCard = ({ summary }) => {
       percentage: criticalPct,
       threshold: 'current stock <= 50% minimum stock and > 0',
       icon: AlertOctagon,
-      color: 'orange',
-      textColor: 'text-orange-400',
-      bgColor: 'bg-orange-500/10',
-      borderColor: 'border-orange-500/20',
+      textColor: 'text-orange-700',
+      bgColor: 'bg-orange-50',
+      borderColor: 'border-orange-200',
       barColor: 'bg-orange-500'
     },
     {
@@ -64,36 +61,35 @@ export const StockStatusCard = ({ summary }) => {
       percentage: oosPct,
       threshold: 'current stock = 0',
       icon: XCircle,
-      color: 'red',
-      textColor: 'text-red-400',
-      bgColor: 'bg-red-500/10',
-      borderColor: 'border-red-500/20',
+      textColor: 'text-red-700',
+      bgColor: 'bg-red-50',
+      borderColor: 'border-red-200',
       barColor: 'bg-red-500'
     }
   ];
 
   return (
-    <div className="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-6 shadow-xl space-y-6">
+    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-xs space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h2 className="text-base font-bold text-white tracking-tight">Stock Status Overview</h2>
-          <p className="text-xs text-slate-400">
+          <h2 className="text-base font-bold text-[#102A43] tracking-tight">Stock Status Overview</h2>
+          <p className="text-xs text-[#64748B]">
             Current catalog distribution across defined stock thresholds.
           </p>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700/50 self-start sm:self-auto">
-          <Info className="w-3.5 h-3.5 text-indigo-400" />
-          <span>Total: <strong className="text-white">{totalCalculated}</strong> products</span>
+        <div className="flex items-center gap-1.5 text-xs text-[#64748B] bg-[#F4F8FC] px-3 py-1.5 rounded-lg border border-[#E2E8F0] self-start sm:self-auto">
+          <Info className="w-3.5 h-3.5 text-[#1769C2]" />
+          <span>Total: <strong className="text-[#102A43]">{totalCalculated}</strong> products</span>
         </div>
       </div>
 
       {/* Segmented Distribution Bar */}
       <div className="space-y-1.5">
-        <div className="h-3 w-full bg-slate-900/80 rounded-full overflow-hidden flex p-0.5 gap-0.5 border border-slate-700/50">
+        <div className="h-3 w-full bg-[#F4F8FC] rounded-full overflow-hidden flex p-0.5 gap-0.5 border border-[#E2E8F0]">
           {normalPct > 0 && (
             <div
               style={{ width: `${normalPct}%` }}
-              className="bg-emerald-500 h-full rounded-l-full transition-all duration-500"
+              className="bg-[#10B981] h-full rounded-l-full transition-all duration-500"
               title={`Normal: ${normal} (${normalPct}%)`}
             />
           )}
@@ -119,11 +115,11 @@ export const StockStatusCard = ({ summary }) => {
             />
           )}
         </div>
-        <div className="flex justify-between text-[11px] text-slate-400 font-medium px-1">
-          <span className="text-emerald-400">{normalPct}% Normal</span>
-          <span className="text-amber-400">{lowPct}% Low</span>
-          <span className="text-orange-400">{criticalPct}% Critical</span>
-          <span className="text-red-400">{oosPct}% Out of Stock</span>
+        <div className="flex justify-between text-[11px] text-[#64748B] font-semibold px-1">
+          <span className="text-emerald-700">{normalPct}% Normal</span>
+          <span className="text-amber-700">{lowPct}% Low</span>
+          <span className="text-orange-700">{criticalPct}% Critical</span>
+          <span className="text-red-700">{oosPct}% Out of Stock</span>
         </div>
       </div>
 
@@ -143,10 +139,10 @@ export const StockStatusCard = ({ summary }) => {
                 <Icon className={`w-4 h-4 ${item.textColor}`} />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-white">{item.count}</span>
-                <span className="text-xs text-slate-400">items</span>
+                <span className="text-2xl font-extrabold text-[#102A43]">{item.count}</span>
+                <span className="text-xs text-[#64748B]">items</span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-snug">
+              <p className="text-[11px] text-[#64748B] leading-snug">
                 {item.threshold}
               </p>
             </div>

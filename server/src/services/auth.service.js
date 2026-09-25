@@ -240,3 +240,11 @@ export const getCurrentUser = async (userId) => {
     role: user.role
   };
 };
+
+export { findUserById };
+export default {
+  register,
+  login,
+  getCurrentUser,
+  findUserById
+};

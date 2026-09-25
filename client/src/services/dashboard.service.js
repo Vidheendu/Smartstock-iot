@@ -134,12 +134,49 @@ export const getStockStatusSummary = async () => {
   };
 };
 
+import inventoryService from './inventory.service.js';
+
+function formatRelativeTime(dateString) {
+  const delta = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
+  if (delta < 60) return 'Just now';
+  if (delta < 3600) return `${Math.floor(delta / 60)}m ago`;
+  if (delta < 86400) return `${Math.floor(delta / 3600)}h ago`;
+  return `${Math.floor(delta / 86400)}d ago`;
+}
+
 /**
- * Fetch recent activity list for store stock updates.
+ * Fetch recent activity list from live inventory history records.
  * @returns {Promise<{ success: boolean, data: RecentActivity[] }>}
  */
 export const getRecentActivities = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 150));
+  try {
+    const history = await inventoryService.getInventoryHistory();
+    if (history && history.length > 0) {
+      const activities = history.slice(0, 5).map((h) => {
+        const isPositive = Number(h.quantityChange) > 0;
+        return {
+          id: h.id,
+          type: h.changeType === 'STOCK_IN' ? 'stock_in' : h.changeType === 'STOCK_OUT' ? 'stock_out' : 'adjustment',
+          title:
+            h.changeType === 'STOCK_IN'
+              ? `Stock Received: ${h.productName}`
+              : h.changeType === 'STOCK_OUT'
+              ? `Stock Sold / Out: ${h.productName}`
+              : `Stock Adjusted: ${h.productName}`,
+          description: `${isPositive ? `+${h.quantityChange}` : h.quantityChange} ${h.unit} (${h.previousStock} → ${h.newStock}) — ${h.reason}`,
+          timestamp: formatRelativeTime(h.createdAt)
+        };
+      });
+
+      return {
+        success: true,
+        data: activities
+      };
+    }
+  } catch (err) {
+    console.warn('[DASHBOARD ACTIVITIES] Using mock fallback:', err.message);
+  }
+
   return {
     success: true,
     data: [...MOCK_ACTIVITIES]
@@ -151,3 +188,4 @@ export default {
   getStockStatusSummary,
   getRecentActivities
 };
+

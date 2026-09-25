@@ -182,12 +182,12 @@ export const Products = () => {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#E2E8F0]">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
+          <h1 className="text-2xl font-bold tracking-tight text-[#102A43] flex items-center gap-2.5">
             <span>Products</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-[#64748B] mt-1">
             Manage your store products and stock thresholds.
           </p>
         </div>
@@ -199,7 +199,7 @@ export const Products = () => {
               setFormError(null);
               setIsAddModalOpen(true);
             }}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition cursor-pointer self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer self-start sm:self-auto"
           >
             <PackagePlus className="w-4 h-4" />
             <span>Add Product</span>
@@ -227,23 +227,23 @@ export const Products = () => {
       {/* Loading State */}
       {loading ? (
         <div className="min-h-[40vh] flex flex-col items-center justify-center space-y-3">
-          <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-          <p className="text-sm font-medium text-slate-300">Loading products...</p>
+          <Loader2 className="w-8 h-8 animate-spin text-[#1769C2]" />
+          <p className="text-sm font-medium text-[#64748B]">Loading products...</p>
         </div>
       ) : error ? (
         /* Error State */
         <div className="min-h-[30vh] flex flex-col items-center justify-center p-6">
-          <div className="max-w-md w-full bg-slate-800/90 border border-red-500/30 rounded-2xl p-6 text-center space-y-4 shadow-xl">
-            <div className="w-12 h-12 mx-auto rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+          <div className="max-w-md w-full bg-white border border-red-200 rounded-2xl p-6 text-center space-y-4 shadow-sm">
+            <div className="w-12 h-12 mx-auto rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
               <AlertCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-lg font-bold text-white">Unable to load products</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="text-lg font-bold text-[#102A43]">Unable to load products</h2>
+            <p className="text-xs text-[#64748B]">
               Could not retrieve the product catalog from the database. Please try again.
             </p>
             <button
               onClick={fetchProductsData}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#1769C2] hover:bg-[#1257A0] text-white text-xs font-semibold rounded-lg transition cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Retry</span>
@@ -252,14 +252,14 @@ export const Products = () => {
         </div>
       ) : filteredProducts.length === 0 ? (
         /* Empty State */
-        <div className="bg-slate-800/60 border border-dashed border-slate-700 rounded-2xl p-12 text-center space-y-4">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+        <div className="bg-white border border-dashed border-[#CBD5E1] rounded-2xl p-12 text-center space-y-4 shadow-sm">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#1769C2]/10 border border-[#1769C2]/20 text-[#1769C2] flex items-center justify-center">
             <Package className="w-7 h-7" />
           </div>
           {products.length === 0 ? (
             <div className="space-y-2">
-              <h3 className="text-base font-bold text-white">No products found</h3>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
+              <h3 className="text-base font-bold text-[#102A43]">No products found</h3>
+              <p className="text-xs text-[#64748B] max-w-sm mx-auto">
                 Your inventory catalog is currently empty. Get started by adding your first product.
               </p>
               {isManager && (
@@ -269,7 +269,7 @@ export const Products = () => {
                       setFormError(null);
                       setIsAddModalOpen(true);
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl transition cursor-pointer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#1769C2] to-[#10B981] hover:opacity-95 text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 transition cursor-pointer"
                   >
                     <PackagePlus className="w-4 h-4" />
                     <span>Add Product</span>
@@ -279,14 +279,14 @@ export const Products = () => {
             </div>
           ) : (
             <div className="space-y-2">
-              <h3 className="text-base font-bold text-white">No products match your filters</h3>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
+              <h3 className="text-base font-bold text-[#102A43]">No products match your filters</h3>
+              <p className="text-xs text-[#64748B] max-w-sm mx-auto">
                 No items match the current search query and filter criteria.
               </p>
               <div className="pt-2">
                 <button
                   onClick={handleClearFilters}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-xl transition cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#102A43] border border-slate-300 text-xs font-semibold rounded-xl transition cursor-pointer"
                 >
                   <span>Clear Filters</span>
                 </button>
@@ -366,13 +366,13 @@ export const Products = () => {
         title="Deactivate Product"
       >
         <div className="space-y-4">
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-            <div className="text-xs text-slate-300">
-              <p className="font-semibold text-red-300 mb-1">
+          <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+            <div className="text-xs text-[#102A43]">
+              <p className="font-semibold text-red-700 mb-1">
                 Are you sure you want to deactivate "{deletingProduct?.name}"?
               </p>
-              <p className="text-slate-400">
+              <p className="text-[#64748B]">
                 This will soft delete the product by setting its status to inactive. It will be hidden from the default catalog view while preserving stock records.
               </p>
             </div>
@@ -382,7 +382,7 @@ export const Products = () => {
             <button
               onClick={() => setDeletingProduct(null)}
               disabled={isDeleting}
-              className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-700 hover:bg-slate-600 rounded-xl transition cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:text-[#102A43] bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer"
             >
               Cancel
             </button>

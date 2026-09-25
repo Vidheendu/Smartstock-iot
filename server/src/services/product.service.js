@@ -653,12 +653,71 @@ export async function getProductStats() {
   };
 }
 
+/**
+ * Safely and atomically updates product current stock and recalculates stock status.
+ * Used by Inventory Service for stock-in, stock-out, and adjustment transactions.
+ */
+export async function updateProductStock(id, newStock) {
+  const existing = await getProductById(id);
+  if (!existing) {
+    const error = new Error('Product not found');
+    error.status = 404;
+    throw error;
+  }
+
+  const cleanStock = Math.max(0, parseInt(newStock, 10));
+  const newStatus = calculateStockStatus(cleanStock, existing.minimumStock);
+  const now = new Date().toISOString();
+
+  if (supabase) {
+    try {
+      const { data: updated, error } = await supabase
+        .from('products')
+        .update({
+          current_stock: cleanStock,
+          stock_status: newStatus,
+          updated_at: now
+        })
+        .eq('id', id)
+        .select('*, suppliers(*)')
+        .single();
+
+      if (!error && updated) {
+        const idx = inMemoryProducts.findIndex((p) => p.id === id);
+        if (idx !== -1) {
+          inMemoryProducts[idx].current_stock = cleanStock;
+          inMemoryProducts[idx].stock_status = newStatus;
+          inMemoryProducts[idx].updated_at = now;
+        }
+        return formatProduct(updated);
+      }
+    } catch (err) {
+      console.warn('[PRODUCTS DB] Supabase updateProductStock failed:', err.message);
+    }
+  }
+
+  // Update in-memory fallback
+  const idx = inMemoryProducts.findIndex((p) => p.id === id);
+  if (idx !== -1) {
+    inMemoryProducts[idx].current_stock = cleanStock;
+    inMemoryProducts[idx].stock_status = newStatus;
+    inMemoryProducts[idx].updated_at = now;
+    return formatProduct(inMemoryProducts[idx]);
+  }
+
+  existing.currentStock = cleanStock;
+  existing.stockStatus = newStatus;
+  existing.updatedAt = now;
+  return existing;
+}
+
 export default {
   getAllProducts,
   getProductById,
   checkSkuExists,
   createProduct,
   updateProduct,
+  updateProductStock,
   deleteProduct,
   getSuppliers,
   getProductStats

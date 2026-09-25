@@ -94,15 +94,20 @@ CREATE INDEX IF NOT EXISTS idx_readings_product_time ON sensor_readings(product_
 CREATE TABLE IF NOT EXISTS inventory_history (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     product_id UUID REFERENCES products(id) ON DELETE CASCADE,
-    change_quantity INTEGER NOT NULL,
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    change_type VARCHAR(30) NOT NULL DEFAULT 'ADJUSTMENT' CHECK (change_type IN ('STOCK_IN', 'STOCK_OUT', 'ADJUSTMENT')),
+    quantity_change INTEGER NOT NULL,
     previous_stock INTEGER NOT NULL CHECK (previous_stock >= 0),
     new_stock INTEGER NOT NULL CHECK (new_stock >= 0),
-    reason VARCHAR(50) NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    source VARCHAR(30) NOT NULL DEFAULT 'MANUAL' CHECK (source IN ('MANUAL', 'IOT')),
     reference_id UUID,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_history_product_time ON inventory_history(product_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_history_user ON inventory_history(user_id);
+CREATE INDEX IF NOT EXISTS idx_history_type ON inventory_history(change_type);
 CREATE INDEX IF NOT EXISTS idx_history_reason ON inventory_history(reason);
 
 -- 7. ALERTS TABLE

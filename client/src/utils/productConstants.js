@@ -39,33 +39,33 @@ export const STOCK_STATUS_CONFIG = {
   NORMAL: {
     label: 'NORMAL',
     color: 'emerald',
-    text: 'text-emerald-400',
-    bg: 'bg-emerald-500/10',
-    border: 'border-emerald-500/20',
+    text: 'text-emerald-700',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
     description: 'Current stock > Minimum stock'
   },
   LOW: {
     label: 'LOW',
     color: 'amber',
-    text: 'text-amber-400',
-    bg: 'bg-amber-500/10',
-    border: 'border-amber-500/20',
+    text: 'text-amber-700',
+    bg: 'bg-amber-50',
+    border: 'border-amber-200',
     description: 'Current stock <= Minimum stock and > 50% min'
   },
   CRITICAL: {
     label: 'CRITICAL',
     color: 'orange',
-    text: 'text-orange-400',
-    bg: 'bg-orange-500/10',
-    border: 'border-orange-500/20',
+    text: 'text-orange-700',
+    bg: 'bg-orange-50',
+    border: 'border-orange-200',
     description: 'Current stock <= 50% minimum stock and > 0'
   },
   OUT_OF_STOCK: {
     label: 'OUT OF STOCK',
     color: 'red',
-    text: 'text-red-400',
-    bg: 'bg-red-500/10',
-    border: 'border-red-500/20',
+    text: 'text-red-700',
+    bg: 'bg-red-50',
+    border: 'border-red-200',
     description: 'Current stock = 0'
   }
 };

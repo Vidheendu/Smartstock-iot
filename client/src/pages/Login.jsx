@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import { Cpu, Lock, Mail, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { Lock, Mail, AlertCircle, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -54,34 +54,39 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-slate-800/90 backdrop-blur border border-slate-700/70 rounded-2xl p-8 shadow-2xl space-y-6">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex p-3 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-600/30 mb-2">
-            <Cpu className="w-8 h-8 text-white" />
+    <div className="min-h-screen bg-[#F4F8FC] text-[#102A43] flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white border border-[#E2E8F0] rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/60 space-y-6">
+        {/* Header with Official Logo */}
+        <div className="text-center space-y-3">
+          <Link to="/" className="inline-block">
+            <img
+              src="/logo.png"
+              alt="SmartStock-IoT"
+              className="h-16 w-auto mx-auto object-contain"
+            />
+          </Link>
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold tracking-tight text-[#102A43]">
+              Welcome Back
+            </h1>
+            <p className="text-xs text-[#64748B]">
+              Sign in to access your store inventory dashboard
+            </p>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">SmartStock</h1>
-          <p className="text-xs text-indigo-400 font-semibold uppercase tracking-wider">
-            Smart Inventory Monitoring System
-          </p>
-          <p className="text-xs text-slate-400">
-            Sign in to access store inventory and IoT simulation
-          </p>
         </div>
 
         {/* Success Notice from Registration */}
         {successMessage && (
-          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-xs text-emerald-300">
-            <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-xs text-emerald-800">
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-[#10B981]" />
             <span>{successMessage}</span>
           </div>
         )}
 
         {/* Server Error Notice */}
         {serverError && (
-          <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center gap-2 text-xs text-red-300">
-            <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+          <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-xs text-red-700">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{serverError}</span>
           </div>
         )}
@@ -90,45 +95,45 @@ export const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           {/* Email */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Mail className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@smartstock.com"
-                className={`w-full bg-slate-900/60 border ${
-                  errors.email ? 'border-red-500' : 'border-slate-700'
-                } rounded-xl pl-9 pr-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition`}
+                placeholder="manager@smartstock.com"
+                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
+                  errors.email ? 'border-red-400' : 'border-[#E2E8F0]'
+                }`}
               />
             </div>
             {errors.email && (
-              <p className="text-xs text-red-400 mt-1">{errors.email}</p>
+              <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.email}</p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-[#102A43] uppercase tracking-wider mb-1.5">
               Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Lock className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className={`w-full bg-slate-900/60 border ${
-                  errors.password ? 'border-red-500' : 'border-slate-700'
-                } rounded-xl pl-9 pr-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition`}
+                className={`w-full bg-[#F4F8FC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition ${
+                  errors.password ? 'border-red-400' : 'border-[#E2E8F0]'
+                }`}
               />
             </div>
             {errors.password && (
-              <p className="text-xs text-red-400 mt-1">{errors.password}</p>
+              <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.password}</p>
             )}
           </div>
 
@@ -136,7 +141,7 @@ export const Login = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-600/50 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-600/20 transition flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white gradient-brand hover:opacity-95 shadow-md shadow-emerald-500/20 transition cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? (
               <>
@@ -144,23 +149,53 @@ export const Login = () => {
                 <span>Signing in...</span>
               </>
             ) : (
-              <span>Login</span>
+              <>
+                <span>Sign In</span>
+                <ArrowRight className="w-4 h-4" />
+              </>
             )}
           </button>
         </form>
 
-        {/* Demo Credentials Tip */}
-        <div className="p-3 bg-slate-900/40 border border-slate-700/50 rounded-xl text-xs text-slate-400 space-y-1">
-          <p className="font-semibold text-slate-300">Demo Accounts (Pre-configured):</p>
-          <p>Manager: <span className="text-indigo-300 font-mono">manager@smartstock.com</span> / <span className="font-mono">password123</span></p>
-          <p>Staff: <span className="text-indigo-300 font-mono">staff@smartstock.com</span> / <span className="font-mono">password123</span></p>
+        {/* Demo Credentials Quick-Fill Hint */}
+        <div className="p-3 bg-[#F4F8FC] rounded-2xl border border-[#E2E8F0] text-[11px] text-[#64748B] space-y-1">
+          <p className="font-semibold text-[#0B1F3A]">Quick Test Accounts:</p>
+          <div className="flex items-center justify-between text-[11px]">
+            <span>Manager: <strong className="text-[#102A43]">manager@smartstock.com</strong></span>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('manager@smartstock.com');
+                setPassword('password123');
+              }}
+              className="text-[#1769C2] font-bold hover:underline cursor-pointer"
+            >
+              Fill
+            </button>
+          </div>
+          <div className="flex items-center justify-between text-[11px]">
+            <span>Staff: <strong className="text-[#102A43]">staff@smartstock.com</strong></span>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('staff@smartstock.com');
+                setPassword('password123');
+              }}
+              className="text-[#1769C2] font-bold hover:underline cursor-pointer"
+            >
+              Fill
+            </button>
+          </div>
         </div>
 
         {/* Footer Link */}
-        <div className="text-center text-xs text-slate-400">
+        <div className="text-center text-xs text-[#64748B]">
           <span>Don't have an account? </span>
-          <Link to="/register" className="text-indigo-400 hover:text-indigo-300 font-semibold underline-offset-2 hover:underline">
-            Register
+          <Link
+            to="/register"
+            className="text-[#1769C2] font-bold hover:text-[#10B981] transition"
+          >
+            Create account
           </Link>
         </div>
       </div>

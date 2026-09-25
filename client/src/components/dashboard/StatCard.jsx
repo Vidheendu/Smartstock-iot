@@ -1,47 +1,55 @@
 import React from 'react';
 
 /**
- * Color variant configurations based on SmartStock semantic color guidelines:
- * - indigo: General metrics (e.g. Total Products)
+ * Color variant configurations based on SmartStock-IoT brand guidelines:
+ * - blue: General metrics (e.g. Total Products) -> Royal Blue (#1769C2)
  * - amber: Low Stock (warning)
  * - orange: Critical Stock (urgent)
  * - red: Out of Stock (danger)
+ * - emerald: Normal / Success -> Emerald Green (#10B981)
  */
 const COLOR_VARIANTS = {
+  blue: {
+    bg: 'bg-royalblue-50',
+    border: 'border-royalblue-200',
+    text: 'text-[#1769C2]',
+    iconBg: 'bg-royalblue-50 text-[#1769C2] border border-royalblue-200',
+    valueText: 'text-[#0B1F3A]'
+  },
   indigo: {
-    bg: 'bg-indigo-500/10',
-    border: 'border-indigo-500/20',
-    text: 'text-indigo-400',
-    iconBg: 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30',
-    valueText: 'text-white'
+    bg: 'bg-royalblue-50',
+    border: 'border-royalblue-200',
+    text: 'text-[#1769C2]',
+    iconBg: 'bg-royalblue-50 text-[#1769C2] border border-royalblue-200',
+    valueText: 'text-[#0B1F3A]'
   },
   amber: {
-    bg: 'bg-amber-500/10',
-    border: 'border-amber-500/20',
-    text: 'text-amber-400',
-    iconBg: 'bg-amber-600/20 text-amber-400 border border-amber-500/30',
-    valueText: 'text-amber-300'
+    bg: 'bg-amber-50',
+    border: 'border-amber-200',
+    text: 'text-amber-700',
+    iconBg: 'bg-amber-50 text-amber-600 border border-amber-200',
+    valueText: 'text-amber-700'
   },
   orange: {
-    bg: 'bg-orange-500/10',
-    border: 'border-orange-500/20',
-    text: 'text-orange-400',
-    iconBg: 'bg-orange-600/20 text-orange-400 border border-orange-500/30',
-    valueText: 'text-orange-300'
+    bg: 'bg-orange-50',
+    border: 'border-orange-200',
+    text: 'text-orange-700',
+    iconBg: 'bg-orange-50 text-orange-600 border border-orange-200',
+    valueText: 'text-orange-700'
   },
   red: {
-    bg: 'bg-red-500/10',
-    border: 'border-red-500/20',
-    text: 'text-red-400',
-    iconBg: 'bg-red-600/20 text-red-400 border border-red-500/30',
-    valueText: 'text-red-400'
+    bg: 'bg-red-50',
+    border: 'border-red-200',
+    text: 'text-red-700',
+    iconBg: 'bg-red-50 text-red-600 border border-red-200',
+    valueText: 'text-red-700'
   },
   emerald: {
-    bg: 'bg-emerald-500/10',
-    border: 'border-emerald-500/20',
-    text: 'text-emerald-400',
-    iconBg: 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30',
-    valueText: 'text-emerald-300'
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    text: 'text-emerald-700',
+    iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-200',
+    valueText: 'text-emerald-700'
   }
 };
 
@@ -49,18 +57,18 @@ export const StatCard = ({
   title,
   value,
   icon: Icon,
-  variant = 'indigo',
+  variant = 'blue',
   subtitle,
   badge
 }) => {
-  const styles = COLOR_VARIANTS[variant] || COLOR_VARIANTS.indigo;
+  const styles = COLOR_VARIANTS[variant] || COLOR_VARIANTS.blue;
 
   return (
     <div
-      className={`rounded-2xl p-5 border bg-slate-800/80 backdrop-blur ${styles.border} transition-all duration-200 hover:border-slate-600 shadow-lg`}
+      className="rounded-2xl p-5 border border-[#E2E8F0] bg-white shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-200"
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
           {title}
         </span>
         {Icon && (
@@ -71,18 +79,18 @@ export const StatCard = ({
       </div>
 
       <div className="mt-4 flex items-baseline justify-between">
-        <span className={`text-3xl font-bold tracking-tight ${styles.valueText}`}>
+        <span className={`text-3xl font-extrabold tracking-tight ${styles.valueText}`}>
           {value}
         </span>
         {badge && (
-          <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${styles.bg} ${styles.text} border ${styles.border}`}>
+          <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold ${styles.bg} ${styles.text} border ${styles.border}`}>
             {badge}
           </span>
         )}
       </div>
 
       {subtitle && (
-        <p className="mt-2 text-xs text-slate-400">
+        <p className="mt-2 text-xs text-[#64748B]">
           {subtitle}
         </p>
       )}

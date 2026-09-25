@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, X, Filter, ArrowUpDown } from 'lucide-react';
+import { Search, X, Filter } from 'lucide-react';
 import { PRODUCT_CATEGORIES } from '../../utils/productConstants.js';
 
 export const ProductFilters = ({
@@ -25,22 +25,22 @@ export const ProductFilters = ({
     sortBy !== 'created_desc';
 
   return (
-    <div className="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-4 sm:p-5 shadow-lg space-y-4">
+    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
       <div className="flex flex-col md:flex-row gap-3">
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search products by name, SKU, or category..."
-            className="w-full bg-slate-900/80 border border-slate-700/70 rounded-xl pl-10 pr-9 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition"
+            className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#102A43] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] transition"
           />
           {searchTerm && (
             <button
               onClick={() => onSearchChange('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#102A43] cursor-pointer"
               title="Clear search"
             >
               <X className="w-3.5 h-3.5" />
@@ -55,7 +55,7 @@ export const ProductFilters = ({
             <select
               value={category}
               onChange={(e) => onCategoryChange(e.target.value)}
-              className="w-full bg-slate-900/80 border border-slate-700/70 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 cursor-pointer"
+              className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-xs font-medium text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
             >
               <option value="ALL">All Categories</option>
               {PRODUCT_CATEGORIES.map((cat) => (
@@ -71,7 +71,7 @@ export const ProductFilters = ({
             <select
               value={status}
               onChange={(e) => onStatusChange(e.target.value)}
-              className="w-full bg-slate-900/80 border border-slate-700/70 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 cursor-pointer"
+              className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-xs font-medium text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
             >
               <option value="ALL">All Stock States</option>
               <option value="NORMAL">Normal</option>
@@ -86,7 +86,7 @@ export const ProductFilters = ({
             <select
               value={activeFilter}
               onChange={(e) => onActiveFilterChange(e.target.value)}
-              className="w-full bg-slate-900/80 border border-slate-700/70 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 cursor-pointer"
+              className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-xs font-medium text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
             >
               <option value="true">Active Only</option>
               <option value="all">All Records</option>
@@ -99,7 +99,7 @@ export const ProductFilters = ({
             <select
               value={sortBy}
               onChange={(e) => onSortByChange(e.target.value)}
-              className="w-full bg-slate-900/80 border border-slate-700/70 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 cursor-pointer"
+              className="w-full bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl px-3 py-2.5 text-xs font-medium text-[#102A43] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
             >
               <option value="created_desc">Newest First</option>
               <option value="name_asc">Name (A-Z)</option>
@@ -114,19 +114,19 @@ export const ProductFilters = ({
       </div>
 
       {/* Filter Stats & Clear action */}
-      <div className="flex items-center justify-between text-xs text-slate-400 pt-1 border-t border-slate-700/40">
+      <div className="flex items-center justify-between text-xs text-[#64748B] pt-2 border-t border-[#E2E8F0]">
         <div>
-          Showing <span className="font-semibold text-white">{filteredCount}</span> of{' '}
-          <span className="font-semibold text-white">{totalCount}</span> products
+          Showing <span className="font-bold text-[#102A43]">{filteredCount}</span> of{' '}
+          <span className="font-bold text-[#102A43]">{totalCount}</span> products
           {isFiltered && (
-            <span className="text-indigo-400 ml-1.5">(filtered)</span>
+            <span className="text-[#1769C2] font-semibold ml-1.5">(filtered)</span>
           )}
         </div>
 
         {isFiltered && (
           <button
             onClick={onClearFilters}
-            className="flex items-center gap-1 text-slate-400 hover:text-indigo-300 font-medium transition cursor-pointer"
+            className="flex items-center gap-1 text-[#1769C2] hover:text-[#10B981] font-bold transition cursor-pointer"
           >
             <X className="w-3.5 h-3.5" />
             <span>Clear Filters</span>

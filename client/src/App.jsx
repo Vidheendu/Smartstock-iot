@@ -5,9 +5,12 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import AppLayout from './components/layout/AppLayout.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import Landing from './pages/Landing.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Products from './pages/Products.jsx';
 import ProductDetails from './pages/ProductDetails.jsx';
+import Inventory from './pages/Inventory.jsx';
+import InventoryHistory from './pages/InventoryHistory.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import {
@@ -43,8 +46,8 @@ function PublicRoute({ children }) {
 function AppRoutes() {
   return (
     <Routes>
-      {/* Root redirect */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      {/* Landing page at root */}
+      <Route path="/" element={<Landing />} />
 
       {/* Public Authentication Routes */}
       <Route
@@ -77,17 +80,8 @@ function AppRoutes() {
         {/* General Protected Routes (Staff & Manager) */}
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
-        <Route
-          path="/inventory"
-          element={
-            <PlaceholderPage
-              title="Inventory"
-              description="Inventory tracking, stock adjustments, and audit logs will be implemented in a later phase."
-              icon={Boxes}
-              phase="Phase 4"
-            />
-          }
-        />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/inventory/history" element={<InventoryHistory />} />
         <Route
           path="/iot"
           element={

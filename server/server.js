@@ -6,6 +6,7 @@ import authRoutes from './src/routes/auth.routes.js';
 import productRoutes from './src/routes/product.routes.js';
 import supplierRoutes from './src/routes/supplier.routes.js';
 import dashboardRoutes from './src/routes/dashboard.routes.js';
+import inventoryRoutes from './src/routes/inventory.routes.js';
 import { notFoundHandler, errorHandler } from './src/middleware/error.middleware.js';
 
 // Validate environment variables on startup
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
 // 404 & Centralized Error Middleware
 app.use(notFoundHandler);

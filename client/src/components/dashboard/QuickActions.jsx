@@ -9,8 +9,8 @@ const ACTIONS = [
     description: 'Register and configure new stock catalog item',
     to: '/products',
     icon: PackagePlus,
-    accent: 'hover:border-indigo-500/50 hover:bg-indigo-500/5',
-    iconColor: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20'
+    accent: 'hover:border-[#1769C2] hover:bg-royalblue-50/60',
+    iconColor: 'text-[#1769C2] bg-royalblue-50 border-royalblue-200'
   },
   {
     id: 'view-inventory',
@@ -18,8 +18,8 @@ const ACTIONS = [
     description: 'Inspect current stock quantities and threshold status',
     to: '/inventory',
     icon: Boxes,
-    accent: 'hover:border-blue-500/50 hover:bg-blue-500/5',
-    iconColor: 'text-blue-400 bg-blue-500/10 border-blue-500/20'
+    accent: 'hover:border-[#10B981] hover:bg-emerald-50/60',
+    iconColor: 'text-[#10B981] bg-emerald-50 border-emerald-200'
   },
   {
     id: 'monitor-iot',
@@ -27,8 +27,8 @@ const ACTIONS = [
     description: 'Track software-simulated sensor telemetry feeds',
     to: '/iot',
     icon: RadioTower,
-    accent: 'hover:border-purple-500/50 hover:bg-purple-500/5',
-    iconColor: 'text-purple-400 bg-purple-500/10 border-purple-500/20'
+    accent: 'hover:border-[#1769C2] hover:bg-royalblue-50/60',
+    iconColor: 'text-[#1769C2] bg-royalblue-50 border-royalblue-200'
   },
   {
     id: 'check-alerts',
@@ -36,21 +36,21 @@ const ACTIONS = [
     description: 'Review low, critical, and out-of-stock warning events',
     to: '/alerts',
     icon: TriangleAlert,
-    accent: 'hover:border-amber-500/50 hover:bg-amber-500/5',
-    iconColor: 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+    accent: 'hover:border-amber-400 hover:bg-amber-50/60',
+    iconColor: 'text-amber-600 bg-amber-50 border-amber-200'
   }
 ];
 
 export const QuickActions = () => {
   return (
-    <div className="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-6 shadow-xl space-y-4">
+    <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-xs space-y-4">
       <div className="flex items-center gap-2.5">
-        <div className="p-2 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+        <div className="p-2 rounded-xl gradient-brand text-white shadow-xs">
           <Zap className="w-4 h-4" />
         </div>
         <div>
-          <h2 className="text-base font-bold text-white tracking-tight">Quick Actions</h2>
-          <p className="text-xs text-slate-400">
+          <h2 className="text-base font-bold text-[#102A43] tracking-tight">Quick Actions</h2>
+          <p className="text-xs text-[#64748B]">
             Frequently accessed stock management shortcuts.
           </p>
         </div>
@@ -63,20 +63,20 @@ export const QuickActions = () => {
             <Link
               key={action.id}
               to={action.to}
-              className={`group p-4 rounded-xl border border-slate-700/60 bg-slate-900/40 transition-all duration-200 ${action.accent} flex flex-col justify-between`}
+              className={`group p-4 rounded-xl border border-[#E2E8F0] bg-[#F4F8FC] transition-all duration-200 ${action.accent} flex flex-col justify-between`}
             >
               <div className="flex items-start justify-between">
                 <div className={`p-2.5 rounded-xl border ${action.iconColor}`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#1769C2] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
               </div>
 
               <div className="mt-4">
-                <h3 className="text-sm font-semibold text-white group-hover:text-indigo-300 transition-colors">
+                <h3 className="text-sm font-bold text-[#102A43] group-hover:text-[#1769C2] transition-colors">
                   {action.title}
                 </h3>
-                <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                <p className="text-xs text-[#64748B] mt-1 line-clamp-2">
                   {action.description}
                 </p>
               </div>

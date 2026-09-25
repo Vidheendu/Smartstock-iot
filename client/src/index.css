@@ -4,4 +4,48 @@
 
 :root {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --color-primary: #0B1F3A;
+  --color-secondary: #1769C2;
+  --color-accent: #10B981;
+  --color-accent-hover: #059669;
+  --color-bg: #F4F8FC;
+  --color-card: #FFFFFF;
+  --color-text: #102A43;
+  --color-text-muted: #64748B;
+  --color-border: #E2E8F0;
+}
+
+body {
+  background-color: #F4F8FC;
+  color: #102A43;
+}
+
+.gradient-brand {
+  background: linear-gradient(135deg, #1769C2, #10B981);
+}
+
+.gradient-brand-hover:hover {
+  background: linear-gradient(135deg, #1359a6, #059669);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #1769C2, #10B981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F8FC;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
 }

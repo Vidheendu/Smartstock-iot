@@ -62,9 +62,9 @@ export const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-3">
-        <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-        <p className="text-sm font-medium text-slate-300">Loading dashboard...</p>
-        <p className="text-xs text-slate-500">Preparing stock overview metrics</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#1769C2]" />
+        <p className="text-sm font-semibold text-[#102A43]">Loading dashboard...</p>
+        <p className="text-xs text-[#64748B]">Preparing stock overview metrics</p>
       </div>
     );
   }
@@ -73,17 +73,17 @@ export const Dashboard = () => {
   if (error) {
     return (
       <div className="min-h-[40vh] flex flex-col items-center justify-center p-6">
-        <div className="max-w-md w-full bg-slate-800/90 border border-red-500/30 rounded-2xl p-6 text-center space-y-4 shadow-xl">
-          <div className="w-12 h-12 mx-auto rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+        <div className="max-w-md w-full bg-white border border-red-200 rounded-3xl p-8 text-center space-y-4 shadow-lg shadow-slate-200/50">
+          <div className="w-12 h-12 mx-auto rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-500">
             <AlertCircle className="w-6 h-6" />
           </div>
-          <h2 className="text-lg font-bold text-white">Unable to load dashboard data</h2>
-          <p className="text-xs text-slate-400">
+          <h2 className="text-lg font-bold text-[#102A43]">Unable to load dashboard data</h2>
+          <p className="text-xs text-[#64748B]">
             An issue occurred while fetching the inventory overview. Please retry.
           </p>
           <button
             onClick={loadData}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1769C2] hover:bg-[#1359a6] text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-xs"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Retry</span>
@@ -98,23 +98,23 @@ export const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Dashboard Greeting Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#E2E8F0]">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl font-bold tracking-tight text-white">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#102A43]">
               Dashboard
             </h1>
             <span
-              className={`px-2 py-0.5 rounded text-[11px] font-bold ${
+              className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
                 isManager
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                  : 'bg-royalblue-50 text-[#1769C2] border border-[#1769C2]/20'
               }`}
             >
               {user?.role || 'STAFF'}
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-[#64748B] mt-1">
             Overview of your store inventory and stock activity.
           </p>
         </div>
@@ -122,16 +122,16 @@ export const Dashboard = () => {
         {/* User Identity & Refresh Action */}
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-semibold text-white">{user?.name}</p>
-            <p className="text-[11px] text-slate-400">{user?.email}</p>
+            <p className="text-xs font-bold text-[#102A43]">{user?.name}</p>
+            <p className="text-[11px] text-[#64748B]">{user?.email}</p>
           </div>
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 rounded-xl transition cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#102A43] bg-white hover:bg-[#F4F8FC] border border-[#E2E8F0] rounded-xl transition cursor-pointer disabled:opacity-50 shadow-xs"
             title="Refresh dashboard metrics"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#1769C2]' : 'text-[#64748B]'}`} />
             <span className="hidden sm:inline">Refresh</span>
           </button>
         </div>
@@ -143,8 +143,8 @@ export const Dashboard = () => {
           title="Total Products"
           value={stats?.totalProducts ?? 0}
           icon={Package}
-          variant="indigo"
-          badge="Catalog"
+          variant="blue"
+          badge="Live Catalog"
           subtitle="Total registered stock SKUs"
         />
 
@@ -171,7 +171,7 @@ export const Dashboard = () => {
           value={stats?.outOfStock ?? 0}
           icon={XCircle}
           variant="red"
-          badge="Empty"
+          badge="Depleted"
           subtitle="Stock level currently at zero"
         />
       </div>
