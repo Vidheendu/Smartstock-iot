@@ -66,8 +66,11 @@ export const getSuppliers = async () => {
   return response.data?.data || [];
 };
 
+export const getAllProducts = getProducts;
+
 export default {
   getProducts,
+  getAllProducts,
   getProduct,
   createProduct,
   updateProduct,

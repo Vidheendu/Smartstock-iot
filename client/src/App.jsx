@@ -11,6 +11,9 @@ import Products from './pages/Products.jsx';
 import ProductDetails from './pages/ProductDetails.jsx';
 import Inventory from './pages/Inventory.jsx';
 import InventoryHistory from './pages/InventoryHistory.jsx';
+import Alerts from './pages/Alerts.jsx';
+import AlertDetails from './pages/AlertDetails.jsx';
+import IotMonitor from './pages/IotMonitor.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import {
@@ -82,28 +85,9 @@ function AppRoutes() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/inventory/history" element={<InventoryHistory />} />
-        <Route
-          path="/iot"
-          element={
-            <PlaceholderPage
-              title="IoT Monitor"
-              description="Software-simulated sensor readings, device statuses, and telemetry streams will be implemented in a later phase."
-              icon={RadioTower}
-              phase="Phase 5"
-            />
-          }
-        />
-        <Route
-          path="/alerts"
-          element={
-            <PlaceholderPage
-              title="Alerts"
-              description="Threshold-based stock alerts and real-time warning rules will be implemented in a later phase."
-              icon={TriangleAlert}
-              phase="Phase 6"
-            />
-          }
-        />
+        <Route path="/iot" element={<IotMonitor />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/alerts/:id" element={<AlertDetails />} />
         <Route
           path="/analytics"
           element={

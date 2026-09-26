@@ -63,13 +63,13 @@ INSERT INTO inventory_history (product_id, change_quantity, previous_stock, new_
 ('b0000000-0000-0000-0000-000000000007', -4, 12, 8, 'SIMULATED_CONSUMPTION', NOW() - INTERVAL '4 hours');
 
 -- 7. SEED ALERTS FOR DEFICIT PRODUCTS
-INSERT INTO alerts (id, product_id, severity, message, current_stock, minimum_stock, status, created_at) VALUES
-('d0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000005', 'OUT_OF_STOCK', 'Product "Coca Cola" is completely out of stock!', 0, 60, 'ACTIVE', NOW() - INTERVAL '30 minutes'),
-('d0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 'CRITICAL', 'Product "Sugar" is at critical stock level (12 / 40 min).', 12, 40, 'ACTIVE', NOW() - INTERVAL '1 hour'),
-('d0000000-0000-0000-0000-000000000003', 'b0000000-0000-0000-0000-000000000007', 'CRITICAL', 'Product "Cooking Oil" is at critical stock level (8 / 30 min).', 8, 30, 'ACTIVE', NOW() - INTERVAL '4 hours'),
-('d0000000-0000-0000-0000-000000000004', 'b0000000-0000-0000-0000-000000000010', 'CRITICAL', 'Product "Chips" is at critical stock level (15 / 40 min).', 15, 40, 'ACTIVE', NOW() - INTERVAL '5 hours'),
-('d0000000-0000-0000-0000-000000000005', 'b0000000-0000-0000-0000-000000000002', 'LOW', 'Product "Bread" is running low (18 / 30 min).', 18, 30, 'ACTIVE', NOW() - INTERVAL '3 hours'),
-('d0000000-0000-0000-0000-000000000006', 'b0000000-0000-0000-0000-000000000006', 'LOW', 'Product "Biscuits" is running low (22 / 25 min).', 22, 25, 'ACTIVE', NOW() - INTERVAL '6 hours');
+INSERT INTO alerts (id, product_id, alert_type, severity, message, current_stock, minimum_stock, source, status, created_at) VALUES
+('d0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000005', 'OUT_OF_STOCK', 'OUT_OF_STOCK', 'Coca Cola is out of stock.', 0, 60, 'SYSTEM', 'ACTIVE', NOW() - INTERVAL '30 minutes'),
+('d0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 'CRITICAL_STOCK', 'CRITICAL', 'Sugar stock is critical. Current stock is 12 bags (1kg) and minimum stock is 40 bags (1kg).', 12, 40, 'SYSTEM', 'ACTIVE', NOW() - INTERVAL '1 hour'),
+('d0000000-0000-0000-0000-000000000003', 'b0000000-0000-0000-0000-000000000007', 'CRITICAL_STOCK', 'CRITICAL', 'Cooking Oil stock is critical. Current stock is 8 bottles (1L) and minimum stock is 30 bottles (1L).', 8, 30, 'SYSTEM', 'ACTIVE', NOW() - INTERVAL '4 hours'),
+('d0000000-0000-0000-0000-000000000004', 'b0000000-0000-0000-0000-000000000010', 'CRITICAL_STOCK', 'CRITICAL', 'Chips stock is critical. Current stock is 15 bags and minimum stock is 40 bags.', 15, 40, 'SYSTEM', 'ACTIVE', NOW() - INTERVAL '5 hours'),
+('d0000000-0000-0000-0000-000000000005', 'b0000000-0000-0000-0000-000000000002', 'LOW_STOCK', 'LOW', 'Bread stock is low. Current stock is 18 loaves and minimum stock is 30 loaves.', 18, 30, 'SYSTEM', 'ACTIVE', NOW() - INTERVAL '3 hours'),
+('d0000000-0000-0000-0000-000000000006', 'b0000000-0000-0000-0000-000000000006', 'LOW_STOCK', 'LOW', 'Biscuits stock is low. Current stock is 22 packs and minimum stock is 25 packs.', 22, 25, 'SYSTEM', 'ACTIVE', NOW() - INTERVAL '6 hours');
 
 -- 8. SEED NOTIFICATIONS
 INSERT INTO notifications (alert_id, title, message, type, is_read, created_at) VALUES

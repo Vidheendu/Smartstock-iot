@@ -114,11 +114,15 @@ CREATE INDEX IF NOT EXISTS idx_history_reason ON inventory_history(reason);
 CREATE TABLE IF NOT EXISTS alerts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+    alert_type VARCHAR(30) NOT NULL DEFAULT 'LOW_STOCK' CHECK (alert_type IN ('LOW_STOCK', 'CRITICAL_STOCK', 'OUT_OF_STOCK')),
     severity VARCHAR(30) NOT NULL CHECK (severity IN ('LOW', 'CRITICAL', 'OUT_OF_STOCK')),
     message TEXT NOT NULL,
     current_stock INTEGER NOT NULL CHECK (current_stock >= 0),
     minimum_stock INTEGER NOT NULL CHECK (minimum_stock >= 0),
+    source VARCHAR(30) NOT NULL DEFAULT 'SYSTEM' CHECK (source IN ('MANUAL', 'IOT', 'SYSTEM')),
     status VARCHAR(30) DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'ACKNOWLEDGED', 'RESOLVED')),
+    acknowledged_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    acknowledged_at TIMESTAMPTZ,
     resolved_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -126,6 +130,8 @@ CREATE TABLE IF NOT EXISTS alerts (
 
 CREATE INDEX IF NOT EXISTS idx_alerts_product_status ON alerts(product_id, status);
 CREATE INDEX IF NOT EXISTS idx_alerts_status_created ON alerts(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_alerts_source ON alerts(source);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_alerts_unique_active_product_type ON alerts(product_id, alert_type) WHERE status IN ('ACTIVE', 'ACKNOWLEDGED');
 
 -- 8. NOTIFICATIONS TABLE
 CREATE TABLE IF NOT EXISTS notifications (

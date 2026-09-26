@@ -7,7 +7,8 @@ import {
   XCircle,
   RefreshCw,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  BellRing
 } from 'lucide-react';
 import {
   getDashboardStats,
@@ -138,7 +139,7 @@ export const Dashboard = () => {
       </div>
 
       {/* 1. Summary Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <StatCard
           title="Total Products"
           value={stats?.totalProducts ?? 0}
@@ -173,6 +174,15 @@ export const Dashboard = () => {
           variant="red"
           badge="Depleted"
           subtitle="Stock level currently at zero"
+        />
+
+        <StatCard
+          title="Active Alerts"
+          value={stats?.activeAlerts ?? 0}
+          icon={BellRing}
+          variant="red"
+          badge="Action Req."
+          subtitle="Unresolved stock deficit warnings"
         />
       </div>
 

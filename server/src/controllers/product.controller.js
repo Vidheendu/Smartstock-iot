@@ -1,4 +1,5 @@
 import productService from '../services/product.service.js';
+import alertService from '../services/alert.service.js';
 
 /**
  * Controller to list all products.
@@ -152,9 +153,20 @@ export async function getSuppliers(req, res, next) {
 export async function getDashboardStats(req, res, next) {
   try {
     const stats = await productService.getProductStats();
+    let activeAlerts = 0;
+    try {
+      const summary = await alertService.getAlertSummary();
+      activeAlerts = summary.activeAlerts;
+    } catch {
+      activeAlerts = alertService.getActiveAlertsCount();
+    }
+
     res.status(200).json({
       success: true,
-      data: stats
+      data: {
+        ...stats,
+        activeAlerts
+      }
     });
   } catch (error) {
     next(error);

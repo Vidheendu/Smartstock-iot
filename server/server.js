@@ -7,6 +7,8 @@ import productRoutes from './src/routes/product.routes.js';
 import supplierRoutes from './src/routes/supplier.routes.js';
 import dashboardRoutes from './src/routes/dashboard.routes.js';
 import inventoryRoutes from './src/routes/inventory.routes.js';
+import alertRoutes from './src/routes/alert.routes.js';
+import iotRoutes from './src/routes/iot.routes.js';
 import { notFoundHandler, errorHandler } from './src/middleware/error.middleware.js';
 
 // Validate environment variables on startup
@@ -32,6 +34,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/alerts', alertRoutes);
+app.use('/api/iot', iotRoutes);
 
 // 404 & Centralized Error Middleware
 app.use(notFoundHandler);

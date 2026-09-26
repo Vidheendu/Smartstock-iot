@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import supabase from '../config/db.js';
 import { getAllProducts, getProductById, updateProductStock } from './product.service.js';
 import { findUserById } from './auth.service.js';
+import { evaluateStockAlert } from './alert.service.js';
 
 // Pre-seeded in-memory inventory history fallback (mirrors database/seeds.sql)
 let inMemoryHistory = [
@@ -185,7 +186,7 @@ export async function getInventoryByProduct(productId) {
  * Records a Stock In transaction.
  * Increases current stock by quantity and records an immutable inventory_history record.
  */
-export async function stockIn({ productId, quantity, reason, userId }) {
+export async function stockIn({ productId, quantity, reason, userId, source = 'MANUAL' }) {
   const product = await getProductById(productId);
   if (!product) {
     const error = new Error('Product not found');
@@ -215,7 +216,7 @@ export async function stockIn({ productId, quantity, reason, userId }) {
     previous_stock: previousStock,
     new_stock: newStock,
     reason: String(reason).trim(),
-    source: 'MANUAL',
+    source: source || 'MANUAL',
     created_at: now
   };
 
@@ -252,6 +253,13 @@ export async function stockIn({ productId, quantity, reason, userId }) {
   // 3. Keep in-memory history updated
   inMemoryHistory.unshift(historyRecord);
 
+  // 4. Trigger Automatic Alert Engine after stock update succeeds
+  try {
+    await evaluateStockAlert(product.id, source || 'MANUAL');
+  } catch (alertErr) {
+    console.warn('[INVENTORY ALERT] Failed to evaluate stock alert:', alertErr.message);
+  }
+
   const enrichedTransaction = await enrichHistoryRecord(historyRecord);
 
   return {
@@ -264,7 +272,7 @@ export async function stockIn({ productId, quantity, reason, userId }) {
  * Records a Stock Out transaction.
  * Decreases current stock by quantity, strictly preventing negative inventory.
  */
-export async function stockOut({ productId, quantity, reason, userId }) {
+export async function stockOut({ productId, quantity, reason, userId, source = 'MANUAL' }) {
   const product = await getProductById(productId);
   if (!product) {
     const error = new Error('Product not found');
@@ -301,7 +309,7 @@ export async function stockOut({ productId, quantity, reason, userId }) {
     previous_stock: previousStock,
     new_stock: newStock,
     reason: String(reason).trim(),
-    source: 'MANUAL',
+    source: source || 'MANUAL',
     created_at: now
   };
 
@@ -333,6 +341,13 @@ export async function stockOut({ productId, quantity, reason, userId }) {
   const updatedProduct = await updateProductStock(product.id, newStock);
   inMemoryHistory.unshift(historyRecord);
 
+  // Trigger Automatic Alert Engine after stock update succeeds
+  try {
+    await evaluateStockAlert(product.id, source || 'MANUAL');
+  } catch (alertErr) {
+    console.warn('[INVENTORY ALERT] Failed to evaluate stock alert:', alertErr.message);
+  }
+
   const enrichedTransaction = await enrichHistoryRecord(historyRecord);
 
   return {
@@ -345,7 +360,7 @@ export async function stockOut({ productId, quantity, reason, userId }) {
  * Records a Stock Adjustment transaction.
  * Resets current stock to an absolute new stock value (must be >= 0).
  */
-export async function adjustStock({ productId, newStock, reason, userId }) {
+export async function adjustStock({ productId, newStock, reason, userId, source = 'MANUAL' }) {
   const product = await getProductById(productId);
   if (!product) {
     const error = new Error('Product not found');
@@ -374,7 +389,7 @@ export async function adjustStock({ productId, newStock, reason, userId }) {
     previous_stock: previousStock,
     new_stock: parsedNewStock,
     reason: String(reason).trim(),
-    source: 'MANUAL',
+    source: source || 'MANUAL',
     created_at: now
   };
 
@@ -405,6 +420,13 @@ export async function adjustStock({ productId, newStock, reason, userId }) {
 
   const updatedProduct = await updateProductStock(product.id, parsedNewStock);
   inMemoryHistory.unshift(historyRecord);
+
+  // Trigger Automatic Alert Engine after stock update succeeds
+  try {
+    await evaluateStockAlert(product.id, source || 'MANUAL');
+  } catch (alertErr) {
+    console.warn('[INVENTORY ALERT] Failed to evaluate stock alert:', alertErr.message);
+  }
 
   const enrichedTransaction = await enrichHistoryRecord(historyRecord);
 

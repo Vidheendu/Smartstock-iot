@@ -26,6 +26,7 @@ export const authenticateToken = (req, res, next) => {
   try {
     const decoded = verifyToken(token);
     req.user = {
+      id: decoded.userId,
       userId: decoded.userId,
       email: decoded.email,
       role: decoded.role

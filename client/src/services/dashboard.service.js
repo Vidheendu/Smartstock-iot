@@ -79,7 +79,8 @@ export const getDashboardStats = async () => {
           totalProducts: response.data.data.totalProducts ?? 0,
           lowStock: response.data.data.lowStock ?? 0,
           criticalStock: response.data.data.criticalStock ?? 0,
-          outOfStock: response.data.data.outOfStock ?? 0
+          outOfStock: response.data.data.outOfStock ?? 0,
+          activeAlerts: response.data.data.activeAlerts ?? 0
         }
       };
     }
@@ -93,7 +94,8 @@ export const getDashboardStats = async () => {
       totalProducts: 10,
       lowStock: 2,
       criticalStock: 3,
-      outOfStock: 1
+      outOfStock: 1,
+      activeAlerts: 6
     }
   };
 };
