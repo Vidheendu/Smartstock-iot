@@ -12,7 +12,8 @@ import {
   AlertCircle,
   BellRing,
   Bell,
-  ArrowRight
+  ArrowRight,
+  BarChart3
 } from 'lucide-react';
 import {
   getDashboardStats,
@@ -125,12 +126,20 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        {/* User Identity & Refresh Action */}
-        <div className="flex items-center gap-3">
-          <div className="text-right hidden sm:block">
+        {/* User Identity & Actions */}
+        <div className="flex items-center gap-2.5">
+          <div className="text-right hidden sm:block mr-1">
             <p className="text-xs font-bold text-[#0F172A]">{user?.name}</p>
             <p className="text-[11px] text-[#64748B]">{user?.email}</p>
           </div>
+          <Link
+            to="/analytics"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#1769C2] bg-[#E8F2FF] hover:bg-[#D9EAFE] border border-[#BFDBFE] rounded-xl transition cursor-pointer shadow-xs"
+            title="View store analytics & insights"
+          >
+            <BarChart3 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">View Analytics</span>
+          </Link>
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}

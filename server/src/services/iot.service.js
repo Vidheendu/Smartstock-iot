@@ -175,6 +175,26 @@ export async function simulateTelemetry({ deviceId, calculatedUnits, rawReading,
     console.warn('[IOT ALERT] Error evaluating stock alert:', alertErr.message);
   }
 
+  if (supabase) {
+    try {
+      await supabase.from('sensor_readings').insert({
+        id: readingRecord.id,
+        device_id: readingRecord.device_id,
+        product_id: readingRecord.product_id,
+        raw_reading: readingRecord.raw_reading,
+        calculated_units: readingRecord.calculated_units,
+        simulated_delta: readingRecord.simulated_delta,
+        battery_level: readingRecord.battery_level,
+        recorded_at: readingRecord.recorded_at
+      });
+      await supabase.from('simulated_devices').update({
+        last_ping_at: now
+      }).eq('id', device.id);
+    } catch (dbErr) {
+      console.warn('[IOT DB] Supabase record reading error:', dbErr.message);
+    }
+  }
+
   return {
     success: true,
     device: await enrichDevice(device),
@@ -186,7 +206,62 @@ export async function simulateTelemetry({ deviceId, calculatedUnits, rawReading,
   };
 }
 
+/**
+ * Retrieves sensor readings with optional filtering by device or date.
+ * Supports both Supabase database and in-memory repository.
+ */
+export async function getSensorReadings(filters = {}) {
+  let readings = [];
+
+  if (supabase) {
+    try {
+      let query = supabase
+        .from('sensor_readings')
+        .select('*')
+        .order('recorded_at', { ascending: false });
+
+      if (filters.deviceId) {
+        query = query.eq('device_id', filters.deviceId);
+      }
+      if (filters.productId) {
+        query = query.eq('product_id', filters.productId);
+      }
+      if (filters.since) {
+        query = query.gte('recorded_at', filters.since);
+      }
+
+      const { data, error } = await query;
+      if (!error && data && data.length > 0) {
+        readings = data;
+      }
+    } catch (err) {
+      console.warn('[IOT SERVICE] Supabase getSensorReadings error, using fallback:', err.message);
+    }
+  }
+
+  if (readings.length === 0) {
+    readings = [...inMemoryReadings];
+
+    if (filters.deviceId) {
+      readings = readings.filter((r) => r.device_id === filters.deviceId);
+    }
+    if (filters.productId) {
+      readings = readings.filter((r) => r.product_id === filters.productId);
+    }
+    if (filters.since) {
+      const sinceTime = new Date(filters.since).getTime();
+      readings = readings.filter((r) => new Date(r.recorded_at).getTime() >= sinceTime);
+    }
+  }
+
+  // Ensure newest first
+  readings.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
+
+  return readings;
+}
+
 export default {
   getDevices,
-  simulateTelemetry
+  simulateTelemetry,
+  getSensorReadings
 };

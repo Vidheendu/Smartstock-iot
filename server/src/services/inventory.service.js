@@ -458,6 +458,9 @@ export async function getInventoryHistory(filters = {}) {
       if (filters.source && filters.source !== 'ALL') {
         query = query.eq('source', filters.source);
       }
+      if (filters.since) {
+        query = query.gte('created_at', filters.since);
+      }
 
       const { data, error } = await query;
       if (!error && data && data.length > 0) {
@@ -480,6 +483,10 @@ export async function getInventoryHistory(filters = {}) {
     }
     if (filters.source && filters.source !== 'ALL') {
       records = records.filter((r) => r.source === filters.source);
+    }
+    if (filters.since) {
+      const sinceTime = new Date(filters.since).getTime();
+      records = records.filter((r) => new Date(r.created_at).getTime() >= sinceTime);
     }
   }
 

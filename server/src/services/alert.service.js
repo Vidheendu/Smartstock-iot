@@ -464,6 +464,9 @@ export async function getAlerts(filters = {}) {
       if (filters.productId && filters.productId !== 'ALL') {
         query = query.eq('product_id', filters.productId);
       }
+      if (filters.since) {
+        query = query.gte('created_at', filters.since);
+      }
 
       const { data, error } = await query;
       if (!error && data && data.length > 0) {
@@ -488,6 +491,10 @@ export async function getAlerts(filters = {}) {
     }
     if (filters.productId && filters.productId !== 'ALL') {
       records = records.filter((a) => a.product_id === filters.productId);
+    }
+    if (filters.since) {
+      const sinceTime = new Date(filters.since).getTime();
+      records = records.filter((a) => new Date(a.created_at).getTime() >= sinceTime);
     }
   }
 

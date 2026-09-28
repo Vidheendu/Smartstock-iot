@@ -14,7 +14,8 @@ import {
   AlertTriangle,
   Loader2,
   AlertCircle,
-  History
+  History,
+  BarChart3
 } from 'lucide-react';
 import productService from '../services/product.service.js';
 import inventoryService from '../services/inventory.service.js';
@@ -147,6 +148,15 @@ export const ProductDetails = () => {
           >
             <History className="w-3.5 h-3.5 text-[#1769C2]" />
             <span>View Inventory History</span>
+          </Link>
+
+          <Link
+            to="/analytics"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#0F172A] bg-white hover:bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl transition cursor-pointer shadow-xs"
+            title="View store analytics"
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-[#1769C2]" />
+            <span>Analytics</span>
           </Link>
 
           {isManager && (

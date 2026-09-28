@@ -15,6 +15,7 @@ import Alerts from './pages/Alerts.jsx';
 import AlertDetails from './pages/AlertDetails.jsx';
 import IotMonitor from './pages/IotMonitor.jsx';
 import Notifications from './pages/Notifications.jsx';
+import Analytics from './pages/Analytics.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import { NotificationProvider } from './context/NotificationContext.jsx';
@@ -90,17 +91,7 @@ function AppRoutes() {
         <Route path="/iot" element={<IotMonitor />} />
         <Route path="/alerts" element={<Alerts />} />
         <Route path="/alerts/:id" element={<AlertDetails />} />
-        <Route
-          path="/analytics"
-          element={
-            <PlaceholderPage
-              title="Analytics"
-              description="Inventory turnover rates and consumption analytics will be implemented in a later phase."
-              icon={BarChart3}
-              phase="Phase 7"
-            />
-          }
-        />
+        <Route path="/analytics" element={<Analytics />} />
         <Route
           path="/forecast"
           element={
