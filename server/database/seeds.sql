@@ -72,10 +72,12 @@ INSERT INTO alerts (id, product_id, alert_type, severity, message, current_stock
 ('d0000000-0000-0000-0000-000000000006', 'b0000000-0000-0000-0000-000000000006', 'LOW_STOCK', 'LOW', 'Biscuits stock is low. Current stock is 22 packs and minimum stock is 25 packs.', 22, 25, 'SYSTEM', 'ACTIVE', NOW() - INTERVAL '6 hours');
 
 -- 8. SEED NOTIFICATIONS
-INSERT INTO notifications (alert_id, title, message, type, is_read, created_at) VALUES
-('d0000000-0000-0000-0000-000000000001', 'Out of Stock Alert: Coca Cola', 'Coca Cola stock depleted to 0 units. Immediate supplier restock required.', 'STOCK_ALERT', FALSE, NOW() - INTERVAL '30 minutes'),
-('d0000000-0000-0000-0000-000000000002', 'Critical Stock Alert: Sugar', 'Sugar stock is at 12 units (minimum: 40).', 'STOCK_ALERT', FALSE, NOW() - INTERVAL '1 hour'),
-('d0000000-0000-0000-0000-000000000003', 'Critical Stock Alert: Cooking Oil', 'Cooking Oil stock dropped to 8 bottles (minimum: 30).', 'STOCK_ALERT', FALSE, NOW() - INTERVAL '4 hours');
+INSERT INTO notifications (id, user_id, alert_id, product_id, title, message, type, is_read, created_at) VALUES
+('f0000000-0000-0000-0000-000000000001', 'e0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000005', 'Out of Stock Alert', 'Coca Cola is out of stock.', 'OUT_OF_STOCK', FALSE, NOW() - INTERVAL '30 minutes'),
+('f0000000-0000-0000-0000-000000000002', 'e0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 'Critical Stock Alert', 'Sugar stock is critical. Current stock is 12 bags (1kg) and minimum stock is 40 bags (1kg).', 'CRITICAL_STOCK', FALSE, NOW() - INTERVAL '1 hour'),
+('f0000000-0000-0000-0000-000000000003', 'e0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000003', 'b0000000-0000-0000-0000-000000000007', 'Critical Stock Alert', 'Cooking Oil stock is critical. Current stock is 8 bottles (1L) and minimum stock is 30 bottles (1L).', 'CRITICAL_STOCK', FALSE, NOW() - INTERVAL '4 hours'),
+('f0000000-0000-0000-0000-000000000004', 'e0000000-0000-0000-0000-000000000002', 'd0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000005', 'Out of Stock Alert', 'Coca Cola is out of stock.', 'OUT_OF_STOCK', FALSE, NOW() - INTERVAL '30 minutes'),
+('f0000000-0000-0000-0000-000000000005', 'e0000000-0000-0000-0000-000000000002', 'd0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 'Critical Stock Alert', 'Sugar stock is critical. Current stock is 12 bags (1kg) and minimum stock is 40 bags (1kg).', 'CRITICAL_STOCK', FALSE, NOW() - INTERVAL '1 hour');
 
 -- 9. SEED RESTOCK ORDER SAMPLE
 INSERT INTO restock_orders (order_number, product_id, supplier_id, quantity, unit_cost, total_cost, status, notes) VALUES

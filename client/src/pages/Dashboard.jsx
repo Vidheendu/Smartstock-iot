@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useNotifications } from '../context/NotificationContext.jsx';
 import {
   Package,
   AlertTriangle,
@@ -8,7 +10,9 @@ import {
   RefreshCw,
   Loader2,
   AlertCircle,
-  BellRing
+  BellRing,
+  Bell,
+  ArrowRight
 } from 'lucide-react';
 import {
   getDashboardStats,
@@ -22,6 +26,7 @@ import QuickActions from '../components/dashboard/QuickActions.jsx';
 
 export const Dashboard = () => {
   const { user } = useAuth();
+  const { unreadCount } = useNotifications();
 
   const [stats, setStats] = useState(null);
   const [stockStatus, setStockStatus] = useState(null);
@@ -137,6 +142,32 @@ export const Dashboard = () => {
           </button>
         </div>
       </div>
+
+      {/* Notification Indicator Banner (Phase 8) */}
+      {unreadCount > 0 && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#E8F2FF] border border-[#BFDBFE] text-[#1769C2] shadow-xs animate-in fade-in duration-200">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-white border border-[#BFDBFE] flex items-center justify-center text-[#1769C2] shrink-0 shadow-xs">
+              <Bell className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-bold text-[#0F172A]">
+                You have {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
+              </p>
+              <p className="text-[11px] text-[#64748B]">
+                New inventory alerts have been issued and require attention.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/notifications"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1769C2] hover:bg-[#1257A0] text-white text-xs font-bold rounded-xl transition shadow-xs self-start sm:self-auto shrink-0"
+          >
+            <span>Review</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      )}
 
       {/* 1. Summary Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">

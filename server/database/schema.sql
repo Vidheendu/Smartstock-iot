@@ -136,15 +136,20 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_alerts_unique_active_product_type ON alert
 -- 8. NOTIFICATIONS TABLE
 CREATE TABLE IF NOT EXISTS notifications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     alert_id UUID REFERENCES alerts(id) ON DELETE SET NULL,
+    product_id UUID REFERENCES products(id) ON DELETE SET NULL,
     title VARCHAR(150) NOT NULL,
     message TEXT NOT NULL,
-    type VARCHAR(50) DEFAULT 'STOCK_ALERT',
-    is_read BOOLEAN DEFAULT FALSE,
+    type VARCHAR(50) NOT NULL DEFAULT 'SYSTEM' CHECK (type IN ('LOW_STOCK', 'CRITICAL_STOCK', 'OUT_OF_STOCK', 'SYSTEM')),
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    read_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_notifications_unread ON notifications(is_read, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_read ON notifications(user_id, is_read, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_notifications_alert ON notifications(alert_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_notifications_alert_user ON notifications(alert_id, user_id) WHERE alert_id IS NOT NULL;
 
 -- 9. RESTOCK_ORDERS TABLE
 CREATE TABLE IF NOT EXISTS restock_orders (

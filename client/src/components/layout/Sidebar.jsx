@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { useNotifications } from '../../context/NotificationContext.jsx';
 import {
   LayoutDashboard,
   Package,
@@ -38,6 +39,7 @@ export const MANAGER_NAV_ITEMS = [
 
 export const Sidebar = ({ onNavClick }) => {
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotifications();
   const navigate = useNavigate();
 
   const isManager = user?.role === 'MANAGER';
@@ -90,7 +92,12 @@ export const Sidebar = ({ onNavClick }) => {
                 className={navItemClass}
               >
                 <Icon className="w-4 h-4 shrink-0" />
-                <span className="truncate">{item.name}</span>
+                <span className="truncate flex-1">{item.name}</span>
+                {item.path === '/notifications' && unreadCount > 0 && (
+                  <span className="ml-auto px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-[#1769C2] text-white">
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
               </NavLink>
             );
           })}

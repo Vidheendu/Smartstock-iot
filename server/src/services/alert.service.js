@@ -3,6 +3,7 @@ import supabase from '../config/db.js';
 import { calculateStockStatus, STOCK_STATUS } from '../utils/stockStatus.js';
 import { getProductById } from './product.service.js';
 import { findUserById } from './auth.service.js';
+import { createNotificationsForAlert } from './notification.service.js';
 
 export const ALERT_TYPES = Object.freeze({
   LOW_STOCK: 'LOW_STOCK',
@@ -425,6 +426,13 @@ export async function evaluateStockAlert(productId, source = 'SYSTEM') {
   }
 
   inMemoryAlerts.unshift(newAlert);
+
+  // Phase 8: Trigger notification creation for NEW alert only
+  try {
+    await createNotificationsForAlert(newAlert);
+  } catch (notifErr) {
+    console.warn('[ALERT SERVICE] Failed to dispatch notifications for new alert:', notifErr.message);
+  }
 
   return {
     action: 'CREATED',

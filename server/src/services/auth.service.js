@@ -241,10 +241,39 @@ export const getCurrentUser = async (userId) => {
   };
 };
 
+/**
+ * Retrieves all active users in the system (for notification distribution).
+ */
+export const getAllUsers = async () => {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('id, email, full_name, role, created_at');
+
+      if (!error && data && data.length > 0) {
+        return data;
+      }
+    } catch (err) {
+      console.warn('[AUTH DB WARNING] Supabase getAllUsers query failed, falling back:', err.message);
+    }
+  }
+
+  return inMemoryUsers.map((u) => ({
+    id: u.id,
+    email: u.email,
+    full_name: u.full_name,
+    role: u.role,
+    created_at: u.created_at
+  }));
+};
+
 export { findUserById };
 export default {
   register,
   login,
   getCurrentUser,
-  findUserById
+  findUserById,
+  getAllUsers
 };
+

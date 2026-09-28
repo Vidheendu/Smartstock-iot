@@ -14,8 +14,10 @@ import InventoryHistory from './pages/InventoryHistory.jsx';
 import Alerts from './pages/Alerts.jsx';
 import AlertDetails from './pages/AlertDetails.jsx';
 import IotMonitor from './pages/IotMonitor.jsx';
+import Notifications from './pages/Notifications.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
+import { NotificationProvider } from './context/NotificationContext.jsx';
 import {
   Package,
   Boxes,
@@ -110,17 +112,7 @@ function AppRoutes() {
             />
           }
         />
-        <Route
-          path="/notifications"
-          element={
-            <PlaceholderPage
-              title="Notifications"
-              description="System notifications and alert distribution channels will be implemented in a later phase."
-              icon={Bell}
-              phase="Phase 6"
-            />
-          }
-        />
+        <Route path="/notifications" element={<Notifications />} />
 
         {/* Manager-Only Protected Routes */}
         <Route
@@ -185,7 +177,9 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <NotificationProvider>
+          <AppRoutes />
+        </NotificationProvider>
       </AuthProvider>
     </BrowserRouter>
   );
