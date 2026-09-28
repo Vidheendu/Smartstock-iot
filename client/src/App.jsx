@@ -16,6 +16,7 @@ import AlertDetails from './pages/AlertDetails.jsx';
 import IotMonitor from './pages/IotMonitor.jsx';
 import Notifications from './pages/Notifications.jsx';
 import Analytics from './pages/Analytics.jsx';
+import Forecast from './pages/Forecast.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import { NotificationProvider } from './context/NotificationContext.jsx';
@@ -92,17 +93,7 @@ function AppRoutes() {
         <Route path="/alerts" element={<Alerts />} />
         <Route path="/alerts/:id" element={<AlertDetails />} />
         <Route path="/analytics" element={<Analytics />} />
-        <Route
-          path="/forecast"
-          element={
-            <PlaceholderPage
-              title="Forecast"
-              description="Stock depletion forecasting and predictive models will be implemented in a later phase."
-              icon={TrendingDown}
-              phase="Phase 7"
-            />
-          }
-        />
+        <Route path="/forecast" element={<Forecast />} />
         <Route path="/notifications" element={<Notifications />} />
 
         {/* Manager-Only Protected Routes */}

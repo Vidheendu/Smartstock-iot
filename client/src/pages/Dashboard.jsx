@@ -13,13 +13,17 @@ import {
   BellRing,
   Bell,
   ArrowRight,
-  BarChart3
+  BarChart3,
+  TrendingDown,
+  Clock
 } from 'lucide-react';
 import {
   getDashboardStats,
   getStockStatusSummary,
   getRecentActivities
 } from '../services/dashboard.service.js';
+import { getForecastOverview } from '../services/forecast.service.js';
+import { formatDaysRemaining } from '../utils/forecastConstants.js';
 import StatCard from '../components/dashboard/StatCard.jsx';
 import StockStatusCard from '../components/dashboard/StockStatusCard.jsx';
 import RecentActivity from '../components/dashboard/RecentActivity.jsx';
@@ -32,6 +36,7 @@ export const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [stockStatus, setStockStatus] = useState(null);
   const [activities, setActivities] = useState([]);
+  const [forecastProducts, setForecastProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -39,15 +44,23 @@ export const Dashboard = () => {
   const loadData = useCallback(async () => {
     try {
       setError(null);
-      const [statsRes, statusRes, activitiesRes] = await Promise.all([
+      const [statsRes, statusRes, activitiesRes, forecastRes] = await Promise.all([
         getDashboardStats(),
         getStockStatusSummary(),
-        getRecentActivities()
+        getRecentActivities(),
+        getForecastOverview(30).catch(() => null)
       ]);
 
       if (statsRes.success) setStats(statsRes.data);
       if (statusRes.success) setStockStatus(statusRes.data);
       if (activitiesRes.success) setActivities(activitiesRes.data);
+      if (forecastRes?.success && Array.isArray(forecastRes?.data?.products)) {
+        // Filter products with valid forecast and positive stock, sorted by shortest days
+        const validForecasts = forecastRes.data.products
+          .filter((p) => p.forecastAvailable && p.estimatedDaysRemaining !== null)
+          .slice(0, 3);
+        setForecastProducts(validForecasts);
+      }
     } catch (err) {
       setError('Unable to load dashboard data.');
     } finally {
@@ -228,6 +241,70 @@ export const Dashboard = () => {
 
       {/* 2. Stock Status Overview */}
       <StockStatusCard summary={stockStatus} />
+
+      {/* 2.5 Stock Forecast Preview (Phase 10) */}
+      <div className="bg-white border border-[#D9E2EC] rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#D9E2EC]">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-[#E8F2FF] border border-[#BFDBFE] text-[#1769C2]">
+              <TrendingDown className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-[#0F172A] tracking-tight">Stock Forecast</h2>
+              <p className="text-xs text-[#64748B]">
+                Products with shortest estimated remaining stock based on 30-day historical consumption.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/forecast"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#E8F2FF] hover:bg-[#D9EAFE] text-[#1769C2] text-xs font-bold rounded-xl transition shadow-xs self-start sm:self-auto cursor-pointer"
+          >
+            <span>View Full Forecast</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {forecastProducts.length === 0 ? (
+          <p className="text-xs text-[#64748B] italic py-2">
+            No consumption forecast data available yet. Use store checkout or stock-out transactions to establish consumption trends.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {forecastProducts.map((p) => (
+              <div
+                key={p.productId}
+                className="p-3.5 rounded-xl border border-[#D9E2EC] bg-[#F8FAFC] flex items-center justify-between"
+              >
+                <div>
+                  <p className="text-xs font-bold text-[#0F172A] truncate max-w-[150px]">
+                    {p.productName}
+                  </p>
+                  <p className="text-[10px] text-[#64748B] font-mono">
+                    Stock: {p.currentStock} {p.unit}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span
+                    className={`inline-block px-2.5 py-1 rounded-full text-xs font-black ${
+                      p.estimatedDaysRemaining < 7
+                        ? 'bg-red-50 text-red-700 border border-red-200'
+                        : p.estimatedDaysRemaining < 14
+                        ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                        : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                    }`}
+                  >
+                    {formatDaysRemaining(p.estimatedDaysRemaining)}
+                  </span>
+                  <span className="text-[10px] text-[#64748B] block mt-0.5">
+                    {p.averageDailyConsumption} {p.unit}/day
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* 3. Recent Activity */}
       <RecentActivity activities={activities} />

@@ -11,6 +11,7 @@ import alertRoutes from './src/routes/alert.routes.js';
 import iotRoutes from './src/routes/iot.routes.js';
 import notificationRoutes from './src/routes/notification.routes.js';
 import analyticsRoutes from './src/routes/analytics.routes.js';
+import forecastRoutes from './src/routes/forecast.routes.js';
 import { notFoundHandler, errorHandler } from './src/middleware/error.middleware.js';
 
 // Validate environment variables on startup
@@ -40,6 +41,7 @@ app.use('/api/alerts', alertRoutes);
 app.use('/api/iot', iotRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/forecast', forecastRoutes);
 
 // 404 & Centralized Error Middleware
 app.use(notFoundHandler);

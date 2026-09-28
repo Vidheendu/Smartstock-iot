@@ -15,10 +15,17 @@ import {
   Loader2,
   AlertCircle,
   History,
-  BarChart3
+  BarChart3,
+  TrendingDown
 } from 'lucide-react';
 import productService from '../services/product.service.js';
 import inventoryService from '../services/inventory.service.js';
+import { getProductForecast } from '../services/forecast.service.js';
+import {
+  formatDaysRemaining,
+  formatADC,
+  formatDepletionDate
+} from '../utils/forecastConstants.js';
 import ProductStatusBadge from '../components/products/ProductStatusBadge.jsx';
 import ProductModal from '../components/products/ProductModal.jsx';
 import ProductForm from '../components/products/ProductForm.jsx';
@@ -33,6 +40,7 @@ export const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [suppliers, setSuppliers] = useState([]);
   const [recentHistory, setRecentHistory] = useState([]);
+  const [forecast, setForecast] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -47,14 +55,18 @@ export const ProductDetails = () => {
   const loadData = useCallback(async () => {
     try {
       setError(null);
-      const [prodData, supData, histData] = await Promise.all([
+      const [prodData, supData, histData, forecastRes] = await Promise.all([
         productService.getProduct(id),
         productService.getSuppliers(),
-        inventoryService.getProductHistory(id).catch(() => [])
+        inventoryService.getProductHistory(id).catch(() => []),
+        getProductForecast(id, 30).catch(() => null)
       ]);
       setProduct(prodData);
       setSuppliers(supData);
       setRecentHistory(histData || []);
+      if (forecastRes?.success && forecastRes?.data) {
+        setForecast(forecastRes.data);
+      }
     } catch (err) {
       if (err.response?.status === 404) {
         setError('Product not found.');
@@ -301,6 +313,55 @@ export const ProductDetails = () => {
             </div>
           </div>
         )}
+
+        {/* Stock Forecast Section (Phase 10) */}
+        <div className="p-5 bg-[#F8FAFC] rounded-xl border border-[#D9E2EC] space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F172A] flex items-center gap-2">
+              <TrendingDown className="w-4 h-4 text-[#1769C2]" />
+              <span>Stock Forecast</span>
+            </h3>
+            <span className="text-[11px] text-[#64748B]">Forecast Period: 30 days</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="p-3 bg-white border border-[#D9E2EC] rounded-xl space-y-1">
+              <span className="text-[#64748B] block font-medium">Average Daily Consumption:</span>
+              <span className="text-base font-bold text-[#0F172A]">
+                {forecast?.averageDailyConsumption > 0
+                  ? formatADC(forecast.averageDailyConsumption, product.unit)
+                  : '0 units/day'}
+              </span>
+            </div>
+
+            <div className="p-3 bg-white border border-[#D9E2EC] rounded-xl space-y-1">
+              <span className="text-[#64748B] block font-medium">Estimated Days Remaining:</span>
+              <span className="text-base font-bold text-[#1769C2]">
+                {formatDaysRemaining(forecast?.estimatedDaysRemaining)}
+              </span>
+            </div>
+
+            <div className="p-3 bg-white border border-[#D9E2EC] rounded-xl space-y-1">
+              <span className="text-[#64748B] block font-medium">Projected Depletion:</span>
+              <span className="text-base font-bold text-slate-800">
+                {formatDepletionDate(forecast?.projectedDepletionDate)}
+              </span>
+            </div>
+          </div>
+
+          <div className="pt-1 flex items-center justify-between">
+            <p className="text-[11px] text-[#64748B]">
+              Calculated using historical stock-out transactions from the last 30 days.
+            </p>
+            <Link
+              to="/forecast"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#1769C2] hover:text-[#1257A0]"
+            >
+              <span>View Forecast Details</span>
+              <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
+            </Link>
+          </div>
+        </div>
 
         {/* Timestamps */}
         <div className="flex flex-wrap items-center gap-4 text-xs text-[#64748B] pt-3 border-t border-[#D9E2EC]">
