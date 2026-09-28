@@ -17,6 +17,7 @@ import IotMonitor from './pages/IotMonitor.jsx';
 import Notifications from './pages/Notifications.jsx';
 import Analytics from './pages/Analytics.jsx';
 import Forecast from './pages/Forecast.jsx';
+import Restocking from './pages/Restocking.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import { NotificationProvider } from './context/NotificationContext.jsx';
@@ -95,22 +96,10 @@ function AppRoutes() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/forecast" element={<Forecast />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/restocking" element={<Restocking />} />
+        <Route path="/restocking/:id" element={<Restocking />} />
 
         {/* Manager-Only Protected Routes */}
-        <Route
-          path="/restocking"
-          element={
-            <ProtectedRoute allowedRoles={['MANAGER']}>
-              <PlaceholderPage
-                title="Restocking"
-                description="Restock orders, reorder point automation, and replenishment requests will be implemented in a later phase."
-                icon={ShoppingCart}
-                phase="Phase 8"
-                roleRequired="MANAGER"
-              />
-            </ProtectedRoute>
-          }
-        />
         <Route
           path="/suppliers"
           element={

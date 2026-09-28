@@ -80,5 +80,10 @@ INSERT INTO notifications (id, user_id, alert_id, product_id, title, message, ty
 ('f0000000-0000-0000-0000-000000000005', 'e0000000-0000-0000-0000-000000000002', 'd0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000004', 'Critical Stock Alert', 'Sugar stock is critical. Current stock is 12 bags (1kg) and minimum stock is 40 bags (1kg).', 'CRITICAL_STOCK', FALSE, NOW() - INTERVAL '1 hour');
 
 -- 9. SEED RESTOCK ORDER SAMPLE
-INSERT INTO restock_orders (order_number, product_id, supplier_id, quantity, unit_cost, total_cost, status, notes) VALUES
-('PO-202609-001', 'b0000000-0000-0000-0000-000000000005', 'a0000000-0000-0000-0000-000000000003', 120, 0.85, 102.00, 'PENDING', 'Urgent re-order due to complete stock depletion');
+INSERT INTO restock_orders (id, order_number, supplier_id, status, notes, total_items, total_amount, created_by, created_at, updated_at) VALUES
+('c0000000-0000-0000-0000-000000000001', 'RS-0001', 'a0000000-0000-0000-0000-000000000003', 'PENDING', 'Urgent re-order due to complete stock depletion', 1, 102.00, 'e0000000-0000-0000-0000-000000000001', NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day');
+
+-- 10. SEED RESTOCK ORDER ITEMS
+INSERT INTO restock_order_items (id, restock_order_id, product_id, quantity, unit_price, total_price, created_at) VALUES
+('c1000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000005', 120, 0.85, 102.00, NOW() - INTERVAL '1 day');
+

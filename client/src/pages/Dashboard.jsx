@@ -15,7 +15,8 @@ import {
   ArrowRight,
   BarChart3,
   TrendingDown,
-  Clock
+  Clock,
+  ShoppingCart
 } from 'lucide-react';
 import {
   getDashboardStats,
@@ -24,6 +25,8 @@ import {
 } from '../services/dashboard.service.js';
 import { getForecastOverview } from '../services/forecast.service.js';
 import { formatDaysRemaining } from '../utils/forecastConstants.js';
+import { getRestockOrders } from '../services/restock.service.js';
+import RestockStatusBadge from '../components/restock/RestockStatusBadge.jsx';
 import StatCard from '../components/dashboard/StatCard.jsx';
 import StockStatusCard from '../components/dashboard/StockStatusCard.jsx';
 import RecentActivity from '../components/dashboard/RecentActivity.jsx';
@@ -37,6 +40,7 @@ export const Dashboard = () => {
   const [stockStatus, setStockStatus] = useState(null);
   const [activities, setActivities] = useState([]);
   const [forecastProducts, setForecastProducts] = useState([]);
+  const [pendingOrders, setPendingOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -44,11 +48,12 @@ export const Dashboard = () => {
   const loadData = useCallback(async () => {
     try {
       setError(null);
-      const [statsRes, statusRes, activitiesRes, forecastRes] = await Promise.all([
+      const [statsRes, statusRes, activitiesRes, forecastRes, restockRes] = await Promise.all([
         getDashboardStats(),
         getStockStatusSummary(),
         getRecentActivities(),
-        getForecastOverview(30).catch(() => null)
+        getForecastOverview(30).catch(() => null),
+        getRestockOrders().catch(() => null)
       ]);
 
       if (statsRes.success) setStats(statsRes.data);
@@ -60,6 +65,12 @@ export const Dashboard = () => {
           .filter((p) => p.forecastAvailable && p.estimatedDaysRemaining !== null)
           .slice(0, 3);
         setForecastProducts(validForecasts);
+      }
+      if (restockRes?.orders && Array.isArray(restockRes.orders)) {
+        const active = restockRes.orders
+          .filter((o) => o.status === 'PENDING' || o.status === 'ORDERED')
+          .slice(0, 3);
+        setPendingOrders(active);
       }
     } catch (err) {
       setError('Unable to load dashboard data.');
@@ -299,6 +310,60 @@ export const Dashboard = () => {
                   <span className="text-[10px] text-[#64748B] block mt-0.5">
                     {p.averageDailyConsumption} {p.unit}/day
                   </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 2.6 Pending Restock Orders (Phase 11) */}
+      <div className="bg-white border border-[#D9E2EC] rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#D9E2EC]">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-700">
+              <ShoppingCart className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-[#0F172A] tracking-tight">Pending Restock Orders</h2>
+              <p className="text-xs text-[#64748B]">
+                Active replenishment orders currently pending dispatch or en route from suppliers.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/restocking"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#E8F2FF] hover:bg-[#D9EAFE] text-[#1769C2] text-xs font-bold rounded-xl transition shadow-xs self-start sm:self-auto cursor-pointer"
+          >
+            <span>View Restocking</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {pendingOrders.length === 0 ? (
+          <p className="text-xs text-[#64748B] italic py-2">
+            No active restock orders currently pending.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {pendingOrders.map((o) => (
+              <div
+                key={o.id}
+                className="p-3.5 rounded-xl border border-[#D9E2EC] bg-[#F8FAFC] flex items-center justify-between"
+              >
+                <div>
+                  <p className="text-xs font-mono font-bold text-[#1769C2]">
+                    {o.orderNumber}
+                  </p>
+                  <p className="text-xs font-bold text-[#0F172A] truncate max-w-[140px]">
+                    {o.supplier?.name || 'Unassigned'}
+                  </p>
+                  <p className="text-[10px] text-[#64748B]">
+                    {o.totalItems} product line(s)
+                  </p>
+                </div>
+                <div className="text-right">
+                  <RestockStatusBadge status={o.status} />
                 </div>
               </div>
             ))}

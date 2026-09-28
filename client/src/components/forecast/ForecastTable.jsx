@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Search,
   Filter,
@@ -7,7 +8,8 @@ import {
   CheckCircle2,
   Calendar,
   Layers,
-  ArrowRight
+  ArrowRight,
+  ShoppingCart
 } from 'lucide-react';
 import ForecastStatusBadge from './ForecastStatusBadge.jsx';
 import {
@@ -17,6 +19,7 @@ import {
 } from '../../utils/forecastConstants.js';
 
 export const ForecastTable = ({ products = [], onSelectProduct, periodDays = 30 }) => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
 
@@ -195,16 +198,31 @@ export const ForecastTable = ({ products = [], onSelectProduct, periodDays = 30 
                       <ForecastStatusBadge status={p.forecastStatus} />
                     </td>
 
-                    {/* Action Button */}
+                    {/* Action Buttons */}
                     <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
-                      <button
-                        onClick={() => onSelectProduct(p)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold text-[#1769C2] hover:bg-[#E8F2FF] rounded-lg transition cursor-pointer"
-                        title="View consumption details"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                        <span className="hidden md:inline">Inspect</span>
-                      </button>
+                      <div className="flex items-center justify-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => onSelectProduct(p)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold text-[#1769C2] hover:bg-[#E8F2FF] rounded-lg transition cursor-pointer"
+                          title="View consumption details"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span className="hidden md:inline">Inspect</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const suggested = Math.max(1, (p.minimumStock * 2) - p.currentStock);
+                            navigate(`/restocking?action=new&productId=${p.productId}&quantity=${suggested}`);
+                          }}
+                          className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition cursor-pointer"
+                          title="Create restock order for this product"
+                        >
+                          <ShoppingCart className="w-3 h-3" />
+                          <span className="hidden md:inline">Restock</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );

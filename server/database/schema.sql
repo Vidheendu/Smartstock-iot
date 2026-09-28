@@ -155,18 +155,34 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_notifications_alert_user ON notifications(
 CREATE TABLE IF NOT EXISTS restock_orders (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     order_number VARCHAR(50) UNIQUE NOT NULL,
-    product_id UUID REFERENCES products(id) ON DELETE RESTRICT,
     supplier_id UUID REFERENCES suppliers(id) ON DELETE RESTRICT,
-    quantity INTEGER NOT NULL CHECK (quantity > 0),
-    unit_cost NUMERIC(10, 2) NOT NULL DEFAULT 0.00 CHECK (unit_cost >= 0),
-    total_cost NUMERIC(10, 2) NOT NULL DEFAULT 0.00 CHECK (total_cost >= 0),
-    status VARCHAR(30) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'APPROVED', 'SHIPPED', 'DELIVERED', 'CANCELLED')),
-    order_date TIMESTAMPTZ DEFAULT NOW(),
-    delivered_date TIMESTAMPTZ,
+    status VARCHAR(30) DEFAULT 'PENDING' CHECK (status IN ('DRAFT', 'PENDING', 'ORDERED', 'RECEIVED', 'CANCELLED')),
     notes TEXT,
-    created_at TIMESTAMPTZ DEFAULT NOW()
+    total_items INTEGER NOT NULL DEFAULT 0 CHECK (total_items >= 0),
+    total_amount NUMERIC(10, 2) NOT NULL DEFAULT 0.00 CHECK (total_amount >= 0),
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    ordered_at TIMESTAMPTZ,
+    received_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_restock_order_no ON restock_orders(order_number);
 CREATE INDEX IF NOT EXISTS idx_restock_status ON restock_orders(status);
-CREATE INDEX IF NOT EXISTS idx_restock_product ON restock_orders(product_id);
+CREATE INDEX IF NOT EXISTS idx_restock_supplier ON restock_orders(supplier_id);
+CREATE INDEX IF NOT EXISTS idx_restock_created_by ON restock_orders(created_by);
+
+-- 10. RESTOCK_ORDER_ITEMS TABLE
+CREATE TABLE IF NOT EXISTS restock_order_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    restock_order_id UUID REFERENCES restock_orders(id) ON DELETE CASCADE,
+    product_id UUID REFERENCES products(id) ON DELETE RESTRICT,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price NUMERIC(10, 2) NOT NULL DEFAULT 0.00 CHECK (unit_price >= 0),
+    total_price NUMERIC(10, 2) NOT NULL DEFAULT 0.00 CHECK (total_price >= 0),
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_restock_items_order ON restock_order_items(restock_order_id);
+CREATE INDEX IF NOT EXISTS idx_restock_items_product ON restock_order_items(product_id);
+
