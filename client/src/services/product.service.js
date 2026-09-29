@@ -23,6 +23,17 @@ export const getProduct = async (id) => {
 };
 
 /**
+ * Fetch consolidated product details for Phase 13.
+ * 
+ * @param {string} id - Product UUID
+ * @returns {Promise<Object>} Consolidated details object
+ */
+export const getProductDetails = async (id) => {
+  const response = await api.get(`/products/${id}/details`);
+  return response.data?.data;
+};
+
+/**
  * Create a new product.
  * 
  * @param {Object} productData - New product payload
@@ -72,6 +83,7 @@ export default {
   getProducts,
   getAllProducts,
   getProduct,
+  getProductDetails,
   createProduct,
   updateProduct,
   deleteProduct,

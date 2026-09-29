@@ -134,13 +134,31 @@ export async function getInventoryHistory(req, res, next) {
  */
 export async function getProductHistory(req, res, next) {
   try {
-    const data = await inventoryService.getProductHistory(req.params.productId);
-    res.status(200).json({
+    const result = await inventoryService.getProductHistory(req.params.productId, req.query);
+    if (Array.isArray(result)) {
+      return res.status(200).json({
+        success: true,
+        count: result.length,
+        total: result.length,
+        data: result
+      });
+    }
+    return res.status(200).json({
       success: true,
-      count: data.length,
-      data
+      count: result.data?.length || 0,
+      total: result.total,
+      page: result.page,
+      limit: result.limit,
+      totalPages: result.totalPages,
+      data: result.data
     });
   } catch (error) {
+    if (error.status === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found'
+      });
+    }
     next(error);
   }
 }

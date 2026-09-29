@@ -442,6 +442,37 @@ export async function adjustStock({ productId, newStock, reason, userId, source 
 export async function getInventoryHistory(filters = {}) {
   let records = [];
 
+  // Handle dateFilter if provided ('today', '7d', '30d', '90d')
+  let effectiveSince = filters.since;
+  if (!effectiveSince && filters.dateFilter && filters.dateFilter !== 'ALL') {
+    const now = new Date();
+    const df = String(filters.dateFilter).toLowerCase();
+    if (df === 'today') {
+      effectiveSince = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+    } else if (df === '7d' || df === '7days' || df === '7') {
+      effectiveSince = new Date(now.getTime() - 7 * 86400000).toISOString();
+    } else if (df === '30d' || df === '30days' || df === '30') {
+      effectiveSince = new Date(now.getTime() - 30 * 86400000).toISOString();
+    } else if (df === '90d' || df === '90days' || df === '90') {
+      effectiveSince = new Date(now.getTime() - 90 * 86400000).toISOString();
+    }
+  }
+
+  // Normalize changeType (support e.g. 'Stock In' -> 'STOCK_IN')
+  const normalizeChangeType = (ct) => {
+    if (!ct || ct === 'ALL') return null;
+    const clean = String(ct).trim().toUpperCase().replace(/\s+/g, '_');
+    return clean;
+  };
+  const normalizedType = normalizeChangeType(filters.changeType);
+
+  // Normalize source (support e.g. 'Manual' -> 'MANUAL')
+  const normalizeSource = (s) => {
+    if (!s || s === 'ALL') return null;
+    return String(s).trim().toUpperCase();
+  };
+  const normalizedSource = normalizeSource(filters.source);
+
   if (supabase) {
     try {
       let query = supabase
@@ -452,14 +483,14 @@ export async function getInventoryHistory(filters = {}) {
       if (filters.productId) {
         query = query.eq('product_id', filters.productId);
       }
-      if (filters.changeType && filters.changeType !== 'ALL') {
-        query = query.eq('change_type', filters.changeType);
+      if (normalizedType) {
+        query = query.eq('change_type', normalizedType);
       }
-      if (filters.source && filters.source !== 'ALL') {
-        query = query.eq('source', filters.source);
+      if (normalizedSource) {
+        query = query.eq('source', normalizedSource);
       }
-      if (filters.since) {
-        query = query.gte('created_at', filters.since);
+      if (effectiveSince) {
+        query = query.gte('created_at', effectiveSince);
       }
 
       const { data, error } = await query;
@@ -478,14 +509,14 @@ export async function getInventoryHistory(filters = {}) {
     if (filters.productId) {
       records = records.filter((r) => r.product_id === filters.productId);
     }
-    if (filters.changeType && filters.changeType !== 'ALL') {
-      records = records.filter((r) => r.change_type === filters.changeType);
+    if (normalizedType) {
+      records = records.filter((r) => (r.change_type || '').toUpperCase() === normalizedType);
     }
-    if (filters.source && filters.source !== 'ALL') {
-      records = records.filter((r) => r.source === filters.source);
+    if (normalizedSource) {
+      records = records.filter((r) => (r.source || 'MANUAL').toUpperCase() === normalizedSource);
     }
-    if (filters.since) {
-      const sinceTime = new Date(filters.since).getTime();
+    if (effectiveSince) {
+      const sinceTime = new Date(effectiveSince).getTime();
       records = records.filter((r) => new Date(r.created_at).getTime() >= sinceTime);
     }
   }
@@ -494,13 +525,33 @@ export async function getInventoryHistory(filters = {}) {
   records.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
   // Enrich each record with product and user display metadata
-  return Promise.all(records.map(enrichHistoryRecord));
+  const enriched = await Promise.all(records.map(enrichHistoryRecord));
+
+  // Return paginated response if requested
+  if (filters.page !== undefined || filters.limit !== undefined || filters.paginate === true || filters.paginate === 'true') {
+    const page = Math.max(1, parseInt(filters.page, 10) || 1);
+    const limit = Math.max(1, parseInt(filters.limit, 10) || 10);
+    const total = enriched.length;
+    const totalPages = Math.ceil(total / limit) || 1;
+    const startIndex = (page - 1) * limit;
+    const data = enriched.slice(startIndex, startIndex + limit);
+
+    return {
+      total,
+      page,
+      limit,
+      totalPages,
+      data
+    };
+  }
+
+  return enriched;
 }
 
 /**
- * Retrieves inventory history for a single product.
+ * Retrieves inventory history for a single product with optional filtering and pagination.
  */
-export async function getProductHistory(productId) {
+export async function getProductHistory(productId, filters = {}) {
   // Validate that product exists
   const product = await getProductById(productId);
   if (!product) {
@@ -509,7 +560,7 @@ export async function getProductHistory(productId) {
     throw error;
   }
 
-  return getInventoryHistory({ productId: product.id });
+  return getInventoryHistory({ productId: product.id, ...filters });
 }
 
 export default {
@@ -521,3 +572,4 @@ export default {
   getInventoryHistory,
   getProductHistory
 };
+

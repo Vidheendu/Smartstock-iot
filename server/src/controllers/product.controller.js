@@ -48,6 +48,30 @@ export async function getProductById(req, res, next) {
 }
 
 /**
+ * Controller to fetch consolidated product details for Phase 13.
+ * Route: GET /api/products/:id/details
+ */
+export async function getProductDetails(req, res, next) {
+  try {
+    const { id } = req.params;
+    const details = await productService.getProductDetails(id);
+
+    res.status(200).json({
+      success: true,
+      data: details
+    });
+  } catch (error) {
+    if (error.status === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found'
+      });
+    }
+    next(error);
+  }
+}
+
+/**
  * Controller to create a new product.
  */
 export async function createProduct(req, res, next) {

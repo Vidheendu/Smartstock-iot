@@ -14,6 +14,13 @@ const router = express.Router();
 router.get('/', authenticateToken, productController.getProducts);
 
 /**
+ * @route   GET /api/products/:id/details
+ * @desc    Get consolidated product details, inventory, supplier, IoT, forecast, alerts & restock data
+ * @access  Protected (STAFF, MANAGER)
+ */
+router.get('/:id/details', authenticateToken, productController.getProductDetails);
+
+/**
  * @route   GET /api/products/:id
  * @desc    Get details for a single product
  * @access  Protected (STAFF, MANAGER)

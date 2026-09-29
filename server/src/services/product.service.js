@@ -714,9 +714,323 @@ export async function getRawProductsForSupplierService() {
   return inMemoryProducts;
 }
 
+/**
+ * Consolidated product details service for Phase 13.
+ * Gathers product details, inventory summary, supplier info, IoT device & telemetry,
+ * alerts, forecast summary, recent restock orders, stock movement, and activity timeline.
+ * Strictly reuses existing services and real database data.
+ */
+export async function getProductDetails(id) {
+  const product = await getProductById(id);
+  if (!product) {
+    const error = new Error('Product not found');
+    error.status = 404;
+    throw error;
+  }
+
+  // 1. Current Inventory Summary
+  const inventory = {
+    productId: product.id,
+    currentStock: product.currentStock,
+    minimumStock: product.minimumStock,
+    unit: product.unit,
+    stockStatus: product.stockStatus
+  };
+
+  // 2. Supplier Details
+  let supplier = null;
+  if (product.supplierId) {
+    try {
+      const { getSupplierById } = await import('./supplier.service.js');
+      const sup = await getSupplierById(product.supplierId);
+      if (sup) {
+        supplier = {
+          id: sup.id,
+          name: sup.name,
+          contactPerson: sup.contact_person || sup.contact_name || sup.contactPerson || 'N/A',
+          email: sup.email || 'N/A',
+          phone: sup.phone || 'N/A',
+          status: (sup.isActive !== false && sup.is_active !== false) ? 'ACTIVE' : 'INACTIVE',
+          leadTimeDays: sup.leadTimeDays || sup.lead_time_days || null
+        };
+      }
+    } catch (supErr) {
+      console.warn('[PRODUCT DETAILS] Error loading supplier:', supErr.message);
+    }
+  }
+
+  // 3. IoT Device & Telemetry (Phase 6)
+  let iotDevice = null;
+  let telemetry = [];
+  try {
+    const { getDevices, getSensorReadings } = await import('./iot.service.js');
+    const allDevices = await getDevices();
+    const assigned = allDevices.find(d => d.productId === product.id);
+    if (assigned) {
+      iotDevice = {
+        id: assigned.id,
+        deviceCode: assigned.deviceCode,
+        deviceName: assigned.deviceName,
+        deviceType: assigned.deviceType,
+        location: assigned.location,
+        status: (assigned.status === 'ACTIVE' || assigned.status === 'ONLINE') ? 'ONLINE' : 'OFFLINE',
+        battery: assigned.batteryLevel ?? 95,
+        lastSeen: assigned.lastPingAt,
+        simulationStatus: 'SIMULATED IoT DEVICE'
+      };
+
+      const readings = await getSensorReadings({ productId: product.id });
+      telemetry = readings.slice(0, 10).map(r => ({
+        id: r.id,
+        timestamp: r.recorded_at,
+        rawReading: r.raw_reading,
+        calculatedQuantity: r.calculated_units,
+        battery: r.battery_level,
+        readingType: 'SIMULATED'
+      }));
+    }
+  } catch (iotErr) {
+    console.warn('[PRODUCT DETAILS] Error loading IoT data:', iotErr.message);
+  }
+
+  // 4. Alerts (Phase 7)
+  let alerts = [];
+  try {
+    const { getAlerts } = await import('./alert.service.js');
+    const allAlerts = await getAlerts({ productId: product.id });
+    alerts = allAlerts.map(a => ({
+      id: a.id,
+      alertType: a.alertType,
+      severity: a.severity,
+      message: a.message,
+      status: a.status,
+      source: a.source,
+      createdAt: a.createdAt,
+      resolvedAt: a.resolvedAt || null,
+      acknowledgedAt: a.acknowledgedAt || null
+    }));
+  } catch (alertErr) {
+    console.warn('[PRODUCT DETAILS] Error loading alerts:', alertErr.message);
+  }
+
+  // 5. Forecast & Consumption (Phase 10)
+  let forecast = null;
+  try {
+    const { getProductForecast, getProductConsumption } = await import('./forecast.service.js');
+    const [fc30, fc7, fc90] = await Promise.all([
+      getProductForecast(product.id, 30).catch(() => null),
+      getProductConsumption(product.id, 7).catch(() => null),
+      getProductConsumption(product.id, 90).catch(() => null)
+    ]);
+
+    const isDepleted = product.currentStock === 0;
+    const hasData = (fc30?.totalConsumed || 0) > 0 || (fc30?.recordsCount || 0) > 0;
+    const isLimitedData = hasData && (fc30?.recordsCount || 0) < 3;
+
+    forecast = {
+      averageDailyConsumption: fc30?.averageDailyConsumption ?? 0,
+      estimatedDaysRemaining: isDepleted ? 0 : (fc30?.estimatedDaysRemaining ?? null),
+      projectedDepletionDate: isDepleted ? null : (fc30?.projectedDepletionDate ?? null),
+      forecastPeriod: 30,
+      status: isDepleted ? 'DEPLETED' : (fc30?.status || 'NO_DATA'),
+      confidence: fc30?.confidence || 'INSUFFICIENT',
+      isLimitedData,
+      hasData,
+      periods: {
+        '7': {
+          totalConsumed: fc7?.totalConsumed ?? 0,
+          adc: fc7 ? Number(((fc7.totalConsumed || 0) / 7).toFixed(2)) : 0
+        },
+        '30': {
+          totalConsumed: fc30?.totalConsumed ?? 0,
+          adc: fc30?.averageDailyConsumption ?? 0
+        },
+        '90': {
+          totalConsumed: fc90?.totalConsumed ?? 0,
+          adc: fc90 ? Number(((fc90.totalConsumed || 0) / 90).toFixed(2)) : 0
+        }
+      }
+    };
+  } catch (fcErr) {
+    console.warn('[PRODUCT DETAILS] Error loading forecast:', fcErr.message);
+  }
+
+  // 6. Restock Orders (Phase 11)
+  let restockOrders = [];
+  const suggestedRestockQuantity = Math.max(0, (product.minimumStock * 2) - product.currentStock);
+  try {
+    const { getRestockOrders } = await import('./restock.service.js');
+    const allOrders = await getRestockOrders();
+    const matchingOrders = allOrders.filter(o => 
+      o.items && o.items.some(item => (item.productId === product.id || item.product_id === product.id))
+    );
+
+    restockOrders = matchingOrders.map(o => {
+      const item = o.items.find(it => (it.productId === product.id || it.product_id === product.id));
+      return {
+        id: o.id,
+        orderNumber: o.orderNumber,
+        supplier: o.supplier?.name || 'N/A',
+        supplierId: o.supplierId,
+        quantity: item?.quantity || 0,
+        status: o.status,
+        createdAt: o.createdAt,
+        receivedAt: o.receivedAt || null
+      };
+    });
+  } catch (restockErr) {
+    console.warn('[PRODUCT DETAILS] Error loading restock orders:', restockErr.message);
+  }
+
+  // 7. Inventory History & Stock Movement (Phase 5)
+  let stockMovement = [];
+  let historyRecords = [];
+  try {
+    const { getInventoryHistory } = await import('./inventory.service.js');
+    historyRecords = await getInventoryHistory({ productId: product.id });
+
+    // Build chronological stock movement points (oldest to newest)
+    const chronological = [...historyRecords].reverse();
+    stockMovement = chronological.map(h => ({
+      date: h.createdAt,
+      stock: h.newStock,
+      previousStock: h.previousStock,
+      change: h.quantityChange,
+      type: h.changeType,
+      source: h.source
+    }));
+
+    if (stockMovement.length > 0) {
+      const lastPoint = stockMovement[stockMovement.length - 1];
+      if (lastPoint.stock !== product.currentStock) {
+        stockMovement.push({
+          date: new Date().toISOString(),
+          stock: product.currentStock,
+          previousStock: lastPoint.stock,
+          change: product.currentStock - lastPoint.stock,
+          type: 'CURRENT',
+          source: 'SYSTEM'
+        });
+      }
+    } else {
+      stockMovement.push({
+        date: product.createdAt,
+        stock: product.currentStock,
+        previousStock: product.currentStock,
+        change: 0,
+        type: 'INITIAL',
+        source: 'SYSTEM'
+      });
+    }
+  } catch (histErr) {
+    console.warn('[PRODUCT DETAILS] Error loading stock movement:', histErr.message);
+  }
+
+  // 8. Recent Activity Timeline (Interleaved real events, top 10)
+  const activities = [];
+
+  // Stock movements
+  for (const h of historyRecords.slice(0, 10)) {
+    const qty = Math.abs(h.quantityChange);
+    let title = 'Stock adjusted';
+    let desc = `Stock adjusted to ${h.newStock} ${product.unit}`;
+    if (h.changeType === 'STOCK_IN') {
+      title = 'Stock received';
+      desc = `Stock increased by ${qty} ${product.unit}`;
+    } else if (h.changeType === 'STOCK_OUT') {
+      title = 'Stock reduced';
+      desc = `Stock reduced by ${qty} ${product.unit}`;
+    }
+    activities.push({
+      id: `hist-${h.id}`,
+      type: h.changeType,
+      title,
+      description: desc,
+      timestamp: h.createdAt,
+      source: h.source
+    });
+  }
+
+  // IoT Readings
+  for (const r of telemetry.slice(0, 5)) {
+    activities.push({
+      id: `iot-${r.id}`,
+      type: 'IOT_READING',
+      title: 'IoT sensor reading received',
+      description: `Sensor reading: ${r.calculatedQuantity} ${product.unit} (${r.battery ? r.battery + '% battery' : 'SIMULATED'})`,
+      timestamp: r.timestamp,
+      source: 'IOT'
+    });
+  }
+
+  // Alerts
+  for (const a of alerts.slice(0, 5)) {
+    const typeLabel = (a.alertType || 'Stock').replace(/_/g, ' ');
+    activities.push({
+      id: `alert-created-${a.id}`,
+      type: 'ALERT_CREATED',
+      title: `${typeLabel} alert created`,
+      description: a.message,
+      timestamp: a.createdAt,
+      source: a.source || 'SYSTEM'
+    });
+    if (a.resolvedAt) {
+      activities.push({
+        id: `alert-resolved-${a.id}`,
+        type: 'ALERT_RESOLVED',
+        title: `${typeLabel} alert resolved`,
+        description: 'Alert condition resolved',
+        timestamp: a.resolvedAt,
+        source: 'SYSTEM'
+      });
+    }
+  }
+
+  // Restock orders
+  for (const ro of restockOrders.slice(0, 5)) {
+    activities.push({
+      id: `restock-created-${ro.id}`,
+      type: 'RESTOCK_CREATED',
+      title: `Restock order ${ro.orderNumber} created`,
+      description: `Restock order created for ${ro.quantity} ${product.unit} (${ro.status})`,
+      timestamp: ro.createdAt,
+      source: 'SYSTEM'
+    });
+    if (ro.receivedAt) {
+      activities.push({
+        id: `restock-received-${ro.id}`,
+        type: 'RESTOCK_RECEIVED',
+        title: `Restock order ${ro.orderNumber} received`,
+        description: `Shipment for ${ro.quantity} ${product.unit} received and restocked`,
+        timestamp: ro.receivedAt,
+        source: 'SYSTEM'
+      });
+    }
+  }
+
+  // Sort newest first
+  activities.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  const activityTimeline = activities.slice(0, 10);
+
+  return {
+    product,
+    inventory,
+    supplier,
+    iotDevice,
+    telemetry,
+    alerts,
+    forecast,
+    restockOrders,
+    suggestedRestockQuantity,
+    stockMovement,
+    activityTimeline
+  };
+}
+
 export default {
   getAllProducts,
   getProductById,
+  getProductDetails,
   checkSkuExists,
   createProduct,
   updateProduct,
@@ -726,3 +1040,4 @@ export default {
   getProductStats,
   getRawProductsForSupplierService
 };
+

@@ -85,14 +85,22 @@ export const getInventoryHistory = async (params = {}) => {
 };
 
 /**
- * Fetch inventory audit history for a single product.
+ * Fetch inventory audit history for a single product with optional filters and pagination.
  * 
  * @param {string} productId - Product UUID
- * @returns {Promise<Array>} Product-specific inventory history records
+ * @param {Object} [params] - { changeType, source, dateFilter, page, limit }
+ * @returns {Promise<Array>} Product-specific inventory history records (with pagination metadata)
  */
-export const getProductHistory = async (productId) => {
-  const response = await api.get(`/inventory/${productId}/history`);
-  return response.data?.data || [];
+export const getProductHistory = async (productId, params = {}) => {
+  const response = await api.get(`/inventory/${productId}/history`, { params });
+  const data = response.data?.data || [];
+  if (Array.isArray(data)) {
+    data.total = response.data?.total ?? data.length;
+    data.page = response.data?.page ?? 1;
+    data.limit = response.data?.limit ?? data.length;
+    data.totalPages = response.data?.totalPages ?? 1;
+  }
+  return data;
 };
 
 export default {
