@@ -20,10 +20,10 @@ INSERT INTO users (id, email, password_hash, full_name, role) VALUES
 ('e0000000-0000-0000-0000-000000000002', 'staff@smartstock.com', '$2b$10$x1VCpBETnXPwknq.4hzx5uRUF6GH.Ozi8imwsUarTThA/vtYOBwV2', 'Taylor Brooks', 'STAFF');
 
 -- 2. SEED SUPPLIERS (At least 3 suppliers)
-INSERT INTO suppliers (id, name, contact_name, email, phone, address, lead_time_days) VALUES
-('a0000000-0000-0000-0000-000000000001', 'Fresh Dairy & Bakery Ltd', 'Sarah Jenkins', 'orders@freshdairybakery.com', '+1-555-0192', '104 Meadow Lane, Agro Park, NY', 2),
-('a0000000-0000-0000-0000-000000000002', 'Agro Staples & Grains Co', 'Robert Chen', 'sales@agrostaples.com', '+1-555-0144', '88 Grain Terminal Rd, Chicago, IL', 4),
-('a0000000-0000-0000-0000-000000000003', 'Apex Beverages & Snacks Inc', 'Maria Rodriguez', 'supply@apexbeverages.com', '+1-555-0188', '500 Commerce Blvd, Atlanta, GA', 3);
+INSERT INTO suppliers (id, name, contact_name, contact_person, email, phone, address, city, state, country, postal_code, notes, lead_time_days, is_active) VALUES
+('a0000000-0000-0000-0000-000000000001', 'Fresh Dairy & Bakery Ltd', 'Sarah Jenkins', 'Sarah Jenkins', 'orders@freshdairybakery.com', '+1-555-0192', '104 Meadow Lane', 'Agro Park', 'NY', 'USA', '10001', 'Primary dairy and fresh bakery supplier', 2, TRUE),
+('a0000000-0000-0000-0000-000000000002', 'Agro Staples & Grains Co', 'Robert Chen', 'Robert Chen', 'sales@agrostaples.com', '+1-555-0144', '88 Grain Terminal Rd', 'Chicago', 'IL', 'USA', '60601', 'Bulk grain, flour, and sugar supplier', 4, TRUE),
+('a0000000-0000-0000-0000-000000000003', 'Apex Beverages & Snacks Inc', 'Maria Rodriguez', 'Maria Rodriguez', 'supply@apexbeverages.com', '+1-555-0188', '500 Commerce Blvd', 'Atlanta', 'GA', 'USA', '30301', 'Beverages, canned drinks, and dry snacks distributor', 3, TRUE);
 
 -- 3. SEED PRODUCTS (10 products with diverse stock states)
 -- NORMAL: Milk, Rice, Coffee, Tea

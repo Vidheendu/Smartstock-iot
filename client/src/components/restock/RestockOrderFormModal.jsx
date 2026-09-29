@@ -40,10 +40,15 @@ export default function RestockOrderFormModal({
         ]);
 
         if (isMounted) {
-          const supList = Array.isArray(supRes) ? supRes : (supRes?.data || []);
+          const rawSupList = Array.isArray(supRes) ? supRes : (supRes?.data || []);
+          // Show only ACTIVE suppliers for new orders (is_active = true)
+          const activeSuppliers = rawSupList.filter(s =>
+            (s.isActive !== false && s.is_active !== false) ||
+            (isEdit && (s.id === initialData?.supplierId || s.id === initialData?.supplier_id))
+          );
           const prodList = Array.isArray(prodRes?.data) ? prodRes.data : (Array.isArray(prodRes) ? prodRes : []);
 
-          setSuppliers(supList);
+          setSuppliers(activeSuppliers);
           setProducts(prodList);
 
           // Populate initial data if provided

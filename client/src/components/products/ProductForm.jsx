@@ -204,11 +204,16 @@ export const ProductForm = ({
               className="w-full bg-[#F8FAFC] border border-[#D9E2EC] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#1769C2]/30 focus:border-[#1769C2] cursor-pointer"
             >
               <option value="">No Supplier Assigned</option>
-              {suppliers.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
+              {suppliers
+                .filter((s) => (s.isActive !== false && s.is_active !== false) || s.id === formData.supplierId)
+                .map((s) => {
+                  const isSupplierInactive = s.isActive === false || s.is_active === false;
+                  return (
+                    <option key={s.id} value={s.id}>
+                      {s.name} {isSupplierInactive ? '(Inactive)' : ''}
+                    </option>
+                  );
+                })}
             </select>
             {suppliers.length === 0 && (
               <p className="text-[11px] text-[#64748B] mt-1">No suppliers available.</p>

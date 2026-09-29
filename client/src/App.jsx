@@ -18,6 +18,8 @@ import Notifications from './pages/Notifications.jsx';
 import Analytics from './pages/Analytics.jsx';
 import Forecast from './pages/Forecast.jsx';
 import Restocking from './pages/Restocking.jsx';
+import Suppliers from './pages/Suppliers.jsx';
+import SupplierDetails from './pages/SupplierDetails.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import { NotificationProvider } from './context/NotificationContext.jsx';
@@ -98,22 +100,10 @@ function AppRoutes() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/restocking" element={<Restocking />} />
         <Route path="/restocking/:id" element={<Restocking />} />
+        <Route path="/suppliers" element={<Suppliers />} />
+        <Route path="/suppliers/:id" element={<SupplierDetails />} />
 
         {/* Manager-Only Protected Routes */}
-        <Route
-          path="/suppliers"
-          element={
-            <ProtectedRoute allowedRoles={['MANAGER']}>
-              <PlaceholderPage
-                title="Suppliers"
-                description="Supplier directory and vendor management will be implemented in a later phase."
-                icon={Truck}
-                phase="Phase 8"
-                roleRequired="MANAGER"
-              />
-            </ProtectedRoute>
-          }
-        />
         <Route
           path="/settings"
           element={

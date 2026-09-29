@@ -29,11 +29,11 @@ export const MAIN_NAV_ITEMS = [
   { name: 'Analytics', path: '/analytics', icon: BarChart3 },
   { name: 'Forecast', path: '/forecast', icon: TrendingDown },
   { name: 'Restocking', path: '/restocking', icon: ShoppingCart },
+  { name: 'Suppliers', path: '/suppliers', icon: Truck },
   { name: 'Notifications', path: '/notifications', icon: Bell }
 ];
 
 export const MANAGER_NAV_ITEMS = [
-  { name: 'Suppliers', path: '/suppliers', icon: Truck },
   { name: 'Settings', path: '/settings', icon: Settings }
 ];
 

@@ -16,7 +16,8 @@ import {
   BarChart3,
   TrendingDown,
   Clock,
-  ShoppingCart
+  ShoppingCart,
+  Truck
 } from 'lucide-react';
 import {
   getDashboardStats,
@@ -26,6 +27,7 @@ import {
 import { getForecastOverview } from '../services/forecast.service.js';
 import { formatDaysRemaining } from '../utils/forecastConstants.js';
 import { getRestockOrders } from '../services/restock.service.js';
+import { getSuppliers } from '../services/supplier.service.js';
 import RestockStatusBadge from '../components/restock/RestockStatusBadge.jsx';
 import StatCard from '../components/dashboard/StatCard.jsx';
 import StockStatusCard from '../components/dashboard/StockStatusCard.jsx';
@@ -41,6 +43,7 @@ export const Dashboard = () => {
   const [activities, setActivities] = useState([]);
   const [forecastProducts, setForecastProducts] = useState([]);
   const [pendingOrders, setPendingOrders] = useState([]);
+  const [activeSuppliersCount, setActiveSuppliersCount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -48,12 +51,13 @@ export const Dashboard = () => {
   const loadData = useCallback(async () => {
     try {
       setError(null);
-      const [statsRes, statusRes, activitiesRes, forecastRes, restockRes] = await Promise.all([
+      const [statsRes, statusRes, activitiesRes, forecastRes, restockRes, suppliersRes] = await Promise.all([
         getDashboardStats(),
         getStockStatusSummary(),
         getRecentActivities(),
         getForecastOverview(30).catch(() => null),
-        getRestockOrders().catch(() => null)
+        getRestockOrders().catch(() => null),
+        getSuppliers({ limit: 1 }).catch(() => null)
       ]);
 
       if (statsRes.success) setStats(statsRes.data);
@@ -71,6 +75,9 @@ export const Dashboard = () => {
           .filter((o) => o.status === 'PENDING' || o.status === 'ORDERED')
           .slice(0, 3);
         setPendingOrders(active);
+      }
+      if (suppliersRes?.summary?.activeSuppliers !== undefined) {
+        setActiveSuppliersCount(suppliersRes.summary.activeSuppliers);
       }
     } catch (err) {
       setError('Unable to load dashboard data.');
@@ -369,6 +376,28 @@ export const Dashboard = () => {
             ))}
           </div>
         )}
+      </div>
+
+      {/* 2.7 Suppliers Summary (Phase 12) */}
+      <div className="bg-white border border-[#D9E2EC] rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-[#1769C2]">
+            <Truck className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-sm font-bold text-[#0F172A]">Suppliers</h2>
+            <p className="text-xs text-[#64748B]">
+              Active Suppliers: <span className="font-bold text-[#0F172A]">{activeSuppliersCount !== null ? activeSuppliersCount : '—'}</span>
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/suppliers"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#E8F2FF] hover:bg-[#D9EAFE] text-[#1769C2] text-xs font-bold rounded-xl transition shadow-xs self-start sm:self-auto cursor-pointer"
+        >
+          <span>View Suppliers</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
 
       {/* 3. Recent Activity */}

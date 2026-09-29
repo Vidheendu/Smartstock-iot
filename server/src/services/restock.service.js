@@ -373,10 +373,15 @@ export async function createRestockOrder({ supplierId, items, notes = '', userId
   }
 
   const suppliers = await getSuppliers();
-  const supplierExists = suppliers.some(s => s.id === supplierId.trim());
-  if (!supplierExists) {
+  const targetSupplier = suppliers.find(s => s.id === supplierId.trim());
+  if (!targetSupplier) {
     const error = new Error('Supplier not found');
     error.status = 404;
+    throw error;
+  }
+  if (targetSupplier.isActive === false || targetSupplier.is_active === false) {
+    const error = new Error('Cannot create restock order for an inactive supplier');
+    error.status = 400;
     throw error;
   }
 
@@ -552,6 +557,11 @@ export async function updateRestockOrder(orderId, updateData = {}) {
     if (!sup) {
       const error = new Error('Supplier not found');
       error.status = 404;
+      throw error;
+    }
+    if (sup.isActive === false || sup.is_active === false) {
+      const error = new Error('Cannot assign an inactive supplier to a restock order');
+      error.status = 400;
       throw error;
     }
     supplierId = sup.id;
@@ -1014,4 +1024,35 @@ export async function getRestockSummary() {
     totalOrders: orders.length,
     productsNeedingRestock: needingRestock.length
   };
+}
+
+/**
+ * Helper for supplier service to retrieve restock orders and items without triggering circular getSuppliers calls.
+ */
+export async function getRawRestockOrdersForSupplierService() {
+  let orders = inMemoryOrders;
+  let items = inMemoryOrderItems;
+  if (supabase) {
+    try {
+      const { data: dbOrders, error: orderErr } = await supabase.from('restock_orders').select('*');
+      const { data: dbItems, error: itemErr } = await supabase.from('restock_order_items').select('*');
+      if (!orderErr && Array.isArray(dbOrders)) {
+        const dbIds = new Set(dbOrders.map(o => o.id));
+        const combined = [...dbOrders];
+        for (const mo of inMemoryOrders) {
+          if (!dbIds.has(mo.id)) combined.push(mo);
+        }
+        orders = combined;
+      }
+      if (!itemErr && Array.isArray(dbItems)) {
+        const dbItemIds = new Set(dbItems.map(i => i.id));
+        const combinedItems = [...dbItems];
+        for (const mi of inMemoryOrderItems) {
+          if (!dbItemIds.has(mi.id)) combinedItems.push(mi);
+        }
+        items = combinedItems;
+      }
+    } catch {}
+  }
+  return { orders, items };
 }

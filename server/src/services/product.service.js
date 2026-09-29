@@ -238,33 +238,21 @@ function formatProduct(product, supplierMap = {}) {
  * Fetch list of suppliers.
  */
 export async function getSuppliers() {
-  if (supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('suppliers')
-        .select('*')
-        .order('name');
-      if (!error && data) {
-        return data.map((s) => ({
-          id: s.id,
-          name: s.name,
-          contactName: s.contact_name,
-          email: s.email,
-          phone: s.phone
-        }));
-      }
-    } catch (err) {
-      console.warn('[SUPPLIERS DB] Supabase query failed, falling back:', err.message);
-    }
+  try {
+    const { getSuppliers: fetchFromSupplierService } = await import('./supplier.service.js');
+    const res = await fetchFromSupplierService();
+    return res.data || [];
+  } catch (err) {
+    console.warn('[PRODUCT SERVICE] Fallback getSuppliers failed:', err.message);
+    return inMemorySuppliers.map((s) => ({
+      id: s.id,
+      name: s.name,
+      contactName: s.contact_name,
+      email: s.email,
+      phone: s.phone,
+      isActive: s.is_active !== undefined ? s.is_active : true
+    }));
   }
-
-  return inMemorySuppliers.map((s) => ({
-    id: s.id,
-    name: s.name,
-    contactName: s.contact_name,
-    email: s.email,
-    phone: s.phone
-  }));
 }
 
 /**
@@ -711,6 +699,21 @@ export async function updateProductStock(id, newStock) {
   return existing;
 }
 
+/**
+ * Helper for supplier service to retrieve products without triggering circular getSuppliers calls.
+ */
+export async function getRawProductsForSupplierService() {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*');
+      if (!error && Array.isArray(data)) return data;
+    } catch {}
+  }
+  return inMemoryProducts;
+}
+
 export default {
   getAllProducts,
   getProductById,
@@ -720,5 +723,6 @@ export default {
   updateProductStock,
   deleteProduct,
   getSuppliers,
-  getProductStats
+  getProductStats,
+  getRawProductsForSupplierService
 };

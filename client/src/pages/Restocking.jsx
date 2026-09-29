@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import { Plus, RefreshCw, AlertCircle, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import RestockSummaryCards from '../components/restock/RestockSummaryCards.jsx';
@@ -9,6 +9,7 @@ import RestockOrderFormModal from '../components/restock/RestockOrderFormModal.j
 import RestockOrderDetailsModal from '../components/restock/RestockOrderDetailsModal.jsx';
 import {
   getRestockOrders,
+  getRestockOrder,
   getRestockSummary,
   getProductsNeedingRestock,
   markRestockOrdered,
@@ -20,6 +21,7 @@ import { getSuppliers } from '../services/product.service.js';
 export default function Restocking() {
   const { user } = useAuth();
   const isManager = user?.role === 'MANAGER';
+  const { id: routeOrderId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // State
@@ -122,6 +124,26 @@ export default function Restocking() {
       setSearchParams({}, { replace: true });
     }
   }, [searchParams, setSearchParams]);
+
+  // Automatically open details modal if navigated to /restocking/:id
+  useEffect(() => {
+    if (routeOrderId) {
+      const found = orders.find((o) => o.id === routeOrderId || o.orderNumber === routeOrderId);
+      if (found) {
+        setSelectedOrder(found);
+        setIsDetailsOpen(true);
+      } else {
+        getRestockOrder(routeOrderId)
+          .then((res) => {
+            if (res.order) {
+              setSelectedOrder(res.order);
+              setIsDetailsOpen(true);
+            }
+          })
+          .catch(() => {});
+      }
+    }
+  }, [routeOrderId, orders]);
 
   // Handle Quick Sorting
   const handleSort = (field) => {

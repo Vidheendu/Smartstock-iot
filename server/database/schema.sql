@@ -24,15 +24,32 @@ CREATE TABLE IF NOT EXISTS suppliers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(150) NOT NULL,
     contact_name VARCHAR(100),
-    email VARCHAR(255) NOT NULL,
+    contact_person VARCHAR(100),
+    email VARCHAR(255),
     phone VARCHAR(50),
     address TEXT,
+    city VARCHAR(100),
+    state VARCHAR(100),
+    country VARCHAR(100),
+    postal_code VARCHAR(30),
+    notes TEXT,
     lead_time_days INTEGER DEFAULT 3 CHECK (lead_time_days >= 0),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Safe migrations for existing schemas
+ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS contact_person VARCHAR(100);
+ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS city VARCHAR(100);
+ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS state VARCHAR(100);
+ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS country VARCHAR(100);
+ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS postal_code VARCHAR(30);
+ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS notes TEXT;
+ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT TRUE;
+
 CREATE INDEX IF NOT EXISTS idx_suppliers_name ON suppliers(name);
+CREATE INDEX IF NOT EXISTS idx_suppliers_is_active ON suppliers(is_active);
 
 -- 3. PRODUCTS TABLE
 CREATE TABLE IF NOT EXISTS products (
