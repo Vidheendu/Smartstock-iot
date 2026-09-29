@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useParams } from 'react-router-dom';
 import { Plus, RefreshCw, AlertCircle, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
+import ConfirmDialog from '../components/common/ConfirmDialog.jsx';
 import RestockSummaryCards from '../components/restock/RestockSummaryCards.jsx';
 import ProductsNeedingRestock from '../components/restock/ProductsNeedingRestock.jsx';
 import RestockTable from '../components/restock/RestockTable.jsx';
@@ -20,11 +22,13 @@ import { getSuppliers } from '../services/product.service.js';
 
 export default function Restocking() {
   const { user } = useAuth();
+  const toast = useToast();
   const isManager = user?.role === 'MANAGER';
   const { id: routeOrderId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // State
+  const [confirmAction, setConfirmAction] = useState(null);
   const [orders, setOrders] = useState([]);
   const [summary, setSummary] = useState(null);
   const [needingRestock, setNeedingRestock] = useState([]);
@@ -182,33 +186,54 @@ export default function Restocking() {
   const handleOrderOrder = async (order) => {
     try {
       await markRestockOrdered(order.id);
+      toast.success(`Restock order ${order.orderNumber} marked as ORDERED.`);
       fetchOrders();
       fetchAuxiliaryData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to update order status');
+      toast.error(err.response?.data?.message || 'Failed to update order status');
     }
   };
 
-  const handleReceiveOrder = async (order) => {
-    if (!window.confirm(`Mark order ${order.orderNumber} as RECEIVED? Product inventory will be increased.`)) return;
-    try {
-      await receiveRestockOrder(order.id);
-      fetchOrders();
-      fetchAuxiliaryData();
-    } catch (err) {
-      alert(err.response?.data?.message || 'Failed to receive restock order');
-    }
+  const handleReceiveOrder = (order) => {
+    setConfirmAction({
+      title: 'Receive Restock Order',
+      message: `Mark order ${order.orderNumber} as RECEIVED? Product inventory will be automatically increased.`,
+      confirmText: 'Receive Order',
+      variant: 'primary',
+      onConfirm: async () => {
+        try {
+          await receiveRestockOrder(order.id);
+          toast.success(`Order ${order.orderNumber} received. Inventory updated.`);
+          fetchOrders();
+          fetchAuxiliaryData();
+        } catch (err) {
+          toast.error(err.response?.data?.message || 'Failed to receive restock order');
+        } finally {
+          setConfirmAction(null);
+        }
+      }
+    });
   };
 
-  const handleCancelOrder = async (order) => {
-    if (!window.confirm(`Cancel restock order ${order.orderNumber}?`)) return;
-    try {
-      await cancelRestockOrder(order.id, 'User cancelled from order list');
-      fetchOrders();
-      fetchAuxiliaryData();
-    } catch (err) {
-      alert(err.response?.data?.message || 'Failed to cancel order');
-    }
+  const handleCancelOrder = (order) => {
+    setConfirmAction({
+      title: 'Cancel Restock Order',
+      message: `Are you sure you want to cancel order ${order.orderNumber}? This action cannot be undone.`,
+      confirmText: 'Cancel Order',
+      variant: 'danger',
+      onConfirm: async () => {
+        try {
+          await cancelRestockOrder(order.id, 'User cancelled from order list');
+          toast.success(`Order ${order.orderNumber} cancelled.`);
+          fetchOrders();
+          fetchAuxiliaryData();
+        } catch (err) {
+          toast.error(err.response?.data?.message || 'Failed to cancel order');
+        } finally {
+          setConfirmAction(null);
+        }
+      }
+    });
   };
 
   return (
@@ -357,6 +382,18 @@ export default function Restocking() {
           setIsFormOpen(true);
         }}
       />
+
+      {confirmAction && (
+        <ConfirmDialog
+          isOpen={true}
+          title={confirmAction.title}
+          message={confirmAction.message}
+          confirmText={confirmAction.confirmText}
+          variant={confirmAction.variant}
+          onConfirm={confirmAction.onConfirm}
+          onCancel={() => setConfirmAction(null)}
+        />
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import { Lock, Mail, User, Shield, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
+import { Lock, Mail, User, Shield, AlertCircle, Loader2, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 export const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,8 @@ export const Register = () => {
     role: 'STAFF'
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -209,15 +211,23 @@ export const Register = () => {
             <div className="relative">
               <Lock className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-10 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
                   errors.password ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-3.5 top-3.5 text-[#64748B] hover:text-[#0F172A] transition cursor-pointer"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
             {errors.password && (
               <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.password}</p>
@@ -232,15 +242,23 @@ export const Register = () => {
             <div className="relative">
               <Lock className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
               <input
-                type="password"
+                type={showConfirmPassword ? 'text' : 'password'}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
+                className={`w-full bg-[#F8FAFC] border rounded-xl pl-10 pr-10 py-3 text-xs sm:text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1769C2]/20 focus:border-[#1769C2] transition ${
                   errors.confirmPassword ? 'border-red-400' : 'border-[#D9E2EC]'
                 }`}
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                className="absolute right-3.5 top-3.5 text-[#64748B] hover:text-[#0F172A] transition cursor-pointer"
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
             {errors.confirmPassword && (
               <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.confirmPassword}</p>

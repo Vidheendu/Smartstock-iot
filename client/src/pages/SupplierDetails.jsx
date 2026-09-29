@@ -23,6 +23,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
 import SupplierStatusBadge from '../components/suppliers/SupplierStatusBadge.jsx';
 import SupplierProductTable from '../components/suppliers/SupplierProductTable.jsx';
 import SupplierRestockTable from '../components/suppliers/SupplierRestockTable.jsx';
@@ -38,6 +39,7 @@ import {
 export default function SupplierDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
   const { user } = useAuth();
   const isManager = user?.role === 'MANAGER';
 
@@ -86,9 +88,12 @@ export default function SupplierDetails() {
       setStatusToggling(true);
       await updateSupplierStatus(supp.id, targetActive);
       setIsStatusModalOpen(false);
+      toast.success(
+        `Supplier '${supp.name}' ${targetActive ? 'activated' : 'deactivated'} successfully.`
+      );
       fetchSupplierData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Unable to update supplier status.');
+      toast.error(err.response?.data?.message || 'Unable to update supplier status.');
     } finally {
       setStatusToggling(false);
     }

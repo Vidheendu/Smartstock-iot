@@ -21,8 +21,10 @@ import Restocking from './pages/Restocking.jsx';
 import Suppliers from './pages/Suppliers.jsx';
 import SupplierDetails from './pages/SupplierDetails.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
-import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import { NotificationProvider } from './context/NotificationContext.jsx';
+import Settings from './pages/Settings.jsx';
+import ErrorBoundary from './components/common/ErrorBoundary.jsx';
+import { ToastProvider } from './context/ToastContext.jsx';
 import {
   Package,
   Boxes,
@@ -33,7 +35,7 @@ import {
   ShoppingCart,
   Truck,
   Bell,
-  Settings
+  Settings as SettingsIcon
 } from 'lucide-react';
 
 /**
@@ -103,18 +105,12 @@ function AppRoutes() {
         <Route path="/suppliers" element={<Suppliers />} />
         <Route path="/suppliers/:id" element={<SupplierDetails />} />
 
-        {/* Manager-Only Protected Routes */}
+        {/* Protected Settings Route */}
         <Route
           path="/settings"
           element={
-            <ProtectedRoute allowedRoles={['MANAGER']}>
-              <PlaceholderPage
-                title="Settings"
-                description="Store configurations and system thresholds will be implemented in a later phase."
-                icon={Settings}
-                phase="Phase 8"
-                roleRequired="MANAGER"
-              />
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           }
         />
@@ -136,13 +132,17 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <NotificationProvider>
-          <AppRoutes />
-        </NotificationProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <ToastProvider>
+            <NotificationProvider>
+              <AppRoutes />
+            </NotificationProvider>
+          </ToastProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
 import {
   ArrowLeft,
   ArrowDownLeft,
@@ -43,6 +44,7 @@ export const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const toast = useToast();
   const isManager = user?.role === 'MANAGER';
 
   // Consolidated Product Details state
@@ -95,6 +97,7 @@ export const ProductDetails = () => {
   const handleStockSuccess = async () => {
     await loadData();
     setHistoryRefreshKey((prev) => prev + 1);
+    toast.success('Inventory stock level updated successfully.');
   };
 
   // Edit Product Submission handler
@@ -105,6 +108,7 @@ export const ProductDetails = () => {
       await productService.updateProduct(id, formData);
       await loadData();
       setIsEditModalOpen(false);
+      toast.success('Product information updated successfully.');
     } catch (err) {
       setFormError(err.response?.data?.message || err.message || 'Failed to update product');
     } finally {
@@ -118,9 +122,10 @@ export const ProductDetails = () => {
     try {
       await productService.deleteProduct(id);
       setIsDeleteModalOpen(false);
+      toast.success('Product deactivated successfully.');
       navigate('/products', { replace: true });
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to deactivate product');
+      toast.error(err.response?.data?.message || 'Failed to deactivate product');
     } finally {
       setIsDeleting(false);
     }

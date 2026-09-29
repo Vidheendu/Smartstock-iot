@@ -30,11 +30,12 @@ export const MAIN_NAV_ITEMS = [
   { name: 'Forecast', path: '/forecast', icon: TrendingDown },
   { name: 'Restocking', path: '/restocking', icon: ShoppingCart },
   { name: 'Suppliers', path: '/suppliers', icon: Truck },
-  { name: 'Notifications', path: '/notifications', icon: Bell }
+  { name: 'Notifications', path: '/notifications', icon: Bell },
+  { name: 'Settings', path: '/settings', icon: Settings }
 ];
 
 export const MANAGER_NAV_ITEMS = [
-  { name: 'Settings', path: '/settings', icon: Settings }
+  { name: 'Manager Access Test', path: '/manager-test', icon: Shield }
 ];
 
 export const Sidebar = ({ onNavClick }) => {

@@ -125,7 +125,7 @@ export const IotMonitor = () => {
             </h1>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8F2FF] border border-[#BFDBFE] text-[#1769C2] text-xs font-bold">
               <Radio className="w-3.5 h-3.5 text-emerald-500 animate-pulse" />
-              <span>SOFTWARE SIMULATION</span>
+              <span>SIMULATED IoT</span>
             </span>
           </div>
           <p className="text-xs sm:text-sm text-[#64748B] mt-1">

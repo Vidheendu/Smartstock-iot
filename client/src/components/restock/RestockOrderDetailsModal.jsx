@@ -14,6 +14,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import RestockStatusBadge from './RestockStatusBadge.jsx';
+import ConfirmDialog from '../common/ConfirmDialog.jsx';
 import { formatCurrency, formatRestockDateTime, RESTOCK_STATUS } from '../../utils/restockConstants.js';
 import { markRestockOrdered, receiveRestockOrder, cancelRestockOrder } from '../../services/restock.service.js';
 
@@ -27,6 +28,7 @@ export default function RestockOrderDetailsModal({
 }) {
   const [processingAction, setProcessingAction] = useState(false);
   const [confirmReceive, setConfirmReceive] = useState(false);
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const [actionError, setActionError] = useState(null);
 
   if (!isOpen || !order) return null;
@@ -60,12 +62,16 @@ export default function RestockOrderDetailsModal({
     }
   };
 
-  const handleCancel = async () => {
-    if (!window.confirm(`Are you sure you want to cancel order ${order.orderNumber}?`)) return;
+  const handleCancel = () => {
+    setShowConfirmCancel(true);
+  };
+
+  const handleConfirmCancelOrder = async () => {
     try {
       setProcessingAction(true);
       setActionError(null);
       await cancelRestockOrder(order.id, 'Cancelled by user');
+      setShowConfirmCancel(false);
       if (onActionSuccess) onActionSuccess();
       onClose();
     } catch (err) {
@@ -357,6 +363,19 @@ export default function RestockOrderDetailsModal({
           )}
         </div>
       </div>
+
+      {showConfirmCancel && (
+        <ConfirmDialog
+          isOpen={showConfirmCancel}
+          title="Cancel Restock Order"
+          message={`Are you sure you want to cancel order ${order.orderNumber}? This action cannot be undone.`}
+          confirmText="Cancel Order"
+          variant="danger"
+          loading={processingAction}
+          onConfirm={handleConfirmCancelOrder}
+          onCancel={() => setShowConfirmCancel(false)}
+        />
+      )}
     </div>
   );
 }

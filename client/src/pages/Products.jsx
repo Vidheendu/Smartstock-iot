@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
 import {
   PackagePlus,
   Loader2,
@@ -18,6 +19,7 @@ import ProductForm from '../components/products/ProductForm.jsx';
 
 export const Products = () => {
   const { user } = useAuth();
+  const toast = useToast();
   const isManager = user?.role === 'MANAGER';
 
   // Data state
@@ -129,6 +131,7 @@ export const Products = () => {
       const newProduct = await productService.createProduct(formData);
       setProducts((prev) => [newProduct, ...prev]);
       setIsAddModalOpen(false);
+      toast.success(`Product '${newProduct.name}' created successfully.`);
     } catch (err) {
       setFormError(err.response?.data?.message || err.message || 'Failed to create product');
     } finally {
@@ -147,6 +150,7 @@ export const Products = () => {
         prev.map((p) => (p.id === editingProduct.id ? updated : p))
       );
       setEditingProduct(null);
+      toast.success(`Product '${updated.name}' updated successfully.`);
     } catch (err) {
       setFormError(err.response?.data?.message || err.message || 'Failed to update product');
     } finally {
@@ -171,9 +175,10 @@ export const Products = () => {
           )
         );
       }
+      toast.success(`Product '${deletingProduct.name}' deactivated successfully.`);
       setDeletingProduct(null);
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to delete product');
+      toast.error(err.response?.data?.message || 'Failed to delete product');
     } finally {
       setIsDeleting(false);
     }
