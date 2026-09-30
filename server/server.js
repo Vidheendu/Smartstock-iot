@@ -13,6 +13,7 @@ import notificationRoutes from './src/routes/notification.routes.js';
 import analyticsRoutes from './src/routes/analytics.routes.js';
 import forecastRoutes from './src/routes/forecast.routes.js';
 import restockRoutes from './src/routes/restock.routes.js';
+import settingsRoutes from './src/routes/settings.routes.js';
 import { notFoundHandler, errorHandler } from './src/middleware/error.middleware.js';
 
 // Validate environment variables on startup
@@ -44,6 +45,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/forecast', forecastRoutes);
 app.use('/api/restock', restockRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // 404 & Centralized Error Middleware
 app.use(notFoundHandler);

@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import supabase from '../config/db.js';
 import { getAllUsers } from './auth.service.js';
+import { getUserPreferences } from './settings.service.js';
 import { getProductById } from './product.service.js';
 import { NOTIFICATION_TYPES, NOTIFICATION_TITLES } from '../types/notification.types.js';
 
@@ -150,6 +151,27 @@ export async function createNotification({
 }) {
   if (!userId) {
     throw new Error('User ID is required to create a notification');
+  }
+
+  // Check user notification preferences before creating future notifications
+  try {
+    const preferences = await getUserPreferences(userId);
+    if (preferences) {
+      if (type === 'LOW_STOCK' && preferences.low_stock_enabled === false) {
+        return null;
+      }
+      if (type === 'CRITICAL_STOCK' && preferences.critical_stock_enabled === false) {
+        return null;
+      }
+      if (type === 'OUT_OF_STOCK' && preferences.out_of_stock_enabled === false) {
+        return null;
+      }
+      if (type === 'SYSTEM' && preferences.system_notifications_enabled === false) {
+        return null;
+      }
+    }
+  } catch (prefErr) {
+    console.warn('[NOTIFICATION SERVICE] User preferences check warning:', prefErr.message);
   }
 
   const notificationTitle = title || getNotificationTitle(type);

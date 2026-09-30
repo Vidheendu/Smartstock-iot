@@ -203,3 +203,17 @@ CREATE TABLE IF NOT EXISTS restock_order_items (
 CREATE INDEX IF NOT EXISTS idx_restock_items_order ON restock_order_items(restock_order_id);
 CREATE INDEX IF NOT EXISTS idx_restock_items_product ON restock_order_items(product_id);
 
+-- 11. USER_PREFERENCES TABLE
+CREATE TABLE IF NOT EXISTS user_preferences (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    low_stock_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    critical_stock_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    out_of_stock_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    system_notifications_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_preferences_user ON user_preferences(user_id);
+

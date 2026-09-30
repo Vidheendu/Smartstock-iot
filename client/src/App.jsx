@@ -23,6 +23,7 @@ import SupplierDetails from './pages/SupplierDetails.jsx';
 import ManagerTest from './pages/ManagerTest.jsx';
 import { NotificationProvider } from './context/NotificationContext.jsx';
 import Settings from './pages/Settings.jsx';
+import Profile from './pages/Profile.jsx';
 import ErrorBoundary from './components/common/ErrorBoundary.jsx';
 import { ToastProvider } from './context/ToastContext.jsx';
 import {
@@ -105,15 +106,9 @@ function AppRoutes() {
         <Route path="/suppliers" element={<Suppliers />} />
         <Route path="/suppliers/:id" element={<SupplierDetails />} />
 
-        {/* Protected Settings Route */}
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
+        {/* Protected Settings & Profile Routes */}
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<Profile />} />
         <Route
           path="/manager-test"
           element={

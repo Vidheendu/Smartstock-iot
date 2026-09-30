@@ -32,6 +32,7 @@ const ROUTE_TITLES = {
   '/suppliers': 'Suppliers',
   '/notifications': 'Notifications',
   '/settings': 'Settings',
+  '/profile': 'Profile',
   '/manager-test': 'Manager Access Test'
 };
 
@@ -347,12 +348,20 @@ export const Topbar = ({ onMenuClick, title }) => {
               {/* Navigation Items */}
               <div className="py-1">
                 <Link
-                  to={isManager ? '/settings' : '/dashboard'}
+                  to="/profile"
+                  onClick={() => setDropdownOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-[#0F172A] hover:text-[#1769C2] hover:bg-[#F8FAFC] transition"
+                >
+                  <User className="w-3.5 h-3.5 text-[#64748B]" />
+                  <span>Profile</span>
+                </Link>
+                <Link
+                  to="/settings"
                   onClick={() => setDropdownOpen(false)}
                   className="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-[#0F172A] hover:text-[#1769C2] hover:bg-[#F8FAFC] transition"
                 >
                   <SettingsIcon className="w-3.5 h-3.5 text-[#64748B]" />
-                  <span>Profile & Settings</span>
+                  <span>Settings</span>
                 </Link>
                 {isManager && (
                   <Link

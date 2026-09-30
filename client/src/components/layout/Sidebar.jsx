@@ -135,7 +135,11 @@ export const Sidebar = ({ onNavClick }) => {
 
       {/* User & Logout Footer */}
       <div className="p-3.5 border-t border-[#D9E2EC] bg-[#F8FAFC]">
-        <div className="p-3 rounded-xl bg-white border border-[#D9E2EC] mb-2 shadow-xs">
+        <Link
+          to="/profile"
+          onClick={onNavClick}
+          className="block p-3 rounded-xl bg-white border border-[#D9E2EC] hover:border-[#BFDBFE] hover:bg-[#F0F7FF] mb-2 shadow-xs transition cursor-pointer"
+        >
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#E8F2FF] text-[#1769C2] border border-[#BFDBFE] font-bold text-xs flex items-center justify-center shrink-0">
               {user?.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
@@ -157,7 +161,7 @@ export const Sidebar = ({ onNavClick }) => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
 
         <button
           onClick={handleLogout}

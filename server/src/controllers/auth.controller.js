@@ -54,6 +54,45 @@ export const getMe = async (req, res, next) => {
 };
 
 /**
+ * Update authenticated user profile.
+ */
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    const user = await authService.updateProfile(req.user.userId, { name });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      user
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Change authenticated user password.
+ */
+export const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const result = await authService.changePassword(req.user.userId, {
+      currentPassword,
+      newPassword,
+      confirmPassword
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: result.message || 'Password changed successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * User logout.
  */
 export const logout = (req, res) => {

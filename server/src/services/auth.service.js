@@ -222,6 +222,26 @@ export const login = async ({ email, password }) => {
   };
 };
 
+async function findUserWithCredentialsById(id) {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (!error && data) {
+        return data;
+      }
+    } catch (err) {
+      console.warn('[AUTH DB WARNING] Supabase query failed, checking fallback store:', err.message);
+    }
+  }
+
+  return inMemoryUsers.find((u) => u.id === id) || null;
+}
+
 /**
  * Retrieves the currently authenticated user by ID.
  */
@@ -237,7 +257,138 @@ export const getCurrentUser = async (userId) => {
     id: user.id,
     name: user.full_name,
     email: user.email,
-    role: user.role
+    role: user.role,
+    createdAt: user.created_at || user.createdAt,
+    created_at: user.created_at || user.createdAt
+  };
+};
+
+/**
+ * Updates profile information for the authenticated user.
+ * Only full name can be updated; email and role remain strictly read-only.
+ */
+export const updateProfile = async (userId, { name }) => {
+  if (!name || typeof name !== 'string' || name.trim().length === 0) {
+    const err = new Error('Full name is required');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const trimmedName = name.trim();
+  if (trimmedName.length > 100) {
+    const err = new Error('Full name cannot exceed 100 characters');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const user = await findUserById(userId);
+  if (!user) {
+    const err = new Error('User not found');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  const now = new Date().toISOString();
+
+  if (supabase) {
+    try {
+      await supabase
+        .from('users')
+        .update({
+          full_name: trimmedName,
+          updated_at: now
+        })
+        .eq('id', userId);
+    } catch (err) {
+      console.warn('[AUTH DB WARNING] Supabase updateProfile failed:', err.message);
+    }
+  }
+
+  const memUser = inMemoryUsers.find((u) => u.id === userId);
+  if (memUser) {
+    memUser.full_name = trimmedName;
+    memUser.updated_at = now;
+  }
+
+  return {
+    id: user.id,
+    name: trimmedName,
+    email: user.email,
+    role: user.role,
+    createdAt: user.created_at || user.createdAt,
+    created_at: user.created_at || user.createdAt
+  };
+};
+
+/**
+ * Changes password for authenticated user after verifying current password.
+ * Password hash is never stored in plaintext and never returned to caller.
+ */
+export const changePassword = async (userId, { currentPassword, newPassword, confirmPassword }) => {
+  if (!currentPassword || typeof currentPassword !== 'string' || currentPassword.length === 0) {
+    const err = new Error('Current password is required');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (!newPassword || typeof newPassword !== 'string') {
+    const err = new Error('New password is required');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (confirmPassword !== undefined && newPassword !== confirmPassword) {
+    const err = new Error('New passwords do not match');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (newPassword.length < 8) {
+    const err = new Error('Password must be at least 8 characters long');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const user = await findUserWithCredentialsById(userId);
+  if (!user) {
+    const err = new Error('User not found');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  const isCurrentValid = await comparePassword(currentPassword, user.password_hash);
+  if (!isCurrentValid) {
+    const err = new Error('Current password is incorrect');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const newHash = await hashPassword(newPassword);
+  const now = new Date().toISOString();
+
+  if (supabase) {
+    try {
+      await supabase
+        .from('users')
+        .update({
+          password_hash: newHash,
+          updated_at: now
+        })
+        .eq('id', userId);
+    } catch (err) {
+      console.warn('[AUTH DB WARNING] Supabase changePassword failed:', err.message);
+    }
+  }
+
+  const memUser = inMemoryUsers.find((u) => u.id === userId);
+  if (memUser) {
+    memUser.password_hash = newHash;
+    memUser.updated_at = now;
+  }
+
+  return {
+    success: true,
+    message: 'Password changed successfully'
   };
 };
 
@@ -268,12 +419,41 @@ export const getAllUsers = async () => {
   }));
 };
 
-export { findUserById };
+/**
+ * Resets in-memory users for test isolation.
+ */
+export const _resetInMemoryUsers = () => {
+  inMemoryUsers.length = 0;
+  inMemoryUsers.push(
+    {
+      id: 'e0000000-0000-0000-0000-000000000001',
+      email: 'manager@smartstock.com',
+      full_name: 'Alex Morgan',
+      password_hash: '$2b$10$x1VCpBETnXPwknq.4hzx5uRUF6GH.Ozi8imwsUarTThA/vtYOBwV2',
+      role: 'MANAGER',
+      created_at: new Date('2026-09-29T10:00:00Z').toISOString()
+    },
+    {
+      id: 'e0000000-0000-0000-0000-000000000002',
+      email: 'staff@smartstock.com',
+      full_name: 'Taylor Brooks',
+      password_hash: '$2b$10$x1VCpBETnXPwknq.4hzx5uRUF6GH.Ozi8imwsUarTThA/vtYOBwV2',
+      role: 'STAFF',
+      created_at: new Date('2026-09-29T10:00:00Z').toISOString()
+    }
+  );
+};
+
+export { findUserById, findUserWithCredentialsById };
 export default {
   register,
   login,
   getCurrentUser,
+  updateProfile,
+  changePassword,
   findUserById,
-  getAllUsers
+  findUserWithCredentialsById,
+  getAllUsers,
+  _resetInMemoryUsers
 };
 

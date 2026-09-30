@@ -87,3 +87,8 @@ INSERT INTO restock_orders (id, order_number, supplier_id, status, notes, total_
 INSERT INTO restock_order_items (id, restock_order_id, product_id, quantity, unit_price, total_price, created_at) VALUES
 ('c1000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000005', 120, 0.85, 102.00, NOW() - INTERVAL '1 day');
 
+-- 11. SEED USER PREFERENCES
+INSERT INTO user_preferences (id, user_id, low_stock_enabled, critical_stock_enabled, out_of_stock_enabled, system_notifications_enabled) VALUES
+('fa000000-0000-0000-0000-000000000001', 'e0000000-0000-0000-0000-000000000001', TRUE, TRUE, TRUE, TRUE),
+('fa000000-0000-0000-0000-000000000002', 'e0000000-0000-0000-0000-000000000002', TRUE, TRUE, TRUE, TRUE);
+

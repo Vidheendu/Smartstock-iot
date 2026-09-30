@@ -37,6 +37,26 @@ export const logout = async () => {
 };
 
 /**
+ * Update current user profile.
+ * 
+ * @param {object} profileData - { name }
+ */
+export const updateProfile = async (profileData) => {
+  const response = await api.put('/auth/profile', profileData);
+  return response.data;
+};
+
+/**
+ * Change current user password.
+ * 
+ * @param {object} passwordData - { currentPassword, newPassword, confirmPassword }
+ */
+export const changePassword = async (passwordData) => {
+  const response = await api.put('/auth/change-password', passwordData);
+  return response.data;
+};
+
+/**
  * Test endpoint for MANAGER role access.
  */
 export const testManagerAccess = async () => {
