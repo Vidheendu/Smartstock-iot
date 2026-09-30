@@ -1,7 +1,7 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/auth.middleware.js';
 import { authorizeRoles } from '../middleware/role.middleware.js';
-import { validateProductMiddleware } from '../validators/product.validator.js';
+import { validateProductMiddleware, validateProductQueryMiddleware } from '../validators/product.validator.js';
 import * as productController from '../controllers/product.controller.js';
 
 const router = express.Router();
@@ -11,7 +11,7 @@ const router = express.Router();
  * @desc    List products with optional search, category, status, and active filters
  * @access  Protected (STAFF, MANAGER)
  */
-router.get('/', authenticateToken, productController.getProducts);
+router.get('/', authenticateToken, validateProductQueryMiddleware, productController.getProducts);
 
 /**
  * @route   GET /api/products/:id/details
@@ -58,6 +58,11 @@ router.put(
  * @desc    Soft delete (deactivate) product
  * @access  Protected (MANAGER only; STAFF receives 403)
  */
-router.delete('/:id', authenticateToken, productController.deleteProduct);
+router.delete(
+  '/:id',
+  authenticateToken,
+  authorizeRoles('MANAGER'),
+  productController.deleteProduct
+);
 
 export default router;

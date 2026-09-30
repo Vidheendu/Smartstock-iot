@@ -12,5 +12,7 @@ router.get('/devices', iotController.getDevices);
 
 // 2. POST /api/iot/simulate — Send software simulated telemetry reading
 router.post('/simulate', iotController.simulateTelemetry);
+router.post('/devices/:id/simulate', iotController.simulateTelemetry);
+router.post('/telemetry', iotController.simulateTelemetry);
 
 export default router;

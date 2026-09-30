@@ -134,11 +134,30 @@ export async function simulateTelemetry({ deviceId, calculatedUnits, rawReading,
     throw error;
   }
 
-  const parsedUnits = Math.max(0, parseInt(calculatedUnits, 10));
-  if (isNaN(parsedUnits)) {
+  const numUnits = Number(calculatedUnits);
+  if (calculatedUnits === undefined || calculatedUnits === null || isNaN(numUnits) || !Number.isFinite(numUnits) || numUnits < 0 || !Number.isInteger(numUnits)) {
     const error = new Error('Calculated units must be a valid non-negative integer.');
     error.status = 400;
     throw error;
+  }
+  const parsedUnits = numUnits;
+
+  if (rawReading !== undefined && rawReading !== null) {
+    const numRaw = Number(rawReading);
+    if (isNaN(numRaw) || !Number.isFinite(numRaw) || numRaw < 0) {
+      const error = new Error('Raw reading value must be a non-negative number.');
+      error.status = 400;
+      throw error;
+    }
+  }
+
+  if (batteryLevel !== undefined && batteryLevel !== null) {
+    const numBattery = Number(batteryLevel);
+    if (isNaN(numBattery) || !Number.isFinite(numBattery) || numBattery < 0 || numBattery > 100) {
+      const error = new Error('Battery level must be a number between 0 and 100.');
+      error.status = 400;
+      throw error;
+    }
   }
 
   const previousStock = product.currentStock;
@@ -150,10 +169,10 @@ export async function simulateTelemetry({ deviceId, calculatedUnits, rawReading,
     id: crypto.randomUUID(),
     device_id: device.id,
     product_id: product.id,
-    raw_reading: rawReading || (parsedUnits * (device.unit_weight_grams || 1000)),
+    raw_reading: rawReading !== undefined ? Number(rawReading) : (parsedUnits * (device.unit_weight_grams || 1000)),
     calculated_units: parsedUnits,
     simulated_delta: delta,
-    battery_level: batteryLevel ?? device.battery_level ?? 95,
+    battery_level: batteryLevel !== undefined ? Number(batteryLevel) : (device.battery_level ?? 95),
     recorded_at: now
   };
   inMemoryReadings.unshift(readingRecord);

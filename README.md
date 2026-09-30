@@ -147,3 +147,20 @@ The system evaluates inventory using the following rules:
 - **LOW:** `0.5 * minimum_stock < current_stock <= minimum_stock`
 - **CRITICAL:** `0 < current_stock <= 0.5 * minimum_stock`
 - **OUT_OF_STOCK:** `current_stock == 0`
+
+---
+
+## 8. Security
+
+SmartStock implements production-grade security safeguards designed for safe deployment:
+- **JWT Authentication:** Signed bearer tokens with 24-hour expiration verify caller identities.
+- **bcrypt Password Hashing:** 10-round salted password hashing; plain passwords and hashes are never exposed.
+- **Role-Based Authorization (RBAC):** Backend enforces strict role restrictions (`MANAGER` vs `STAFF`) on all mutation endpoints.
+- **Input Validation & Sanitization:** Quantities (> 0), prices (>= 0), IoT telemetry (battery 0-100, valid units), and date ranges are rigorously validated.
+- **Pagination & Sort Guards:** Pagination limits are capped at 100, and sorting fields are restricted via allowlists.
+- **Rate Limiting:** Dedicated rate limiters protect authentication endpoints against brute force and APIs against runaway scraping.
+- **CORS & Security Headers:** Explicit origin allowlists and Helmet-equivalent HTTP headers (HSTS, CSP, X-Frame-Options, X-Content-Type-Options) prevent clickjacking and MIME attacks.
+- **Environment Isolation:** Secrets are managed via `.env` (ignored by Git) and `.env.example` templates.
+- **Backend-Only Service Role:** `SUPABASE_SERVICE_ROLE_KEY` is strictly confined to the backend and never exposed to the frontend client.
+- **Zero Secrets Committed:** No API keys, passwords, or credentials exist in the Git history.
+

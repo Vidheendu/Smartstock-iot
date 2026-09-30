@@ -16,12 +16,28 @@ export async function getNotifications(req, res, next) {
       isRead = req.query.isRead === 'true';
     }
 
+    if (req.query.type) {
+      const allowedTypes = ['LOW_STOCK', 'CRITICAL_STOCK', 'OUT_OF_STOCK', 'SYSTEM', 'RESTOCK'];
+      if (!allowedTypes.includes(req.query.type.toUpperCase())) {
+        return res.status(400).json({
+          success: false,
+          message: `Invalid notification type '${req.query.type}'. Allowed: ${allowedTypes.join(', ')}`
+        });
+      }
+    }
+
+    const rawLimit = parseInt(req.query.limit, 10);
+    const limit = !isNaN(rawLimit) && rawLimit > 0 ? Math.min(100, rawLimit) : 20;
+
+    const rawOffset = parseInt(req.query.offset, 10);
+    const offset = !isNaN(rawOffset) && rawOffset >= 0 ? rawOffset : 0;
+
     const options = {
       isRead,
-      type: req.query.type,
-      search: req.query.search,
-      limit: parseInt(req.query.limit, 10) || 20,
-      offset: parseInt(req.query.offset, 10) || 0
+      type: req.query.type ? req.query.type.toUpperCase() : undefined,
+      search: req.query.search ? String(req.query.search).trim().slice(0, 100) : undefined,
+      limit,
+      offset
     };
 
     const result = await notificationService.getUserNotifications(userId, options);

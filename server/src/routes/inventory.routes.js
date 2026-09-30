@@ -4,7 +4,8 @@ import * as inventoryController from '../controllers/inventory.controller.js';
 import {
   validateStockIn,
   validateStockOut,
-  validateAdjust
+  validateAdjust,
+  validateHistoryQuery
 } from '../validators/inventory.validator.js';
 
 const router = express.Router();
@@ -30,13 +31,13 @@ router.use(authenticateToken);
 router.get('/', inventoryController.getInventory);
 
 // 2. GET /api/inventory/history — Global inventory audit trail (Placed before :productId)
-router.get('/history', inventoryController.getInventoryHistory);
+router.get('/history', validateHistoryQuery, inventoryController.getInventoryHistory);
 
 // 3. GET /api/inventory/:productId — Product specific inventory
 router.get('/:productId', inventoryController.getInventoryByProduct);
 
 // 4. GET /api/inventory/:productId/history — Product specific audit history
-router.get('/:productId/history', inventoryController.getProductHistory);
+router.get('/:productId/history', validateHistoryQuery, inventoryController.getProductHistory);
 
 // 5. POST /api/inventory/stock-in — Add received stock
 router.post('/stock-in', validateStockIn, inventoryController.stockIn);

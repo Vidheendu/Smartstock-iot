@@ -10,14 +10,40 @@ import * as restockService from '../services/restock.service.js';
  */
 export async function getOrders(req, res, next) {
   try {
+    const { status, dateFrom, dateTo, search, sortBy, sortOrder } = req.query;
+
+    if (status && !['ALL', 'PENDING', 'ORDERED', 'RECEIVED', 'CANCELLED'].includes(status.toUpperCase())) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid status filter '${status}'. Allowed: ALL, PENDING, ORDERED, RECEIVED, CANCELLED`
+      });
+    }
+
+    if (dateFrom && dateTo) {
+      const fromTime = new Date(dateFrom).getTime();
+      const toTime = new Date(dateTo).getTime();
+      if (isNaN(fromTime) || isNaN(toTime)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid date format in dateFrom or dateTo'
+        });
+      }
+      if (fromTime > toTime) {
+        return res.status(400).json({
+          success: false,
+          message: 'dateFrom must be before or equal to dateTo'
+        });
+      }
+    }
+
     const filters = {
-      status: req.query.status,
+      status: status ? status.toUpperCase() : undefined,
       supplierId: req.query.supplierId || req.query.supplier,
-      search: req.query.search,
-      dateFrom: req.query.dateFrom,
-      dateTo: req.query.dateTo,
-      sortBy: req.query.sortBy,
-      sortOrder: req.query.sortOrder
+      search: search ? String(search).trim().slice(0, 100) : undefined,
+      dateFrom,
+      dateTo,
+      sortBy,
+      sortOrder
     };
 
     const orders = await restockService.getRestockOrders(filters);

@@ -330,6 +330,7 @@ export async function getSuppliers(params = {}) {
 
   let limitNum = limit ? parseInt(limit, 10) : null;
   if (limitNum !== null && !isNaN(limitNum) && limitNum > 0) {
+    if (limitNum > 100) limitNum = 100;
     const startIndex = (pageNum - 1) * limitNum;
     paginatedData = formatted.slice(startIndex, startIndex + limitNum);
   }

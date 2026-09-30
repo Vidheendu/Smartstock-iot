@@ -6,12 +6,35 @@ import * as alertService from '../services/alert.service.js';
  */
 export async function getAlerts(req, res, next) {
   try {
+    const { severity, status, source, productId, search } = req.query;
+
+    if (severity && severity !== 'ALL' && !['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'].includes(severity.toUpperCase())) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid severity filter '${severity}'. Allowed: LOW, MEDIUM, HIGH, CRITICAL`
+      });
+    }
+
+    if (status && status !== 'ALL' && !['ACTIVE', 'ACKNOWLEDGED', 'RESOLVED'].includes(status.toUpperCase())) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid status filter '${status}'. Allowed: ACTIVE, ACKNOWLEDGED, RESOLVED`
+      });
+    }
+
+    if (source && source !== 'ALL' && !['MANUAL', 'IOT', 'SYSTEM', 'RESTOCK'].includes(source.toUpperCase())) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid source filter '${source}'. Allowed: MANUAL, IOT, SYSTEM, RESTOCK`
+      });
+    }
+
     const filters = {
-      severity: req.query.severity,
-      status: req.query.status,
-      source: req.query.source,
-      productId: req.query.productId,
-      search: req.query.search
+      severity: severity ? severity.toUpperCase() : undefined,
+      status: status ? status.toUpperCase() : undefined,
+      source: source ? source.toUpperCase() : undefined,
+      productId,
+      search: search ? String(search).trim().slice(0, 100) : undefined
     };
 
     const alerts = await alertService.getAlerts(filters);

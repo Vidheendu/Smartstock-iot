@@ -1,8 +1,11 @@
 /**
  * Product Request Validators
  * 
- * Validates payload for creating and updating products.
+ * Validates payload for creating and updating products, as well as query filters.
  */
+
+const ALLOWED_STOCK_STATUSES = ['ALL', 'NORMAL', 'LOW', 'CRITICAL', 'OUT_OF_STOCK'];
+const ALLOWED_SORT_FIELDS = ['name', 'created_at', 'current_stock', 'unit_price', 'sku', 'category', 'createdAt'];
 
 export function validateProductPayload(data, isUpdate = false) {
   const errors = [];
@@ -52,10 +55,14 @@ export function validateProductPayload(data, isUpdate = false) {
   const currentStock = data.currentStock !== undefined ? data.currentStock : data.current_stock;
   if (!isUpdate || currentStock !== undefined) {
     const parsedStock = Number(currentStock);
-    if (currentStock === undefined || currentStock === null || isNaN(parsedStock)) {
+    if (currentStock === undefined || currentStock === null || currentStock === '' || isNaN(parsedStock) || !Number.isFinite(parsedStock)) {
       errors.push('Current stock must be a valid number');
     } else if (parsedStock < 0) {
       errors.push('Current stock cannot be negative');
+    } else if (!Number.isInteger(parsedStock)) {
+      errors.push('Current stock must be an integer');
+    } else if (parsedStock > 1000000) {
+      errors.push('Current stock cannot exceed 1,000,000');
     }
   }
 
@@ -63,10 +70,14 @@ export function validateProductPayload(data, isUpdate = false) {
   const minimumStock = data.minimumStock !== undefined ? data.minimumStock : data.minimum_stock;
   if (!isUpdate || minimumStock !== undefined) {
     const parsedMin = Number(minimumStock);
-    if (minimumStock === undefined || minimumStock === null || isNaN(parsedMin)) {
+    if (minimumStock === undefined || minimumStock === null || minimumStock === '' || isNaN(parsedMin) || !Number.isFinite(parsedMin)) {
       errors.push('Minimum stock must be a valid number');
     } else if (parsedMin < 0) {
       errors.push('Minimum stock cannot be negative');
+    } else if (!Number.isInteger(parsedMin)) {
+      errors.push('Minimum stock must be an integer');
+    } else if (parsedMin > 1000000) {
+      errors.push('Minimum stock cannot exceed 1,000,000');
     }
   }
 
@@ -74,8 +85,12 @@ export function validateProductPayload(data, isUpdate = false) {
   const price = data.price !== undefined ? data.price : (data.unit_price !== undefined ? data.unit_price : undefined);
   if (price !== undefined && price !== null && price !== '') {
     const parsedPrice = Number(price);
-    if (isNaN(parsedPrice) || parsedPrice < 0) {
+    if (isNaN(parsedPrice) || !Number.isFinite(parsedPrice)) {
+      errors.push('Price must be a valid number');
+    } else if (parsedPrice < 0) {
       errors.push('Price cannot be negative');
+    } else if (parsedPrice > 100000000) {
+      errors.push('Price cannot exceed 100,000,000');
     }
   }
 
@@ -96,3 +111,52 @@ export const validateProductMiddleware = (req, res, next) => {
   }
   next();
 };
+
+/**
+ * Validates query parameters for product listing.
+ */
+export const validateProductQueryMiddleware = (req, res, next) => {
+  const { status, sort, page, limit } = req.query;
+
+  if (status && status !== 'ALL' && !ALLOWED_STOCK_STATUSES.includes(status.toUpperCase())) {
+    return res.status(400).json({
+      success: false,
+      message: `Invalid status filter '${status}'. Allowed: ${ALLOWED_STOCK_STATUSES.join(', ')}`
+    });
+  }
+
+  if (sort && !ALLOWED_SORT_FIELDS.includes(sort)) {
+    req.query.sort = 'created_at';
+  }
+
+  if (page !== undefined) {
+    const p = parseInt(page, 10);
+    if (isNaN(p) || p < 1) {
+      return res.status(400).json({
+        success: false,
+        message: 'Page parameter must be an integer greater than or equal to 1'
+      });
+    }
+  }
+
+  if (limit !== undefined) {
+    const l = parseInt(limit, 10);
+    if (isNaN(l) || l < 1) {
+      return res.status(400).json({
+        success: false,
+        message: 'Limit parameter must be an integer greater than or equal to 1'
+      });
+    }
+    // Cap limit to 100
+    req.query.limit = Math.min(100, l);
+  }
+
+  next();
+};
+
+export default {
+  validateProductPayload,
+  validateProductMiddleware,
+  validateProductQueryMiddleware
+};
+

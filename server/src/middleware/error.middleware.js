@@ -10,17 +10,39 @@ export const notFoundHandler = (req, res, next) => {
 
 /**
  * Centralized Error Handling Middleware
+ * Protects sensitive internal details, database error traces, and secrets from leaking.
  */
 export const errorHandler = (err, req, res, next) => {
+  const isProduction = process.env.NODE_ENV === 'production';
   const statusCode = err.statusCode || err.status || 500;
-  const message = err.message || 'Internal Server Error';
 
+  // Log error details server-side safely without leaking credentials
   if (statusCode >= 500) {
-    console.error(`[SERVER ERROR] ${req.method} ${req.originalUrl}:`, err);
+    console.error(`[SERVER ERROR ${statusCode}] ${req.method} ${req.originalUrl}:`, err.message);
+  }
+
+  // Determine safe user-facing message
+  let safeMessage = err.message || 'Internal Server Error';
+
+  // Check for database error signatures
+  const isDatabaseError = err.code?.startsWith?.('23') ||
+                          err.code?.startsWith?.('42') ||
+                          /postgres|supabase|relation|syntax error|constraint|foreign key/i.test(err.message || '');
+
+  if (statusCode >= 500 && isProduction) {
+    safeMessage = 'Internal Server Error. Please try again later.';
+  } else if (isDatabaseError && isProduction) {
+    safeMessage = 'Unable to complete database operation.';
   }
 
   res.status(statusCode).json({
     success: false,
-    message
+    message: safeMessage
   });
 };
+
+export default {
+  notFoundHandler,
+  errorHandler
+};
+

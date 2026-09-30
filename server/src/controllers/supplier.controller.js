@@ -13,14 +13,42 @@ import * as supplierService from '../services/supplier.service.js';
  */
 export async function getSuppliers(req, res, next) {
   try {
+    const { status, page, limit, search } = req.query;
+
+    if (status && !['ALL', 'ACTIVE', 'INACTIVE'].includes(status.toUpperCase())) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid status filter '${status}'. Allowed: ALL, ACTIVE, INACTIVE`
+      });
+    }
+
+    let parsedPage = page !== undefined ? parseInt(page, 10) : undefined;
+    if (parsedPage !== undefined && (isNaN(parsedPage) || parsedPage < 1)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Page parameter must be an integer greater than or equal to 1'
+      });
+    }
+
+    let parsedLimit = limit !== undefined ? parseInt(limit, 10) : undefined;
+    if (parsedLimit !== undefined && (isNaN(parsedLimit) || parsedLimit < 1)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Limit parameter must be an integer greater than or equal to 1'
+      });
+    }
+    if (parsedLimit !== undefined && parsedLimit > 100) {
+      parsedLimit = 100;
+    }
+
     const params = {
-      search: req.query.search,
-      status: req.query.status,
+      search: search ? String(search).trim().slice(0, 100) : undefined,
+      status: status ? status.toUpperCase() : undefined,
       hasActiveOrders: req.query.hasActiveOrders,
       sort: req.query.sort || req.query.sortBy,
       order: req.query.order || req.query.sortOrder,
-      page: req.query.page,
-      limit: req.query.limit,
+      page: parsedPage,
+      limit: parsedLimit,
       activeOnly: req.query.activeOnly === 'true'
     };
 
@@ -62,7 +90,43 @@ export async function getSupplierById(req, res, next) {
  */
 export async function createSupplier(req, res, next) {
   try {
-    const supplier = await supplierService.createSupplier(req.body);
+    const {
+      name,
+      contact_name,
+      contact_person,
+      contactPerson,
+      contactName,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      country,
+      postal_code,
+      postalCode,
+      notes,
+      lead_time_days,
+      leadTimeDays,
+      is_active,
+      isActive
+    } = req.body;
+
+    const sanitizedData = {
+      name,
+      contact_person: contact_person || contactPerson || contact_name || contactName,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      country,
+      postal_code: postal_code || postalCode,
+      notes,
+      lead_time_days: lead_time_days || leadTimeDays,
+      is_active: is_active !== undefined ? is_active : isActive
+    };
+
+    const supplier = await supplierService.createSupplier(sanitizedData);
 
     return res.status(201).json({
       success: true,
@@ -81,7 +145,43 @@ export async function createSupplier(req, res, next) {
  */
 export async function updateSupplier(req, res, next) {
   try {
-    const supplier = await supplierService.updateSupplier(req.params.id, req.body);
+    const {
+      name,
+      contact_name,
+      contact_person,
+      contactPerson,
+      contactName,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      country,
+      postal_code,
+      postalCode,
+      notes,
+      lead_time_days,
+      leadTimeDays,
+      is_active,
+      isActive
+    } = req.body;
+
+    const sanitizedData = {
+      name,
+      contact_person: contact_person || contactPerson || contact_name || contactName,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      country,
+      postal_code: postal_code || postalCode,
+      notes,
+      lead_time_days: lead_time_days || leadTimeDays,
+      is_active: is_active !== undefined ? is_active : isActive
+    };
+
+    const supplier = await supplierService.updateSupplier(req.params.id, sanitizedData);
 
     return res.status(200).json({
       success: true,

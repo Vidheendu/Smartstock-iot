@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node test-phase7.js && node test-phase8.js && node test-phase9.js && node test-phase10.js && node test-phase11.js && node test-phase12.js && node test-phase13.js && node test-phase16.js",
+    "test": "node test-phase7.js && node test-phase8.js && node test-phase9.js && node test-phase10.js && node test-phase11.js && node test-phase12.js && node test-phase13.js && node test-phase16.js && node test-phase17.js",
     "test:phase7": "node test-phase7.js",
     "test:phase8": "node test-phase8.js",
     "test:phase9": "node test-phase9.js",
@@ -15,7 +15,8 @@
     "test:phase11": "node test-phase11.js",
     "test:phase12": "node test-phase12.js",
     "test:phase13": "node test-phase13.js",
-    "test:phase16": "node test-phase16.js"
+    "test:phase16": "node test-phase16.js",
+    "test:phase17": "node test-phase17.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
